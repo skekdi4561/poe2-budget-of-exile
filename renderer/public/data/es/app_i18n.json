@@ -12,7 +12,7 @@
     "leagues_failed": "Error al cargar ligas",
     "leagues_failed_help": "Asegúrate de que el reino no esté en mantenimiento. También haz clic en el botón \"Navegador\", es posible que debas resolver un CAPTCHA.",
     "leagues_failed_help_alt": "Realiza una comprobación de precios y sigue las instrucciones en la descripción del error.",
-    "thanks_3rd_party": "Esta herramienta se basa en {0} y {1}. Por favor, apóyalos también",
+    "thanks_3rd_party": "Esta herramienta depende de {0}; ¡considera la posibilidad de apoyarles!",
     "toggle_browser_hint": "Presiona {0} para alternar entre el navegador y el juego.",
     "contact_me": "Contáctame en uno de los Discords de PoE,",
     "version": "Versión {0}",
@@ -23,7 +23,7 @@
   },
   "map.mods.uber": "T17",
   "map.mods.outdated": "desactualizado",
-  "Support development on": "Apoya el desarrollo en",
+  "Support development on": "Apoya el desarrollo en",
   "Blighted": "Infestado",
   "Blight-ravaged": "Devastado por la plaga",
   "Magic": "Mágico",
@@ -385,5 +385,6 @@
     "parse_error3": "(Posiblemente un nuevo término o palabra modificada de poe1)",
     "bulk_exchange": "Las tasas de cambio a granel aún no están implementadas"
   },
-  "map.mods.heist": "robo"
+  "map.mods.heist": "robo",
+  "Superior": "Avanzado"
 }
