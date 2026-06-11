@@ -360,7 +360,8 @@
     "tip_number_header": "提示 #{0}",
     "enable_alphas": "啟用實驗性功能",
     "read_client_log": "允許讀取 Client.txt 檔案",
-    "client_log_explain": "Client.txt 日誌檔案包含偵錯資訊和聊天記錄。它用於檢測區域變化和玩家等級提升。"
+    "client_log_explain": "Client.txt 日誌檔案包含偵錯資訊和聊天記錄。它用於檢測區域變化和玩家等級提升。",
+    "preferred_trade_site": "主要交易網站"
   },
   "price_check": {
     "name": "價格檢查",
