@@ -116,7 +116,11 @@
     "open_on_craftofexile": "已褻瀆",
     "not_sanctified": "未聖化",
     "ascendancy_points": "天賦：{0}",
-    "mod_desecrated": "已褻瀆"
+    "mod_desecrated": "已褻瀆",
+    "find_same_price": "篩選",
+    "find_same_price_type": "篩選：",
+    "price": "僅限價格",
+    "price_and_item": "價格與物品"
   },
   "item_category": {
     "prop": "類別：{0}",
@@ -164,7 +168,8 @@
     "weapon_flail": "鏈錘",
     "armour_buckler": "輕盾",
     "weapon_talisman": "魔符",
-    "map_tablet": "碑牌"
+    "map_tablet": "碑牌",
+    "armour_focus": "法器2"
   },
   "filters": {
     "selected_some": "已選擇：{0}/{1}，屬性",
@@ -211,7 +216,16 @@
     "tag_desecrated": "褻瀆",
     "grade": "等級 {0}",
     "hybrid_note": "階級可能因複合詞綴的存在而顯示不正確",
-    "hide_for_map": "大多數地圖詞綴沒有價值"
+    "hide_for_map": "大多數地圖詞綴沒有價值",
+    "selected_open_runes": "已選擇：{0}/{1}，空",
+    "selected_full_runes": "滿符文",
+    "empty_rune_socket": "空的符文插槽",
+    "hide_low_ilvl": "物品等級過低，無法重骰所有模組",
+    "hide_not_max_level": "非滿級技能幾乎沒有價值",
+    "hide_revives": "仅在数值不为 0，而且你不打算用崇高石时才选择吗？",
+    "tag_skill": "技能",
+    "tag_mutated": "污染的",
+    "fill_rune_iron": "镶嵌满鍛鐵符文"
   },
   "online_filter": {
     "offline_toggle": "離線 & 在線",
@@ -228,7 +242,8 @@
     "currency_only_div": "神聖石",
     "currency_chaos_div": "兩者皆可",
     "currency_exalted_div": "兩者皆可",
-    "currency_only_exalted": "崇高石"
+    "currency_only_exalted": "崇高石",
+    "ratio_tooltip": "用於本地排序比例\n官方交易網站默認 7.5:1"
   },
   "widget": {
     "title": "小工具標題",
