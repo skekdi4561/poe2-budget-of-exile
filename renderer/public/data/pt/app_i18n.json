@@ -18,7 +18,8 @@
     "version": "Versão {0}",
     "release_notes": "Notas de versão",
     "report_bug": "Reportar um erro no GitHub",
-    "quit": "Sair"
+    "quit": "Sair",
+    "deprecated": "Essa funcionalidade foi descontinuada e será removida no update {0}"
   },
   "map.mods.heist": "assalto",
   "map.mods.uber": "T17",
@@ -113,7 +114,8 @@
     "uses_remaining": "Usos restantes: {0}",
     "victorious": "Triunfante",
     "cowardly": "Covarde",
-    "deadly": "Mortal"
+    "deadly": "Mortal",
+    "open_on_craftofexile": "Abrir item base no Craft of Exile"
   },
   "item_category": {
     "prop": "Categoria: {0}",
