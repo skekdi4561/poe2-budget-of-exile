@@ -176,9 +176,10 @@ describe("statOptions", () => {
         edps: 0,
         p: 1,
         t: 0,
+        crit: 0,
         offs: { "치명타 확률 #%": 2, "희귀 옵션 #": 9 },
       },
-      { pdps: 1, edps: 0, p: 1, t: 0, offs: { "치명타 확률 #%": 5 } },
+      { pdps: 1, edps: 0, p: 1, t: 0, crit: 0, offs: { "치명타 확률 #%": 5 } },
     ];
     const s = statOptions(rows);
     expect(s).toHaveLength(1);
@@ -186,11 +187,35 @@ describe("statOptions", () => {
   });
 });
 
+describe("rowsFromSnapshot crit", () => {
+  // 아이템 최종 치확은 스냅샷에만 있고 골라 담는 지점이 rowsFromSnapshot 의 리터럴 하나뿐이다.
+  // 거기서 빠지면 게이트가 "항상 0" 이 되어 **아무도 안 걸리는데 오류도 안 난다**.
+  // 문자열 케이스도 같이 본다 — numOr0 가 있는 이유가 그 신뢰 경계다(pdps 문자열 결합 실측 사고).
+  it("crit 을 행에 싣고, 숫자가 아니거나 없으면 0", () => {
+    const snap = {
+      taken_at: 0,
+      bows: [
+        { pdps: 100, edps: 0, price: 1, cur: "exalted", crit: 9.5 },
+        { pdps: 100, edps: 0, price: 1, cur: "exalted" },
+        {
+          pdps: 100,
+          edps: 0,
+          price: 1,
+          cur: "exalted",
+          crit: "9.5" as unknown as number,
+        },
+      ],
+    };
+    const { rows } = rowsFromSnapshot(snap, { exalted: 1 }, new Set(), 0);
+    expect(rows.map((r) => r.crit)).toEqual([9.5, 0, 0]);
+  });
+});
+
 describe("metricRows", () => {
   // 물리 전용 초저가 활이 "원소" 지표에서 0 DPS 계단으로 새면 안 된다 (index.html v.d>0 동일)
   const rows: RichRow[] = [
-    { pdps: 300, edps: 0, p: 1, t: 0, offs: {} },
-    { pdps: 100, edps: 80, p: 5, t: 0, offs: {} },
+    { pdps: 300, edps: 0, p: 1, t: 0, crit: 0, offs: {} },
+    { pdps: 100, edps: 80, p: 5, t: 0, crit: 0, offs: {} },
   ];
   it("선택 지표가 0인 행은 제외", () => {
     expect(metricRows(rows, "ele")).toEqual([{ d: 80, p: 5, t: 0 }]);
@@ -299,6 +324,7 @@ describe("optRank (옵션 표시 순서)", () => {
         edps: 0,
         p: 1,
         t: 0,
+        crit: 0,
         offs: { "반려수의 공격 속도 #% 증가": 10 },
       });
     for (let i = 0; i < 2; i++) rows[i].offs["모든 투사체 스킬 레벨 #"] = 2;

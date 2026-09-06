@@ -110,6 +110,21 @@
           >
         </div>
 
+        <!-- 아이템 치확 게이트 (근거는 script 의 minCrit 참고) -->
+        <div class="flex items-center gap-2 mb-3 text-sm text-gray-400">
+          <span>{{ t(":crit_min") }}</span>
+          <input
+            v-model.number="minCrit"
+            type="number"
+            min="0"
+            step="0.1"
+            placeholder="0"
+            class="w-20 bg-gray-950 rounded px-2 py-0.5 text-right border border-gray-700 text-gray-100"
+            style="font-variant-numeric: tabular-nums"
+          />
+          <span>%</span>
+        </div>
+
         <!-- 시장 곡선 차트 -->
         <div class="relative mb-3">
           <canvas
@@ -172,7 +187,10 @@
             </div>
 
             <!-- 추가된 필터 행들 -->
-            <div v-if="!filters.length" class="text-gray-600 text-sm py-2">
+            <div
+              v-if="!filters.length && !minCritN"
+              class="text-gray-600 text-sm py-2"
+            >
               {{ t(":no_filter") }}
             </div>
             <div
@@ -481,6 +499,17 @@ export default defineComponent({
       return r > 0 ? budget.value * r : 0;
     });
 
+    // 아이템 최종 치확 하한 — 조건 필터(filters)와 **별개로** 곡선 전체에 걸린다.
+    // 옵션 필터는 mods 의 증가분("치명타 확률 +4.92%")을 보고, 이건 아이템 최종 치확
+    // (베이스 12 + 증가분 4.92 = 16.92)을 본다. 베이스가 무기마다 달라서(육척봉 0·10·12,
+    // 부적 5·8) 옵션 필터로는 "최종 치확 ≥ X" 를 원리적으로 만들 수 없다 — 그래서 별도 필드다.
+    // 컨트롤을 예산 줄이 아니라 차트 위 자기 행에 둔 이유: 영어에서 예산 줄 잔여 폭이
+    // 약 26px 뿐이라 즉시 줄바꿈된다(한국어만 보고 넣으면 영어에서만 깨진다).
+    const minCrit = ref<number | "">("");
+    const minCritN = computed(() =>
+      typeof minCrit.value === "number" && minCrit.value > 0 ? minCrit.value : 0,
+    );
+
     // 거래소식 자유 필터
     const filters = reactive<StatFilter[]>([]);
     const query = ref("");
@@ -516,6 +545,9 @@ export default defineComponent({
     );
     function onWeaponChange() {
       filters.splice(0); // 이전 무기 기준 옵션 필터는 다른 무기엔 의미가 없다
+      // 치확 하한도 같이 지운다. 베이스 치확이 무기군마다 달라 그대로 들고 가면 뜻이 바뀌고,
+      // 나중에 방패가 들어오면 방패는 치확이 전부 0 이라 값이 남아 있는 순간 전 매물이 탈락한다.
+      minCrit.value = "";
       load();
     }
 
@@ -548,9 +580,12 @@ export default defineComponent({
     );
     const filtered = computed(() => {
       if (!board.value) return [];
-      if (!normFilters.value.length) return board.value.rows;
-      return board.value.rows.filter((r) =>
-        matchesFilters(r.offs, normFilters.value),
+      // 조기 반환(`if (!normFilters.length) return rows`)을 두면 옵션 필터가 비었을 때
+      // 치확 게이트가 통째로 무시된다. matchesFilters 는 빈 배열에 every()로 true 를
+      // 돌려주므로 조기 반환 없이도 결과가 같다 — 지우는 게 맞다.
+      const lo = minCritN.value;
+      return board.value.rows.filter(
+        (r) => r.crit >= lo && matchesFilters(r.offs, normFilters.value),
       );
     });
     const front = computed<Row[]>(() =>
@@ -897,6 +932,8 @@ export default defineComponent({
       sortDesc,
       budget,
       budgetCur,
+      minCrit,
+      minCritN,
       currencies,
       budgetEx,
       filters,

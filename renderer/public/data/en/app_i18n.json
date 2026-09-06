@@ -523,6 +523,7 @@
     "filter_placeholder": "+ Search modifiers (e.g. critical, life, arrow)",
     "stat_meta": "{n} · {lo}–{hi}",
     "no_filter": "No filters — all listings",
+    "crit_min": "Min item crit",
     "min": "min",
     "max": "max",
     "remove": "Remove",

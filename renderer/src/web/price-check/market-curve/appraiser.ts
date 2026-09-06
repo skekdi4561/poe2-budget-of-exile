@@ -33,6 +33,9 @@ export const MIRROR_IN_DIVINE = 350; // 2026-09-06 실측 (mirror 24,104 ex / di
 interface SnapshotBow {
   pdps?: number;
   edps?: number;
+  // 아이템 자체의 치명타 확률(%). 거래소가 properties 로 주는 **최종값**이라
+  // 베이스 + 로컬 증가가 이미 반영돼 있다 — mods 의 "치명타 확률 +N%"(증가분)와 다르다.
+  crit?: number;
   price?: number;
   cur?: string;
   rarity?: string;
@@ -65,6 +68,11 @@ export interface RichRow {
   edps: number;
   p: number;
   t: number;
+  // 아이템 최종 치확. 옵션(offs)이 아니라 별도 필드인 게 핵심이다 — offs 에 합성 키로 넣으면
+  // 이미 있는 "치명타 확률 #%"(모드 증가분) 열쇠와 충돌하고, statOptions 가 그걸 옵션 검색
+  // 드롭다운에 올려 "옵션 필터와 분리"라는 요구를 정면으로 어긴다.
+  // 옵셔널이 아니라 필수다 — 빠뜨린 자리를 vue-tsc 가 잡아준다.
+  crit: number;
   offs: Record<string, number>;
 }
 // 24h 매물에서 실제로 관측된 옵션 하나 — 필터 검색 목록의 항목
@@ -333,7 +341,15 @@ export function rowsFromSnapshot(
     const edps = numOr0(b.edps);
     if (pdps + edps <= 0) continue;
     if (fallbackCurs.has(b.cur!)) rateFallback = true;
-    const row = { pdps, edps, p: price * r, t, offs: offMods(b.mods ?? []) };
+    // 여기가 스냅샷 필드를 골라 담는 **유일한** 지점이다 — 여기 안 적으면 조용히 사라진다.
+    const row = {
+      pdps,
+      edps,
+      p: price * r,
+      t,
+      crit: numOr0(b.crit),
+      offs: offMods(b.mods ?? []),
+    };
     all.push(row);
     if (t >= cut) fresh.push(row);
   }
