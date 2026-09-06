@@ -312,18 +312,20 @@ export interface AugmentData {
  * Value is each option that the value could be for, ie stat for armour or weapon.
  */
 export interface AugmentDataByAugment {
-  [augment: string]: AugmentData[];
+  [augment: string]: AugmentData[] | undefined;
 }
 export interface AugmentDataByTradeId {
-  [tradeId: string]: Array<{
-    refName: string;
-    augment: string;
-    baseStat: string;
-    values: number[];
-    id: string;
-    categories: ItemCategory[];
-    icon: string;
-  }>;
+  [tradeId: string]:
+    | Array<{
+        refName: string;
+        augment: string;
+        baseStat: string;
+        values: number[];
+        id: string;
+        categories: ItemCategory[];
+        icon: string;
+      }>
+    | undefined;
 }
 
 export interface AugmentGroup<T> {

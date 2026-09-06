@@ -398,7 +398,7 @@ function augmentsToLookup(augmentList: BaseType[]): AugmentDataByAugment {
       if (!augmentDataByAugment[augment.refName]) {
         augmentDataByAugment[augment.refName] = [];
       }
-      augmentDataByAugment[augment.refName].push({
+      augmentDataByAugment[augment.refName]!.push({
         augment: augment.name,
         refName: augment.refName,
         baseStat: text,
@@ -426,7 +426,7 @@ function augmentsToLookupTradeId(
       if (!augmentDataByAugment[tradeId[0]]) {
         augmentDataByAugment[tradeId[0]] = [];
       }
-      augmentDataByAugment[tradeId[0]].push({
+      augmentDataByAugment[tradeId[0]]!.push({
         refName: augment.refName,
         augment: augment.name,
         baseStat: text,

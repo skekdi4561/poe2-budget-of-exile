@@ -196,6 +196,26 @@ describe("determineAugments", () => {
     expect(result).toHaveLength(1);
     expect(result[0].refName).toEqual("Greater Storm Rune");
   });
+
+  it("works for bonded augments", () => {
+    const expectedRef = ["Fox Idol"];
+
+    const result = __testExports.determineAugments(
+      {
+        info: {
+          type: ModifierType.Augment,
+        },
+      } as unknown as ParsedModifier,
+      [
+        makeCalcStat(
+          "Idols socketed in this item gain the benefits of their Bonded modifiers",
+          1,
+          ModifierType.Augment,
+        ),
+      ],
+    );
+    expect(result.map((augment) => augment.refName)).toEqual(expectedRef);
+  });
 });
 
 describe("BFS", () => {
@@ -459,5 +479,45 @@ describe("applyAugmentSockets", () => {
         (i) => i?.refName === "Lesser Inspiration Rune",
       ),
     ).toBeTruthy();
+  });
+
+  it("should handle bonded mods", () => {
+    const item = createTestItem();
+    item.category = ItemCategory.BodyArmour;
+    item.augmentSockets = {
+      empty: 1,
+      current: 1,
+      normal: 2,
+      augments: [null, null],
+    };
+
+    const Bonded = makeCalcStat(
+      "Bonded: #% to Quality of all Skills",
+      5,
+      ModifierType.Augment,
+    );
+    const nonBonded = makeCalcStat(
+      "Idols socketed in this item gain the benefits of their Bonded modifiers",
+      1,
+      ModifierType.Augment,
+    );
+    item.statsByType = [Bonded, nonBonded];
+    item.newMods = [
+      {
+        info: {
+          type: ModifierType.Augment,
+          tags: [],
+        },
+        stats: [Bonded.sources[0].stat, nonBonded.sources[0].stat],
+      },
+    ];
+
+    __testExports.applyAugmentSockets(item);
+    expect(item.augmentSockets.empty).toEqual(1);
+    expect(item.augmentSockets.current).toEqual(1);
+    expect(item.augmentSockets.normal).toEqual(2);
+    expect(item.augmentSockets.augments).toHaveLength(2);
+    expect(item.augmentSockets.augments[0]?.refName).toBe("Fox Idol");
+    expect(item.augmentSockets.augments[1]).toBeNull();
   });
 });

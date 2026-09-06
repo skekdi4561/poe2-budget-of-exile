@@ -1325,9 +1325,9 @@ function applyAugmentSockets(item: ParsedItem) {
     const augmentMods = item.newMods.filter(
       (mod) => mod.info.type === ModifierType.Augment,
     );
-    const augmentStats = item.statsByType.filter(
-      (calc) => calc.type === ModifierType.Augment,
-    );
+    const augmentStats = item.statsByType
+      .filter((calc) => calc.type === ModifierType.Augment)
+      .filter((calc) => !calc.stat.ref.startsWith("Bonded"));
 
     let statCombinations = combinations(augmentStats)
       .filter((f) => f.length)
@@ -2168,9 +2168,10 @@ function determineAugments(
   const allTradeIds = statCalcs.map(
     (c) => c.stat.trade.ids[ModifierType.Augment][0],
   );
-  const allPossibleAugments = allTradeIds.map(
-    (id) => AUGMENT_DATA_BY_TRADE_ID[id],
-  );
+  const allPossibleAugments = allTradeIds
+    .map((id) => AUGMENT_DATA_BY_TRADE_ID[id])
+    .filter((v) => v !== undefined);
+
   const augmentRefSets = allPossibleAugments.map(
     (augGroup) => new Set(augGroup.map((a) => a.refName)),
   );
