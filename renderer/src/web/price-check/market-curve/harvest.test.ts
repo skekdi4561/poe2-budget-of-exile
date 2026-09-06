@@ -242,3 +242,92 @@ describe("harvestFetchResults — 거래소를 가리지 않는다", () => {
     vi.unstubAllGlobals();
   });
 });
+
+// 2026-09-07 실측: 방패 크라우드 39행이 전부 **막기 없이** 들어왔다.
+// 수집기(serve.py)는 141/141 꺼냈는데, 그건 **type 코드** 덕분이었고 이름 정규식은 한 번도
+// 검증된 적이 없었다. 그 이름 정규식만 오버레이에 옮겼으니 안 잡힌 것이다.
+// 앞선 검사들은 "소스에 이 문자열이 있는가"만 봤기 때문에 이걸 못 잡았다 — 그래서 여기서는
+// **실제 거래소 응답 모양을 넣어 나온 행을 본다.**
+describe("normalizeResult — 방패(방어구)", () => {
+  const listing = { price: { currency: "divine", amount: 2 } };
+  const shield = (props: unknown[]) => ({
+    id: "s1",
+    item: {
+      typeLine: "거대 방패",
+      rarity: "Rare",
+      extended: { ar: 900 },
+      properties: props,
+    },
+    listing,
+  });
+
+  it("이름이 안 맞아도 type 코드로 막기를 꺼낸다", () => {
+    // 이게 실제로 물린 경우 — 이름이 뭐든 코드가 15면 막기다
+    const row = normalizeResult(
+      shield([{ type: 15, name: "무슨이름이든", values: [["26%", 0]] }]),
+      "L",
+      "armour.shield",
+    );
+    expect(row?.block).toBe(26);
+  });
+
+  it("type 이 없으면 이름으로 떨어진다", () => {
+    const row = normalizeResult(
+      shield([{ name: "막기 확률", values: [["30%", 0]] }]),
+      "L",
+      "armour.shield",
+    );
+    expect(row?.block).toBe(30);
+  });
+
+  it("additionalProperties 에 있어도 찾는다 — serve.py 가 두 배열을 다 훑는다", () => {
+    const row = normalizeResult(
+      {
+        id: "s2",
+        item: {
+          typeLine: "거대 방패",
+          rarity: "Rare",
+          extended: { ar: 900 },
+          properties: [],
+          additionalProperties: [
+            { type: 15, name: "막기 확률", values: [["28%", 0]] },
+          ],
+        },
+        listing,
+      },
+      "L",
+      "armour.shield",
+    );
+    expect(row?.block).toBe(28);
+  });
+
+  it("이웃 속성(막기 회복)을 막기로 착각하지 않는다", () => {
+    const row = normalizeResult(
+      shield([{ type: 99, name: "막기 회복", values: [["77", 0]] }]),
+      "L",
+      "armour.shield",
+    );
+    expect(row?.block).toBeUndefined();
+  });
+
+  it("방어도는 주 지표(pdps)에 담기고 부 지표는 0 — serve.py 와 같은 규약", () => {
+    const row = normalizeResult(shield([]), "L", "armour.shield");
+    expect([row?.pdps, row?.edps]).toEqual([900, 0]);
+    expect("block" in (row ?? {})).toBe(false); // 못 읽으면 키를 안 단다
+  });
+
+  it("무기 행에는 막기를 안 단다", () => {
+    const bow = {
+      id: "b1",
+      item: {
+        typeLine: "활",
+        rarity: "Rare",
+        extended: { pdps: 500, edps: 100 },
+        properties: [{ type: 15, name: "막기 확률", values: [["26%", 0]] }],
+      },
+      listing,
+    };
+    const row = normalizeResult(bow, "L", "weapon.bow");
+    expect("block" in (row ?? {})).toBe(false);
+  });
+});

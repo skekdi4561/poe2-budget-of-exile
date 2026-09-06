@@ -71,7 +71,10 @@ describe("방패(방어구) 지원", () => {
     // 주 지표에 담아야 한다. 안 그러면 위 한 줄만 넣었을 때 전 행이 null 로 버려진다.
     expect(h).toMatch(/armour \? ext\.ar == null/);
     expect(h).toMatch(/armour \? \(ext\.ar \?\? 0\)/);
-    expect(h).toMatch(/block: prop\(item, \/\^/);
+    // 막기 추출이 "있는가"는 harvest.test.ts 가 **실제 응답을 넣어** 본다.
+    // 여기서 소스 문자열만 보다가 v1.1.0 에서 크라우드 39행 전부 막기가 빈 채로 나갔다 —
+    // 문자열은 있었고 동작만 없었다. 그래서 이 검사는 배선(방패 분기)만 지킨다.
+    expect(h).toMatch(/blockOf\(item\)/);
   });
 
   it("방어구 옵션 판정이 카테고리로 갈리고, 스냅샷의 category 로 배선돼 있다", () => {

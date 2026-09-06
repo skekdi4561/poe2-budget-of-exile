@@ -87,16 +87,47 @@ function toNumber(s: unknown): number {
   return m ? +m[0] : 0;
 }
 
+// 거래소 property 의 type 코드. serve.py PROP_CRIT/PROP_APS/PROP_BLOCK 과 같은 값이고
+// 출처는 EE2 자신의 TradePropType 열거(pathofexile-trade.ts)다.
+const PROP_CRIT = 12,
+  PROP_APS = 13,
+  PROP_BLOCK = 15;
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
-function prop(item: any, re: RegExp): number {
-  for (const p of item.properties ?? []) {
-    if (re.test(String(p.name ?? ""))) {
-      const v = p.values?.[0]?.[0];
-      if (v != null) return toNumber(v);
+/**
+ * properties + additionalProperties 에서 값을 꺼낸다. serve.py 의 prop() 과 같은 규약이어야
+ * 수집기 행과 크라우드 행이 같은 값을 갖는다.
+ *
+ * **type 코드를 전 항목에서 먼저** 훑고, 없을 때만 이름 정규식으로 떨어진다. 한 루프에서
+ * OR 로 합치면 느슨한 이름이 이웃 속성("막기 회복")에 먼저 걸릴 수 있다.
+ *
+ * 이름만 보던 판이 실제로 물렸다: 수집기는 type 코드로 방패 막기를 141/141 꺼냈는데,
+ * 같은 이름 정규식만 옮긴 오버레이는 크라우드 39행 전부 막기가 비어서 왔다(2026-09-07 실측).
+ * 즉 수집기가 성공한 건 코드 덕분이고 이름 정규식은 한 번도 검증된 적이 없었다.
+ */
+function prop(item: any, re: RegExp, ptype?: number): number {
+  const list = [
+    ...(item.properties ?? []),
+    ...(item.additionalProperties ?? []),
+  ];
+  const tests: Array<(p: any) => boolean> = [];
+  if (ptype != null) tests.push((p) => p.type === ptype);
+  tests.push((p) => re.test(String(p.name ?? "")));
+  for (const hit of tests) {
+    for (const p of list) {
+      if (hit(p)) {
+        const v = p.values?.[0]?.[0];
+        if (v != null) return toNumber(v);
+      }
     }
   }
   return 0;
 }
+
+// 막기는 extended 에 없다(dps/pdps/edps/ar/ev/es/ward 뿐) — aps/crit 과 같은 properties 채널이다.
+// 0 은 "못 읽었다"는 뜻이라 호출부가 키를 안 단다(serve.py·워커와 같은 규약).
+const blockOf = (item: any): number =>
+  prop(item, /^\[?Block chance|^\[?막기 확률/, PROP_BLOCK);
 
 function modLines(item: any): string[] {
   const out: string[] = [];
@@ -156,17 +187,15 @@ export function normalizeResult(
     name: name || "이름 없음",
     pdps: Math.round((armour ? (ext.ar ?? 0) : (ext.pdps ?? 0)) * 10) / 10,
     edps: armour ? 0 : Math.round((ext.edps ?? 0) * 10) / 10,
-    aps: prop(item, /Attacks per Second|초당 공격/),
-    crit: prop(item, /Critical .*Chance|치명타/),
+    aps: prop(item, /Attacks per Second|초당 공격/, PROP_APS),
+    crit: prop(item, /Critical .*Chance|치명타/, PROP_CRIT),
     price: price.amount,
     cur: price.currency,
     rarity: rarityOf(item), // serve.py rarity_of 와 정합 — frameType 폴백 포함
     mods: modLines(item),
     // 막기는 extended 에 없다(dps/pdps/edps/ar/ev/es/ward 뿐) — aps/crit 과 같은 채널이다.
     // 0 은 "못 읽었다"는 뜻이라 키를 안 단다(serve.py·워커와 같은 규약).
-    ...(armour && prop(item, /^\[?Block chance|^\[?막기 확률/) > 0
-      ? { block: prop(item, /^\[?Block chance|^\[?막기 확률/) }
-      : {}),
+    ...(armour && blockOf(item) > 0 ? { block: blockOf(item) } : {}),
     // 카카오 즉시구매 매물은 수수료(fee)가 붙는다 — 수합 서버가 신뢰 필터로 쓴다
     fee: typeof listing.fee === "number" ? listing.fee : undefined,
     league,
