@@ -79,6 +79,16 @@
 ## 빌드
 
 ```
-cd renderer && npm install && npm run make-index-files && npm run build
-cd ../main  && npm install && npm run build && npm run package
+cd renderer && npm install && npm run make-index-files
+cd ../main  && npm install && npm run package
 ```
+
+`npm run package` 가 렌더러·메인을 차례로 빌드한 뒤 설치본을 만듭니다
+(전에는 빌드를 안 해서 낡은 `renderer/dist` 가 그대로 포장되곤 했습니다).
+
+## 만든 사람
+
+김김두부 — <https://www.youtube.com/channel/UCdLge1kr3N8zEg2dMgF2pAg>
+
+프로그램 사용법을 영상으로 정리해 두었습니다.
+<https://youtu.be/c1o28p74dO8>
