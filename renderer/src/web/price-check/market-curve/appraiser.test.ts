@@ -13,6 +13,7 @@ import {
   optRank,
   isOffDps,
   priceTicks,
+  MIRROR_IN_DIVINE,
 } from "./appraiser";
 
 describe("snapshotUrl", () => {
@@ -69,7 +70,8 @@ describe("marketBoard 무기별 캐시 격리", () => {
       expect(Math.max(...bow!.rows.map((r) => r.pdps))).toBe(200);
       // rates 에 mirror 가 없어도 살아남되(0 ex 면 최전선을 '공짜'로 점령한다), 절대값이 아니라
       // 실측 디바인의 배수여야 한다 — 절대값이면 리그가 바뀔 때 4.6배 부풀린 값이 된다
-      expect(bow!.rows.some((r) => r.p === 65.6 * 6500)).toBe(true);
+      // 배수를 상수로 박지 말 것 — 리그마다 바뀐다(6500 → 350 으로 갱신하며 여기서 걸렸다)
+      expect(bow!.rows.some((r) => r.p === 65.6 * MIRROR_IN_DIVINE)).toBe(true);
       expect(Math.max(...xbow!.rows.map((r) => r.pdps))).toBe(400);
       expect(Math.max(...bow2!.rows.map((r) => r.pdps))).toBe(200);
       // fetch 는 무기마다 한 번씩만(bow2 는 캐시 히트)

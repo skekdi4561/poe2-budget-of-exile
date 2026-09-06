@@ -91,15 +91,19 @@ describe("라우트가 실제로 가드를 부른다", () => {
     const { readFileSync } = await import("node:fs");
     const src = (p: string) =>
       readFileSync(new URL(`../../../main/src/${p}`, import.meta.url), "utf-8");
-    expect(src("proxy.ts")).toContain("denyForeignOrigin(req, res)");
+    expect(src("proxy.ts")).toContain(
+      "if (denyForeignOrigin(req, res)) return;",
+    );
     // 정적 에셋 + /config 두 자리
     expect(
-      src("server.ts").split("denyForeignOrigin(req, res)").length - 1,
+      src("server.ts").split("if (denyForeignOrigin(req, res)) return;")
+        .length - 1,
     ).toBe(2);
     // uploads GET + POST 두 자리
     expect(
-      src("host-files/file-uploads.ts").split("denyForeignOrigin(req, res)")
-        .length - 1,
+      src("host-files/file-uploads.ts").split(
+        "if (denyForeignOrigin(req, res)) return;",
+      ).length - 1,
     ).toBe(2);
   });
 });

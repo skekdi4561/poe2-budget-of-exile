@@ -13,19 +13,22 @@ const ROW_TTL = 24 * 60 * 60 * 1000; // 감정소와 같은 규칙: 수집 24시
 // 환율 수집이 실패한 스냅샷에서도 축척이 살도록 — 감정소 RATE_DEFAULT 와 같은 값
 // ⚠️ mirror 가 빠지면 rateOf 가 0 을 돌려 미러 가격 활이 '공짜'로 최전선을 점령한다
 // (감정소 index.html RATE_DEFAULT 와 같은 이유). 스냅샷 환율이 없을 때의 안전망.
+// 스냅샷이 오기 전에만 쓰이는 안전망. 2026-09-06 poe.ninja 실측으로 갱신 —
+// 직전 값은 지난 리그 것이라 chaos 19.4배·annul 29.9배·divine 4.4배 어긋나 있었다.
+// 감정소 serve.py DEFAULT_RATES / index.html RATE_DEFAULT 와 같은 값.
 const DEFAULT_RATES: Record<string, number> = {
   exalted: 1,
-  chaos: 65,
-  divine: 300,
-  annul: 279,
-  mirror: 2_000_000,
+  chaos: 3.4,
+  divine: 69,
+  annul: 9.3,
+  mirror: 69 * 350,
 };
 // 미러만 절대값을 안 쓴다. 2,000,000 엑잘은 divine 이 300 엑잘이던 리그의 실측이라
 // 리그가 바뀌면 그대로 틀린다(이 리그 divine 은 65.6 — 절대값이면 4.6배 부풀린다).
 // 미러는 시장에서 디바인의 배수로 매겨지고 디바인은 수집기가 매 사이클 실측하므로,
 // 디바인 기준 배수로 두면 리그가 바뀌어도 같이 따라간다.
 // serve.py MIRROR_IN_DIVINE / index.html MIRROR_IN_DIVINE 과 같은 값.
-const MIRROR_IN_DIVINE = 6500;
+export const MIRROR_IN_DIVINE = 350; // 2026-09-06 실측 (mirror 24,104 ex / divine 68.9 ex)
 
 interface SnapshotBow {
   pdps?: number;
