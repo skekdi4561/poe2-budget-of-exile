@@ -38,7 +38,8 @@
     "report_bug": "Сообщить о баге на GitHub",
     "quit": "Выход",
     "deprecated": "Эта функция устарела и будет удалена в следующем обновлении {0}",
-    "name": "PoE2 Budget of Exile"
+    "name": "PoE2 Budget of Exile",
+    "made_by": "Автор"
   },
   "map.mods.heist": "кража",
   "map.mods.outdated": "устарело",

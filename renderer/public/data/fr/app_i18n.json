@@ -20,7 +20,8 @@
     "report_bug": "Signaler un bug sur GitHub",
     "quit": "Quitter",
     "deprecated": "Cette fonctionnalité est obsolète et sera supprimée dans la mise à jour {0}",
-    "name": "PoE2 Budget of Exile"
+    "name": "PoE2 Budget of Exile",
+    "made_by": "Créé par"
   },
   "map.mods.heist": "Casse",
   "map.mods.uber": "T17",

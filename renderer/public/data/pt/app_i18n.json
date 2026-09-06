@@ -19,7 +19,8 @@
     "release_notes": "Notas de versão",
     "report_bug": "Reportar um erro no GitHub",
     "quit": "Sair",
-    "name": "PoE2 Budget of Exile"
+    "name": "PoE2 Budget of Exile",
+    "made_by": "Criado por"
   },
   "map.mods.heist": "assalto",
   "map.mods.uber": "T17",

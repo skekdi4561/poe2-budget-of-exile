@@ -4,7 +4,16 @@
       <img class="w-12 h-12" src="/images/jeweler.png" />
       <p class="text-base">{{ t("app.name") }}</p>
       <p class="">{{ t("app.version", [version]) }}</p>
-      <div class="flex gap-2">
+      <p class="text-gray-400 mt-1">
+        {{ t("app.made_by") }}
+        <a
+          class="border-b"
+          href="https://www.youtube.com/channel/UCdLge1kr3N8zEg2dMgF2pAg"
+          target="_blank"
+          >김김두부</a
+        >
+      </p>
+      <div class="flex gap-2 mt-2">
         <a
           class="border-b"
           href="https://github.com/skekdi4561/poe2-budget-of-exile/releases"

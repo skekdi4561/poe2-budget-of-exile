@@ -20,7 +20,8 @@
     "report_bug": "버그 발생 시 GitHub에 보고해주세요",
     "quit": "종료",
     "deprecated": "この機能は非推奨でありバージョン {0} のアップデートで削除されます",
-    "name": "PoE2 시세 감정소"
+    "name": "PoE2 시세 감정소",
+    "made_by": "만든 사람"
   },
   "map.mods.heist": "강탈",
   "map.mods.outdated": "사용X",

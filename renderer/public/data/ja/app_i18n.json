@@ -19,7 +19,8 @@
     "release_notes": "リリースノート",
     "report_bug": "GitHubでバグを報告する",
     "quit": "終了",
-    "name": "PoE2 Budget of Exile"
+    "name": "PoE2 Budget of Exile",
+    "made_by": "制作"
   },
   "map.mods.heist": "ハイスト",
   "map.mods.uber": "ティア17",

@@ -20,7 +20,8 @@
     "report_bug": "Reportar un error en GitHub",
     "quit": "Salir",
     "deprecated": "Esta función está obsoleta y se eliminará en la actualización {0}",
-    "name": "PoE2 Budget of Exile"
+    "name": "PoE2 Budget of Exile",
+    "made_by": "Creado por"
   },
   "map.mods.uber": "T17",
   "map.mods.outdated": "desactualizado",
