@@ -46,9 +46,7 @@
           >github.com/skekdi4561/poe2-budget-of-exile/issues</a
         >
       </p>
-      <p class="text-gray-500 mt-2">
-        Exiled Exchange 2 (Awakened PoE Trade) 기반 포크 · MIT
-      </p>
+      <p class="text-gray-500 mt-2">{{ t("app.based_on") }}</p>
       <ul class="flex gap-4">
         <li>
           <img class="rounded inline" src="/images/dc_reddit.png" />

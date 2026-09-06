@@ -30,11 +30,11 @@ nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true
   artifactName: "PoE2-BudgetOfExile-Setup-${version}.${ext}"
-portable:
-  artifactName: "PoE2-BudgetOfExile-Portable-${version}.${ext}"
+# 포터블은 배포하지 않는다(2026-09-06 사용자 결정) — 만들어두면 릴리스에 실수로 섞인다.
+# 설치본을 안 건드리고 새 빌드를 확인하고 싶으면 dist/win-unpacked 를 직접 실행하면 된다.
 win:
   # 기본 조회 경로는 build/icon.ico 인데 이 포크의 아이콘은 build/icons/icon.ico 에 있어
-  # 못 찾고 업스트림 PNG 세트로 떨어졌다 — 그래서 사용자가 내려받는 Setup/Portable exe 가
+  # 못 찾고 업스트림 PNG 세트로 떨어졌다 — 그래서 사용자가 내려받는 Setup exe 가
   # **원작 아이콘**을 달고 나갔다(설치 뒤 앱 exe 만 afterPack 이 우리 아이콘으로 스탬핑).
   icon: "build/icons/icon.ico"
   # winCodeSign(legacy 7z)의 darwin 심볼릭 링크가 Windows 추출에서 실패해 rcedit 가
@@ -44,7 +44,6 @@ win:
   signAndEditExecutable: false
   target:
     - "nsis"
-    - "portable"
 linux:
   target:
     - "AppImage"

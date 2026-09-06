@@ -21,7 +21,8 @@
     "quit": "종료",
     "deprecated": "この機能は非推奨でありバージョン {0} のアップデートで削除されます",
     "name": "PoE2 시세 감정소",
-    "made_by": "만든 사람"
+    "made_by": "만든 사람",
+    "based_on": "Exiled Exchange 2 (Awakened PoE Trade) 기반 포크 · MIT"
   },
   "map.mods.heist": "강탈",
   "map.mods.outdated": "사용X",

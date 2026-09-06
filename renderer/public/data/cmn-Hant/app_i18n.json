@@ -21,7 +21,8 @@
     "quit": "退出",
     "deprecated": "此功能已淘汰，將於版本 {0} 更新中移除",
     "name": "PoE2 Budget of Exile",
-    "made_by": "製作"
+    "made_by": "製作",
+    "based_on": "Exiled Exchange 2 (Awakened PoE Trade) 的分支 · MIT"
   },
   "map.mods.heist": "劫盜",
   "map.mods.uber": "T17",

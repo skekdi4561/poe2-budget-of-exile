@@ -20,7 +20,8 @@
     "report_bug": "GitHubでバグを報告する",
     "quit": "終了",
     "name": "PoE2 Budget of Exile",
-    "made_by": "制作"
+    "made_by": "制作",
+    "based_on": "Exiled Exchange 2 (Awakened PoE Trade) のフォーク · MIT"
   },
   "map.mods.heist": "ハイスト",
   "map.mods.uber": "ティア17",

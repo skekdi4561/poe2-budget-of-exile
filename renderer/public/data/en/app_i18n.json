@@ -21,7 +21,8 @@
     "quit": "Quit",
     "deprecated": "This feature is deprecated and will be removed in update {0}",
     "name": "PoE2 Budget of Exile",
-    "made_by": "Made by"
+    "made_by": "Made by",
+    "based_on": "A fork of Exiled Exchange 2 (Awakened PoE Trade) · MIT"
   },
   "map.mods.heist": "heist",
   "map.mods.uber": "T17",

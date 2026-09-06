@@ -20,7 +20,8 @@
     "report_bug": "Reportar um erro no GitHub",
     "quit": "Sair",
     "name": "PoE2 Budget of Exile",
-    "made_by": "Criado por"
+    "made_by": "Criado por",
+    "based_on": "Um fork de Exiled Exchange 2 (Awakened PoE Trade) · MIT"
   },
   "map.mods.heist": "assalto",
   "map.mods.uber": "T17",

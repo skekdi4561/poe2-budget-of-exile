@@ -42,6 +42,8 @@ describe("앱 이름", () => {
         (n) => !mine.includes(n),
       );
       const walk = (o: unknown, path: string[]) => {
+        // MIT 고지는 원작 이름을 밝히는 게 목적이다 — 유출이 아니다
+        if (path.join(".") === "app.based_on") return;
         if (typeof o === "string") {
           for (const bad of others) {
             if (o.includes(bad))
@@ -73,7 +75,8 @@ describe("앱 이름", () => {
     );
     expect(yml).toContain(`productName: "${EN}"`);
     expect(yml).toContain("PoE2-BudgetOfExile-Setup-");
-    expect(yml).toContain("PoE2-BudgetOfExile-Portable-");
+    // 포터블은 배포하지 않기로 했다 — 빌드가 계속 만들면 릴리스에 실수로 섞인다
+    expect(yml).not.toContain("portable");
     const pkg = JSON.parse(
       readFileSync(resolve(here, "../../main/package.json"), "utf-8"),
     ) as { productName: string };
