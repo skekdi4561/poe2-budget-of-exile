@@ -351,9 +351,17 @@ function findInDatabase(item: ParserState) {
     if (uniqueInfo?.length) {
       info = uniqueInfo;
     } else if (item.baseType) {
+      // 번역된 베이스 이름은 여러 영문 베이스와 겹칠 수 있다 — 한국어에서 Taut Crossbow 와
+      // Tense Crossbow 가 **둘 다** "팽팽한 석궁" 이다. baseInfo[0] 하나만 보면 그 첫 항목이
+      // 이 고유의 베이스가 아닐 때 필터가 목록을 통째로 비우고, 바로 아래 item.info 가
+      // undefined 가 되어 .craftable 을 읽다 터진다(유저 신고: 고유 석궁 "성벽 랩터").
+      // 겹치는 베이스를 전부 후보로 보고, 그래도 안 맞으면 **거르지 않는다** —
+      // 변형을 못 좁히는 것이 파싱 자체를 실패시키는 것보다 낫다.
       const baseInfo = ITEM_BY_TRANSLATED("ITEM", item.baseType);
       if (baseInfo?.length) {
-        info = info.filter((info) => info.unique!.base === baseInfo[0].refName);
+        const refs = new Set(baseInfo.map((b) => b.refName));
+        const narrowed = info.filter((info) => refs.has(info.unique!.base));
+        if (narrowed.length) info = narrowed;
       }
     }
   }
