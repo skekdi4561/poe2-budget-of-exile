@@ -74,6 +74,16 @@ describe("방패(방어구) 지원", () => {
     expect(h).toMatch(/block: prop\(item, \/\^/);
   });
 
+  it("방어구 옵션 판정이 카테고리로 갈리고, 스냅샷의 category 로 배선돼 있다", () => {
+    // 이 결함은 감정소 사이트(index.html COUNTED_ARM)에서 먼저 고쳤는데 위젯에 안 옮겨서
+    // v1.1.0 에 그대로 나갔다. 두 곳이 다시 갈리지 않게 여기서 못박는다.
+    expect(appraiser).toMatch(/const COUNTED_ARM = \[/);
+    expect(appraiser).toMatch(/armour \? COUNTED_ARM : COUNTED/);
+    // 판정이 실제로 배선돼야 한다 — 함수만 있고 offMods 가 안 넘기면 아무 일도 안 일어난다
+    expect(appraiser).toMatch(/offMods\(b\.mods \?\? \[\], armourCat\)/);
+    expect(appraiser).toMatch(/snap\.category \?\? ""\)\.startsWith\("armour\."\)/);
+  });
+
   it("막기가 행까지 실린다 — 골라 담는 리터럴에 있어야 한다", () => {
     // 여기서 빠지면 값이 조용히 사라진다(컴파일도 통과하고 예외도 없다).
     expect(appraiser).toMatch(/block: numOr0\(b\.block\)/);

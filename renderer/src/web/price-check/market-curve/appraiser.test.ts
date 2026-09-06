@@ -387,6 +387,35 @@ describe("matchesFilters 열쇠 존재 판정 (V08/V26)", () => {
   });
 });
 
+describe("isOffDps — 방어구(방패)", () => {
+  // 방패는 지표가 방어도다. 무기 목록을 그대로 쓰면 방어도를 만드는 옵션이 '방어도 밖 옵션'
+  // 상위를 차지하고, 그 조건을 켜면 "같은 방어도를 사는 데 더 든다"는 정반대 결론이 나온다.
+  it("방어도를 만드는 옵션은 '지표 밖'이 아니다", () => {
+    for (const m of [
+      "[Armour|방어도] 41% 증가",
+      "[Armour|방어도] +265",
+      "[Armour|방어도], [Evasion|회피], [EnergyShield|에너지 보호막] 20% 증가",
+    ]) {
+      expect(`${m} -> ${isOffDps(m, true)}`).toBe(`${m} -> false`);
+    }
+  });
+
+  it("방어도에 안 들어가는 것은 그대로 남는다", () => {
+    for (const m of [
+      "[Block|막기] 확률 3% 증가",
+      "[Resistances|화염] 저항 +21%",
+      "[StunThreshold|기절 한계치] +130",
+    ]) {
+      expect(`${m} -> ${isOffDps(m, true)}`).toBe(`${m} -> true`);
+    }
+  });
+
+  it("무기 판정은 안 바뀐다 — 기본값이 무기다", () => {
+    expect(isOffDps("[Physical|물리] 피해 168% 증가")).toBe(false);
+    expect(isOffDps("[Armour|방어도] 41% 증가")).toBe(true); // 무기에선 지표 밖이 맞다
+  });
+});
+
 describe("isOffDps (COUNTED — 거래소 DPS 에 이미 든 옵션 판정, V57)", () => {
   it("조건부 추가 피해는 DPS 밖, 무조건 추가 피해는 DPS 안 — serve.py/index.html 과 3표면 동일", () => {
     // 접두 조건이 붙은 추가 피해를 COUNTED 로 삼키면 필터 후보에서 사라진다

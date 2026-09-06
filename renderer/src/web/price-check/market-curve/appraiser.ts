@@ -56,6 +56,8 @@ export interface Trend {
 }
 interface Snapshot {
   taken_at?: number;
+  /** 수집기가 실어 보내는 무기 종류. 활(latest.json)에는 없고, 그 부재가 곧 "무기"다. */
+  category?: string;
   rates?: Record<string, { rate?: number } | number>;
   bows?: SnapshotBow[];
   trend?: Trend | null;
@@ -200,14 +202,25 @@ const modVal = (m: string) => {
   const ns = String(m).match(/[\d.]+/g);
   return ns ? Math.max(...ns.map(Number).filter((n) => isFinite(n))) : 0;
 };
-export const isOffDps = (m: string) =>
-  !COUNTED.some((re) => re.test(cleanMod(m)));
+// 방어구(방패)는 지표가 방어도라 세는 옵션이 다르다. 무기 목록을 그대로 쓰면 방어도를
+// 만드는 옵션이 '방어도 밖 옵션' 상위를 차지하고, 그걸 조건으로 걸면 "이 조건을 걸면 같은
+// 방어도를 사는 데 더 든다"는 정반대 결론이 나온다 — 걸린 조건 자체가 방어도를 올린다.
+// 감정소 사이트 index.html 의 COUNTED_ARM 과 **같은 목록이어야 한다**.
+const COUNTED_ARM = [
+  /increased Armour(?!,)|^방어도 [\d.]+% 증가/i,
+  /increased Armour, Evasion and Energy Shield|^방어도, 회피, 에너지 보호막 [\d.]+% 증가/i,
+  /to Armour$|^방어도 \+?\d/i,
+];
+export const isOffDps = (m: string, armour = false) => {
+  const c = cleanMod(m);
+  return !(armour ? COUNTED_ARM : COUNTED).some((re) => re.test(c));
+};
 
 // 활 하나의 { 옵션 열쇠: 값 } — 같은 열쇠가 여러 번이면 큰 값
-function offMods(mods: string[]): Record<string, number> {
+function offMods(mods: string[], armour = false): Record<string, number> {
   const out: Record<string, number> = {};
   for (const m of mods) {
-    if (!isOffDps(m) || JUNK_MOD.test(cleanMod(m))) continue;
+    if (!isOffDps(m, armour) || JUNK_MOD.test(cleanMod(m))) continue;
     if (JUNK_EXACT.has(modKey(m))) continue;
     const k = modKey(m);
     const v = modVal(m);
@@ -346,6 +359,8 @@ export function rowsFromSnapshot(
   now: number = Date.now(),
 ): { rows: RichRow[]; rateFallback: boolean; staleKept: boolean } {
   const cut = now - ROW_TTL;
+  // 지표는 카테고리가 정한다 — 옵션이 지표에 이미 들었는지 판정이 무기와 방어구에서 갈린다.
+  const armourCat = (snap.category ?? "").startsWith("armour.");
   let rateFallback = false;
   const fresh: RichRow[] = [];
   const all: RichRow[] = [];
@@ -367,7 +382,7 @@ export function rowsFromSnapshot(
       t,
       crit: numOr0(b.crit),
       block: numOr0(b.block),
-      offs: offMods(b.mods ?? []),
+      offs: offMods(b.mods ?? [], armourCat),
     };
     all.push(row);
     if (t >= cut) fresh.push(row);
