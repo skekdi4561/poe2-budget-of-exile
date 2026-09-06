@@ -62,6 +62,18 @@ describe("방패(방어구) 지원", () => {
     expect(leaked.map(([n, s]) => `${n}: ${s}`)).toEqual([]);
   });
 
+  it("방패 크라우드 업로드가 열려 있다", () => {
+    // 이게 없으면 사용자가 방패를 가격 검사해도 업로드가 안 되고, 워커에 armour.shield 행이
+    // 영원히 0건이라 방패 곡선의 중·하위 구간이 통째로 빈다(무기 7종은 크라우드가 절반 이상).
+    const h = readFileSync(resolve(here, "harvest.ts"), "utf-8");
+    expect(h).toMatch(/\[ItemCategory\.Shield, "armour\.shield"\]/);
+    // 방어구는 extended 에 pdps/edps 가 없고 ar 이 온다 — serve.py normalize 와 같은 규약으로
+    // 주 지표에 담아야 한다. 안 그러면 위 한 줄만 넣었을 때 전 행이 null 로 버려진다.
+    expect(h).toMatch(/armour \? ext\.ar == null/);
+    expect(h).toMatch(/armour \? \(ext\.ar \?\? 0\)/);
+    expect(h).toMatch(/block: prop\(item, \/\^/);
+  });
+
   it("막기가 행까지 실린다 — 골라 담는 리터럴에 있어야 한다", () => {
     // 여기서 빠지면 값이 조용히 사라진다(컴파일도 통과하고 예외도 없다).
     expect(appraiser).toMatch(/block: numOr0\(b\.block\)/);

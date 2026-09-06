@@ -22,7 +22,7 @@
           </select>
         </div>
         <span v-if="board" class="text-sm text-gray-400"
-          >{{ t(":listings", { n: filtered.length, m: board.sample }) }} ·
+          >{{ t(":listings", { n: curveCount, m: board.sample }) }} ·
           {{ board.ageHours < 1 ? t(":just_now") : t(":hours_ago", { h: Math.round(board.ageHours) })
           }}<template v-if="board.rateFallback"> · {{ t(":rate_fallback") }}</template></span
         >
@@ -57,9 +57,9 @@
       </div>
       <div v-else-if="!board" class="text-gray-400 py-12 text-center">
         {{
-          curWeapon
-            ? t(":not_collected", { w: weaponName })
-            : t(":load_failed")
+          boardError === "fetch"
+            ? t(":load_failed")
+            : t(":not_collected", { w: weaponName })
         }}
       </div>
 
@@ -366,6 +366,7 @@ import {
   marketBoard,
   frontier,
   formatEx,
+  lastBoardError,
   matchesFilters,
   metricRows,
   priceTicks,
@@ -497,6 +498,10 @@ export default defineComponent({
     // 카테고리가 지표를 정한다 — 감정소의 metric_of()/isArmourCat() 과 같은 문법.
     // 방패는 방어도가 pdps 자리에 담겨 오므로(수집기가 그렇게 설계됐다) 곡선·최전선·예산·추세
     // 계산은 한 줄도 안 바뀐다. 바뀌는 건 **문구와 지표 토글**뿐이다.
+    // 실패 사유를 화면이 그대로 쓴다 — 접미사 유무로 추론하면 인터넷이 끊긴 사용자가
+    // 활에서는 "못 불러왔다", 나머지 7종에서는 "아직 수집 안 됨"이라는 거짓말을 본다.
+    const boardError = ref<"fetch" | "empty" | null>(null);
+
     const isArmour = computed(() => curWeapon.value === "shield");
     const metricLabel = computed(() =>
       t(isArmour.value ? ":metric_name_armour" : ":metric_name_dps"),
@@ -593,10 +598,12 @@ export default defineComponent({
       loading.value = true;
       void initStatText(); // 설정에서 언어를 바꿨을 수 있다 — 같은 언어면 즉시 반환
       const b = await marketBoard(want); // 10분 캐시(무기별)라 매번 불러도 싸다
+      const err = lastBoardError;
       // 느린 fetch 가 도는 사이 사용자가 무기를 바꿨으면 이 결과는 버린다 — 안 그러면
       // A 의 늦은 응답이 B 의 곡선을 덮어써 엉뚱한 무기가 뜬다(무기 전환 경합). 최신 load 가 loading 을 끈다.
       if (want !== curWeapon.value) return;
       board.value = b;
+      boardError.value = err;
       loading.value = false;
     }
     watch(
@@ -629,9 +636,11 @@ export default defineComponent({
           matchesFilters(r.offs, normFilters.value),
       );
     });
-    const front = computed<Row[]>(() =>
-      frontier(metricRows(filtered.value, metric.value)),
-    );
+    // 곡선에 실제로 들어가는 매물 수. filtered.length 를 쓰면 metricRows 의 d>0 에서
+    // 걸러지는 것(원소 지표의 물리 전용 무기 등)이 안 빠져 표본이 부풀어 보인다.
+    const curveRows = computed(() => metricRows(filtered.value, metric.value));
+    const curveCount = computed(() => curveRows.value.length);
+    const front = computed<Row[]>(() => frontier(curveRows.value));
     // frontier 는 DPS 오름차순 — 표시 정렬만 뒤집는다
     const rungs = computed(() =>
       sortDesc.value ? [...front.value].reverse() : front.value,
@@ -975,6 +984,8 @@ export default defineComponent({
       budgetCur,
       minCrit,
       minCritN,
+      boardError,
+      curveCount,
       minBlock,
       minBlockN,
       isArmour,

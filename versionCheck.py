@@ -46,33 +46,22 @@ def extract_version_from_package_lock():
 
 
 def main():
-    readme_version = extract_version_from_readme()
-    bug_report_version = extract_version_from_bug_report()
-    config_version = extract_version_from_config()
+    # 이 포크는 원작의 README·이슈 템플릿·docs 를 안 쓴다(파일명·버전 목록이 원작 것이라
+    # 비교하면 **항상 실패**하고, 그러면 게이트가 죽어 진짜 드리프트를 아무도 못 잡는다 —
+    # 실제로 main/package-lock.json 이 v1.0.0~v1.1.0 내내 0.1.0 으로 방치됐다).
+    # 배포물에 실제로 실리는 두 곳만 본다.
     package_json_version = extract_version_from_package_json()
-    package_lock_top_version, package_lock_packages_version = (
-        extract_version_from_package_lock()
-    )
+    lock_top, lock_packages = extract_version_from_package_lock()
 
-    if (
-        readme_version != bug_report_version
-        or readme_version != config_version
-        or readme_version != package_json_version
-        or readme_version != package_lock_top_version
-        or readme_version != package_lock_packages_version
-    ):
-        print("Version mismatch detected:")
-        print(f"  README.md version: {readme_version}")
-        print(f"  Bug report version: {bug_report_version}")
-        print(f"  Config.js version: {config_version}")
-        print(f"  package.json version: {package_json_version}")
-        print(f"  package-lock.json top-level version: {package_lock_top_version}")
-        print(
-            f"  package-lock.json packages[] version: {package_lock_packages_version}"
-        )
-        exit(1)
+    if package_json_version != lock_top or package_json_version != lock_packages:
+        print("Version mismatch:")
+        print(f"  main/package.json           : {package_json_version}")
+        print(f"  main/package-lock.json      : {lock_top}")
+        print(f'  main/package-lock packages[""]: {lock_packages}')
+        print("Run `npm install --package-lock-only` in ./main after bumping the version.")
+        raise SystemExit(1)
 
-    print("Version check passed. All versions are consistent.")
+    print(f"Version OK: {package_json_version}")
 
 
 if __name__ == "__main__":

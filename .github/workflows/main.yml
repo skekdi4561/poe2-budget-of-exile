@@ -51,7 +51,13 @@ jobs:
       working-directory: ./main
     - run: npm run build
       working-directory: ./main
-    - run: npm run package "--" -p onTagOrDraft
+    # package 스크립트(로컬용)는 렌더러까지 다시 짓는다 — "코드 ≠ 배포물" 사고를 막으려고
+    # 그렇게 뒀다. 하지만 CI 의 이 잡은 렌더러 의존성을 설치하지 않고(위 renderer 잡이 이미
+    # 짓고 artifact 로 넘겨준다), 게다가 여기서 다시 지으면 gitignore 된 *.index.bin 이
+    # 새 체크아웃엔 없어서 산출물에서 사라진다. 그래서 CI 는 조각을 직접 부른다.
+    - run: npm run build
+      working-directory: ./main
+    - run: npx electron-builder build -p onTagOrDraft
       working-directory: ./main
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

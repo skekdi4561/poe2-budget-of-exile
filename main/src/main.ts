@@ -146,6 +146,9 @@ let tray: AppTray;
             gameConfig.readConfig(cfg.gameConfig ?? "");
             appUpdater.checkAtStartup();
             tray.overlayKey = cfg.overlayKey;
+            // 트레이 문구도 설정 언어를 따라간다 — 안 부르면 최초 메뉴(ko)가 그대로 남는다
+            tray.language = cfg.language ?? "ko";
+            tray.rebuildMenu();
             fileWriter.restart(cfg.libraryAlpha, cfg.libraryOutputPath);
           },
         );

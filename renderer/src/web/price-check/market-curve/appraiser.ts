@@ -171,8 +171,15 @@ const COUNTED = [
   /^Adds \d|^(?:\S+ )?피해 \d+~\d+ 추가/i, // 접두 조건('감전된 적에게 …')이 붙은 추가 피해는 거래소 DPS 밖
   /increased Attack Speed|reduced Attack Speed|^공격 속도 [\d.]+% (증가|감소)/i,
 ];
-const JUNK_MOD = /^결속됨|시야 반경|Light Radius|투사체 사거리|능력치 요구사항/;
-const JUNK_EXACT = new Set(["민첩 #", "힘 #", "지능 #", "모든 능력치 #"]);
+// 크라우드 행에는 영어 클라이언트에서 온 것이 섞인다(실측: 전체 mod 줄의 1.6%).
+// 한국어 표기만 막으면 같은 옵션이 영문으로 그대로 드롭다운에 오른다.
+const JUNK_MOD =
+  /^결속됨|^Allocates|시야 반경|Light Radius|투사체 사거리|Projectile Range|능력치 요구사항|Attribute Requirements/;
+const JUNK_EXACT = new Set([
+  "민첩 #", "힘 #", "지능 #", "모든 능력치 #",
+  "+# to Dexterity", "+# to Strength", "+# to Intelligence", "+# to all Attributes",
+  "# to Dexterity", "# to Strength", "# to Intelligence", "# to all Attributes",
+]);
 
 // "[Physical|물리] 피해" 같은 게임 마크업을 벗긴다
 const cleanMod = (m: string) =>
@@ -187,8 +194,11 @@ export const modKey = (m: string) =>
     .replace(/\s+/g, " ")
     .trim();
 const modVal = (m: string) => {
-  const n = String(m).match(/[\d.]+/);
-  return n ? +n[0] : 0;
+  // 첫 숫자가 아니라 **가장 큰 숫자**를 쓴다. "최근 4초 이내 재장전한 경우 … 30% 확률"
+  // 처럼 문턱값이 앞에 오는 옵션에서 첫 숫자를 잡으면 필터가 4 를 값으로 보고 30 이상을
+  // 요구하는 조건이 항상 0건이 되며, 관측 힌트(lo~hi)도 거짓을 말한다.
+  const ns = String(m).match(/[\d.]+/g);
+  return ns ? Math.max(...ns.map(Number).filter((n) => isFinite(n))) : 0;
 };
 export const isOffDps = (m: string) =>
   !COUNTED.some((re) => re.test(cleanMod(m)));
@@ -280,7 +290,9 @@ export function frontier(rows: Row[]): Row[] {
   const out: Row[] = [];
   let best = Infinity;
   for (let i = 0; i < s.length; ) {
-    let j = i;
+    // NaN 은 자기 자신과도 같지 않아 j 가 안 늘고 무한 루프가 된다(렌더러가 통째로 멈춘다).
+    // 지금 UI 경로로는 NaN 이 안 들어오지만, 결과가 "앱이 죽는다"라 가드가 훨씬 싸다.
+    let j = i + 1;
     while (j < s.length && s[j].d === s[i].d) j++;
     const gmin = s[i].p;
     if (gmin < best) {
@@ -369,9 +381,21 @@ export function rowsFromSnapshot(
 }
 
 // 스냅샷 → 24h 유효 매물(옵션 포함) + 옵션 목록 + 환율
+/** 화면이 사유별로 다른 문구를 쓸 수 있게 실패를 구분해 알린다. 접미사 유무로 추론하면
+ *  인터넷이 끊긴 사용자가 활에서는 "못 불러왔다", 방패에서는 "아직 수집 안 됨"을 본다. */
+export let lastBoardError: "fetch" | "empty" | null = null;
+
 export async function marketBoard(suffix = ""): Promise<MarketBoard | null> {
   const snap = await fetchSnapshot(suffix);
-  if (!snap?.bows?.length) return null;
+  if (!snap) {
+    lastBoardError = "fetch";
+    return null;
+  }
+  if (!snap.bows?.length) {
+    lastBoardError = "empty";
+    return null;
+  }
+  lastBoardError = null;
 
   const { rates, fallbackCurs } = parseRates(snap);
   const { rows, rateFallback, staleKept } = rowsFromSnapshot(
@@ -379,7 +403,10 @@ export async function marketBoard(suffix = ""): Promise<MarketBoard | null> {
     rates,
     fallbackCurs,
   );
-  if (rows.length < 2) return null;
+  if (rows.length < 2) {
+    lastBoardError = "empty";
+    return null;
+  }
 
   return {
     rows,

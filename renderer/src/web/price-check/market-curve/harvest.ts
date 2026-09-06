@@ -29,6 +29,9 @@ const COLLECTED_WEAPONS = new Map<ItemCategory, string>([
   // 부적은 오프핸드 아이콘이지만 마셜(양손 근접) 무기다 — meta.ts 의 WEAPON_TWO_HANDED_MELEE
   // 에 들어 있고 거래 id 도 weapon.talisman 이다(2026-09-05 추가).
   [ItemCategory.Talisman, "weapon.talisman"],
+  // 방패는 무기가 아니라 방어구다 — 지표가 DPS 가 아니라 방어도(ar)이고, 아래 normalizeResult
+  // 가 serve.py normalize 의 metric!="dps" 분기와 같은 규약으로 ar 을 pdps 자리에 담는다.
+  [ItemCategory.Shield, "armour.shield"],
 ]);
 
 export function harvestCtxOf(item: ParsedItem, league: string): HarvestCtx {
@@ -52,6 +55,8 @@ const MOD_KEYS = [
 
 interface HarvestRow {
   id: string;
+  /** 방패 막기 확률(%). 방어구에만 있고 언제나 양수라 없으면 키를 안 단다. */
+  block?: number;
   name: string;
   pdps: number;
   edps: number;
@@ -136,7 +141,12 @@ export function normalizeResult(
   if (!price.currency || !price.amount) return null;
   if (!TRADE_CURRENCIES.has(price.currency)) return null;
   const ext = item.extended ?? {};
-  if (ext.pdps == null && ext.edps == null) return null;
+  // 방어구는 지표가 하나뿐이다. 거래소 extended 에 pdps/edps 가 없고 ar 이 온다 —
+  // serve.py normalize 의 metric!="dps" 분기와 **글자 단위로 같은 규약**으로,
+  // 주 지표(pdps)에 방어도를 담고 부 지표(edps)는 0 으로 둔다. 그래야 최전선·탐침·
+  // 추세·크라우드 게이트가 손 안 대고 그대로 돈다(전부 pdps+edps 를 본다).
+  const armour = cat.startsWith("armour.");
+  if (armour ? ext.ar == null : ext.pdps == null && ext.edps == null) return null;
   const name = [item.name, item.typeLine || item.baseType]
     .filter(Boolean)
     .join(" ")
@@ -144,14 +154,19 @@ export function normalizeResult(
   return {
     id: String(res.id ?? ""),
     name: name || "이름 없음",
-    pdps: Math.round((ext.pdps ?? 0) * 10) / 10,
-    edps: Math.round((ext.edps ?? 0) * 10) / 10,
+    pdps: Math.round((armour ? (ext.ar ?? 0) : (ext.pdps ?? 0)) * 10) / 10,
+    edps: armour ? 0 : Math.round((ext.edps ?? 0) * 10) / 10,
     aps: prop(item, /Attacks per Second|초당 공격/),
     crit: prop(item, /Critical .*Chance|치명타/),
     price: price.amount,
     cur: price.currency,
     rarity: rarityOf(item), // serve.py rarity_of 와 정합 — frameType 폴백 포함
     mods: modLines(item),
+    // 막기는 extended 에 없다(dps/pdps/edps/ar/ev/es/ward 뿐) — aps/crit 과 같은 채널이다.
+    // 0 은 "못 읽었다"는 뜻이라 키를 안 단다(serve.py·워커와 같은 규약).
+    ...(armour && prop(item, /^\[?Block chance|^\[?막기 확률/) > 0
+      ? { block: prop(item, /^\[?Block chance|^\[?막기 확률/) }
+      : {}),
     // 카카오 즉시구매 매물은 수수료(fee)가 붙는다 — 수합 서버가 신뢰 필터로 쓴다
     fee: typeof listing.fee === "number" ? listing.fee : undefined,
     league,
