@@ -181,7 +181,7 @@
                 @focus="showDrop = true"
                 @blur="hideDropSoon"
                 type="text"
-                :placeholder='t(":filter_placeholder")'
+                :placeholder='t(isArmour ? ":filter_placeholder_armour" : ":filter_placeholder")'
                 class="w-full bg-gray-900 rounded px-3 py-1.5 border border-gray-700 focus:border-gray-500"
               />
               <div
@@ -299,7 +299,11 @@
             <span
               class="text-gray-500"
               style="font-size: 12px; letter-spacing: 0.05em"
-              >{{ t(":trend_title", { d: trendDays }) }}</span
+              >{{
+                trendShortSpan
+                  ? t(":trend_title_h", { h: trendHours })
+                  : t(":trend_title", { d: trendDays })
+              }}</span
             >
             <!-- 앵커가 하나(수집기 기본 "top")면 고를 게 없으니 라벨만 -->
             <span v-if="trendAnchors.length === 1" class="text-gray-300 text-sm ml-1">{{
@@ -326,7 +330,12 @@
               :class="trendChange.up ? 'text-red-400' : 'text-teal-400'"
               style="font-variant-numeric: tabular-nums"
             >
-              {{ t(":trend_change", { d: trendDays }) }} {{ trendChange.up ? "▲" : "▼" }}
+              {{
+                trendShortSpan
+                  ? t(":trend_change_h", { h: trendHours })
+                  : t(":trend_change", { d: trendDays })
+              }}
+              {{ trendChange.up ? "▲" : "▼" }}
               {{ trendChange.pct }}%
             </span>
           </div>
@@ -885,11 +894,20 @@ export default defineComponent({
         .filter((p) => p.floors[key] != null && isFinite(p.floors[key]))
         .map((p) => ({ t: p.t, p: p.floors[key] }));
     });
-    const trendDays = computed(() => {
+    // 이력 길이. 하루가 안 되면 "1일간"이라고 반올림해 말하지 말고 시간으로 쓴다 —
+    // 새로 추가된 무기는 첫날 내내 이 상태다(방패 실측: 이력 몇 시간인데 "1일 전 대비").
+    const trendSpanH = computed(() => {
       const s = trendSeries.value;
       if (s.length < 2) return 0;
-      return Math.max(1, Math.round((s[s.length - 1].t - s[0].t) / 86_400_000));
+      return (s[s.length - 1].t - s[0].t) / 3_600_000;
     });
+    const trendShortSpan = computed(
+      () => trendSpanH.value > 0 && trendSpanH.value < 24,
+    );
+    const trendHours = computed(() => Math.max(1, Math.round(trendSpanH.value)));
+    const trendDays = computed(() =>
+      trendSpanH.value <= 0 ? 0 : Math.max(1, Math.round(trendSpanH.value / 24)),
+    );
     const trendChange = computed(() => {
       const s = trendSeries.value;
       if (s.length < 2) return null;
@@ -966,6 +984,8 @@ export default defineComponent({
       trendAnchors,
       anchorLabel,
       trendDays,
+      trendHours,
+      trendShortSpan,
       t,
       statText,
       trendChange,
