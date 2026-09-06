@@ -3,7 +3,11 @@
 // 요청을 넣을 수 있으면 그건 곧 계정 권한의 요청이다. 여기가 그 문을 지킨다.
 import { describe, it, expect } from "vitest";
 import type { IncomingMessage, ServerResponse } from "http";
-import { isAllowedOrigin, denyForeignOrigin } from "../../../main/src/origin";
+import {
+  isAllowedOrigin,
+  isAllowedFetchSite,
+  denyForeignOrigin,
+} from "../../../main/src/origin";
 
 describe("isAllowedOrigin", () => {
   it("Origin 이 없으면 통과 — 동일 출처 GET 과 네이티브 클라이언트", () => {
@@ -37,6 +41,20 @@ describe("isAllowedOrigin", () => {
   });
 });
 
+describe("isAllowedFetchSite", () => {
+  // Origin 은 no-cors GET 에 안 붙는다 — <img>/<script>/<iframe> 로 오는 요청은
+  // Origin 없이 도착해 isAllowedOrigin 을 그냥 통과한다. 그 구멍을 여기서 막는다.
+  it("cross-site 는 거부 — 악성 웹페이지가 <img> 로 /proxy 를 때리는 경우", () => {
+    expect(isAllowedFetchSite("cross-site")).toBe(false);
+  });
+
+  it("우리 렌더러와 네이티브 클라이언트는 통과", () => {
+    for (const s of ["same-origin", "none", "same-site", undefined]) {
+      expect(`${s} -> ${isAllowedFetchSite(s)}`).toBe(`${s} -> true`);
+    }
+  });
+});
+
 const fakeRes = () => {
   const res = {
     statusCode: 200,
@@ -47,8 +65,13 @@ const fakeRes = () => {
   };
   return res as unknown as ServerResponse & { writableEnded: boolean };
 };
-const reqWith = (origin?: string) =>
-  ({ headers: origin === undefined ? {} : { origin } }) as IncomingMessage;
+const reqWith = (origin?: string, site?: string) =>
+  ({
+    headers: {
+      ...(origin === undefined ? {} : { origin }),
+      ...(site === undefined ? {} : { "sec-fetch-site": site }),
+    },
+  }) as IncomingMessage;
 
 describe("denyForeignOrigin", () => {
   it("외부 오리진은 403 으로 닫고 라우트를 멈춘다", () => {
@@ -66,6 +89,14 @@ describe("denyForeignOrigin", () => {
     expect(denyForeignOrigin(reqWith(), res)).toBe(false);
     expect(res.statusCode).toBe(200);
     expect(res.writableEnded).toBe(false);
+  });
+
+  it("Origin 없는 교차출처 GET 도 막는다 — <img src=…/proxy/…> 경로", () => {
+    // 이게 실제 구멍이었다: no-cors GET 은 Origin 을 안 보내서 isAllowedOrigin 을 통과하고,
+    // /proxy 는 useSessionCookies:true 라 거래소 세션 쿠키가 실린 요청이 나간다.
+    const res = fakeRes();
+    expect(denyForeignOrigin(reqWith(undefined, "cross-site"), res)).toBe(true);
+    expect(res.statusCode).toBe(403);
   });
 
   it("한 요청에 라우트가 여럿 달려 있어도 응답은 한 번만 끝낸다", () => {
