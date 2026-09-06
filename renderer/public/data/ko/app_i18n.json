@@ -356,7 +356,10 @@
     "parse_error": "예기치 못한 문제로 이 아이템은 검색할 수 없습니다.",
     "parse_error2": "아마 특정 접사가 아직 검색이 불가능한 것으로 보입니다.",
     "parse_error3": "(새로운 접사 혹은 POE 1과는 다른 이름일 수도 있습니다)",
-    "bulk_exchange": "아이템 대량교환 비율 표시는 아직 시행되지 않습니다."
+    "bulk_exchange": "아이템 대량교환 비율 표시는 아직 시행되지 않습니다.",
+    "found_data": "새 아이템 {0}개, 옵션 {1}개를 찾았습니다",
+    "no_data": "새로 찾은 데이터가 없습니다",
+    "failed_to_load": "예비 데이터를 불러오지 못했습니다 — 잠시 뒤 다시 시도해 주세요"
   },
   "tips": {
     "tip_1": "세팅에서 Cheat Sheets 위젯에 원하는 이미지를 추가해 필요할때마다 보실 수 있습니다.",
@@ -404,12 +407,14 @@
     "best_for_budget": "이 예산 최고 {m}",
     "none_in_budget": "예산 내 매물 없음",
     "filter_help": "조건 필터 — 옵션을 검색해 추가하고 수치를 직접 입력",
-    "filter_placeholder": "+ 옵션 검색 (예: 치명타, 생명력, 화살)",
+    "filter_placeholder": "+ 옵션 검색 (예: 치명타, 생명력, 화살)",
+
     "filter_placeholder_armour": "+ 옵션 검색 (예: 막기, 저항, 생명력)",
     "trend_title_h": "가격 추세 — 최근 {h}시간",
     "trend_change_h": "{h}시간 전 대비",
     "stat_meta": "{n}개 · {lo}~{hi}",
-    "no_filter": "필터 없음 — 전체 매물 기준",
+    "no_filter": "필터 없음 — 전체 매물 기준",
+
     "crit_min": "아이템 치확 최소",
     "weapon_shield": "방패",
     "block_min": "막기 최소",
@@ -442,5 +447,8 @@
     "metric_total": "총 DPS",
     "metric_phys": "물리",
     "metric_ele": "원소"
-  }
+  },
+  "Retry Item": "이 아이템 다시 검색",
+  "Reload fallback data": "예비 데이터 다시 불러오기",
+  "Loading...": "불러오는 중..."
 }
