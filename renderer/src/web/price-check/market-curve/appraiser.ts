@@ -36,6 +36,9 @@ interface SnapshotBow {
   // 아이템 자체의 치명타 확률(%). 거래소가 properties 로 주는 **최종값**이라
   // 베이스 + 로컬 증가가 이미 반영돼 있다 — mods 의 "치명타 확률 +N%"(증가분)와 다르다.
   crit?: number;
+  // 방패의 막기 확률(%). 같은 채널(properties)에서 오는 최종값이다.
+  // 거래소 extended 에는 막기가 없어서(dps/pdps/edps/ar/ev/es/ward 뿐) 이 경로뿐이다.
+  block?: number;
   price?: number;
   cur?: string;
   rarity?: string;
@@ -73,6 +76,9 @@ export interface RichRow {
   // 드롭다운에 올려 "옵션 필터와 분리"라는 요구를 정면으로 어긴다.
   // 옵셔널이 아니라 필수다 — 빠뜨린 자리를 vue-tsc 가 잡아준다.
   crit: number;
+  // 방패 막기. 0 은 "미수집"이라는 뜻이다 — 방패는 막기가 언제나 양수라(실측 26~33)
+  // 0 이 정상값일 수 없다. 그래서 별도 센티널 없이 0 하나로 구분된다.
+  block: number;
   offs: Record<string, number>;
 }
 // 24h 매물에서 실제로 관측된 옵션 하나 — 필터 검색 목록의 항목
@@ -348,6 +354,7 @@ export function rowsFromSnapshot(
       p: price * r,
       t,
       crit: numOr0(b.crit),
+      block: numOr0(b.block),
       offs: offMods(b.mods ?? []),
     };
     all.push(row);

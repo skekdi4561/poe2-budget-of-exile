@@ -66,7 +66,7 @@
       <template v-else>
         <!-- 지표 · 예산 -->
         <div class="flex items-center gap-2 mb-3">
-          <div class="flex bg-gray-900 rounded p-0.5">
+          <div v-if="!isArmour" class="flex bg-gray-900 rounded p-0.5">
             <button
               v-for="m in metrics"
               :key="m.id"
@@ -99,7 +99,7 @@
             </option>
           </select>
           <span v-if="best" class="ml-auto"
-            >{{ t(":best_for_budget") }}
+            >{{ t(":best_for_budget", { m: metricLabel }) }}
             <span class="font-bold text-teal-400 text-lg">{{
               Math.round(best.d)
             }}</span>
@@ -110,14 +110,30 @@
           >
         </div>
 
-        <!-- 아이템 치확 게이트 (근거는 script 의 minCrit 참고) -->
-        <div class="flex items-center gap-2 mb-3 text-sm text-gray-400">
+        <!-- 아이템 치확 / 방패 막기 게이트 (근거는 script 의 minCrit 참고) -->
+        <div
+          v-if="!isArmour"
+          class="flex items-center gap-2 mb-3 text-sm text-gray-400"
+        >
           <span>{{ t(":crit_min") }}</span>
           <input
             v-model.number="minCrit"
             type="number"
             min="0"
             step="0.1"
+            placeholder="0"
+            class="w-20 bg-gray-950 rounded px-2 py-0.5 text-right border border-gray-700 text-gray-100"
+            style="font-variant-numeric: tabular-nums"
+          />
+          <span>%</span>
+        </div>
+        <div v-else class="flex items-center gap-2 mb-3 text-sm text-gray-400">
+          <span>{{ t(":block_min") }}</span>
+          <input
+            v-model.number="minBlock"
+            type="number"
+            min="0"
+            step="1"
             placeholder="0"
             class="w-20 bg-gray-950 rounded px-2 py-0.5 text-right border border-gray-700 text-gray-100"
             style="font-variant-numeric: tabular-nums"
@@ -140,7 +156,7 @@
             :style="{ left: hover.left + 'px', top: hover.top + 'px' }"
             style="font-variant-numeric: tabular-nums"
           >
-            DPS {{ Math.round(hover.d) }} ·
+            {{ metricLabel }} {{ Math.round(hover.d) }} ·
             <span class="text-yellow-400 font-bold">{{
               formatEx(hover.p, board.rates)
             }}</span>
@@ -188,7 +204,7 @@
 
             <!-- 추가된 필터 행들 -->
             <div
-              v-if="!filters.length && !minCritN"
+              v-if="!filters.length && !minCritN && !minBlockN"
               class="text-gray-600 text-sm py-2"
             >
               {{ t(":no_filter") }}
@@ -243,7 +259,7 @@
                 @click="sortDesc = !sortDesc"
                 class="text-sm text-gray-400 hover:text-gray-200 underline"
               >
-                {{ sortDesc ? t(":sort_desc") : t(":sort_asc") }}
+                {{ sortDesc ? t(":sort_desc", { m: metricLabel }) : t(":sort_asc", { m: metricLabel }) }}
               </button>
             </div>
             <div
@@ -369,6 +385,8 @@ const WEAPONS: { suffix: string; key: string }[] = [
   { suffix: "spear", key: "weapon_spear" },
   { suffix: "warstaff", key: "weapon_warstaff" },
   { suffix: "talisman", key: "weapon_talisman" },
+  // 방패는 무기가 아니라 방어구다 — 지표가 DPS 가 아니라 방어도(ar)라서 아래 isArmour 로 갈린다.
+  { suffix: "shield", key: "weapon_shield" },
 ];
 
 export default defineComponent({
@@ -476,6 +494,14 @@ export default defineComponent({
         }));
     });
 
+    // 카테고리가 지표를 정한다 — 감정소의 metric_of()/isArmourCat() 과 같은 문법.
+    // 방패는 방어도가 pdps 자리에 담겨 오므로(수집기가 그렇게 설계됐다) 곡선·최전선·예산·추세
+    // 계산은 한 줄도 안 바뀐다. 바뀌는 건 **문구와 지표 토글**뿐이다.
+    const isArmour = computed(() => curWeapon.value === "shield");
+    const metricLabel = computed(() =>
+      t(isArmour.value ? ":metric_name_armour" : ":metric_name_dps"),
+    );
+
     const metric = ref<"total" | "phys" | "ele">("total");
     const metrics = [
       { id: "total" as const, key: "metric_total" },
@@ -508,6 +534,13 @@ export default defineComponent({
     const minCrit = ref<number | "">("");
     const minCritN = computed(() =>
       typeof minCrit.value === "number" && minCrit.value > 0 ? minCrit.value : 0,
+    );
+
+    // 방패 막기 하한. 치확과 같은 자리에 서로 배타적으로 뜬다(무기=치확 / 방패=막기).
+    // block 0 은 "미수집"이라 하한을 걸면 함께 빠진다 — 방패 막기는 언제나 양수다.
+    const minBlock = ref<number | "">("");
+    const minBlockN = computed(() =>
+      typeof minBlock.value === "number" && minBlock.value > 0 ? minBlock.value : 0,
     );
 
     // 거래소식 자유 필터
@@ -548,6 +581,10 @@ export default defineComponent({
       // 치확 하한도 같이 지운다. 베이스 치확이 무기군마다 달라 그대로 들고 가면 뜻이 바뀌고,
       // 나중에 방패가 들어오면 방패는 치확이 전부 0 이라 값이 남아 있는 순간 전 매물이 탈락한다.
       minCrit.value = "";
+      minBlock.value = "";
+      // 방패는 edps 가 전부 0 이라 '원소' 지표에서 metricRows 의 d>0 필터가 전 매물을 지운다.
+      // 데이터도 코드도 멀쩡한데 화면만 비는 형태라 원인 추적이 오래 걸린다 — 여기서 막는다.
+      if (isArmour.value) metric.value = "total";
       load();
     }
 
@@ -584,8 +621,12 @@ export default defineComponent({
       // 치확 게이트가 통째로 무시된다. matchesFilters 는 빈 배열에 every()로 true 를
       // 돌려주므로 조기 반환 없이도 결과가 같다 — 지우는 게 맞다.
       const lo = minCritN.value;
+      const bl = minBlockN.value;
       return board.value.rows.filter(
-        (r) => r.crit >= lo && matchesFilters(r.offs, normFilters.value),
+        (r) =>
+          r.crit >= lo &&
+          r.block >= bl &&
+          matchesFilters(r.offs, normFilters.value),
       );
     });
     const front = computed<Row[]>(() =>
@@ -825,7 +866,7 @@ export default defineComponent({
     });
     // "top" = TOP100 진입 최저가(수집기 기본, 한 선). 숫자 앵커는 옛 스냅샷 호환
     const anchorLabel = (a: number | string) =>
-      a === "top" ? t(":anchor_top") : t(":anchor_dps", { a });
+      a === "top" ? t(":anchor_top") : t(":anchor_dps", { a, m: metricLabel.value });
     // 선택 앵커의 (시각, 가격) 시계열
     const trendSeries = computed<{ t: number; p: number }[]>(() => {
       const tr = board.value?.trend;
@@ -934,6 +975,10 @@ export default defineComponent({
       budgetCur,
       minCrit,
       minCritN,
+      minBlock,
+      minBlockN,
+      isArmour,
+      metricLabel,
       currencies,
       budgetEx,
       filters,

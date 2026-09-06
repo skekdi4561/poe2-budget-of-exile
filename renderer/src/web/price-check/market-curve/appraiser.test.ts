@@ -177,13 +177,30 @@ describe("statOptions", () => {
         p: 1,
         t: 0,
         crit: 0,
+        block: 0,
         offs: { "치명타 확률 #%": 2, "희귀 옵션 #": 9 },
       },
-      { pdps: 1, edps: 0, p: 1, t: 0, crit: 0, offs: { "치명타 확률 #%": 5 } },
+      { pdps: 1, edps: 0, p: 1, t: 0, crit: 0, block: 0, offs: { "치명타 확률 #%": 5 } },
     ];
     const s = statOptions(rows);
     expect(s).toHaveLength(1);
     expect(s[0]).toEqual({ key: "치명타 확률 #%", n: 2, lo: 2, hi: 5 });
+  });
+});
+
+describe("rowsFromSnapshot block", () => {
+  // 방패 막기도 같은 리터럴에서 실린다. 0 은 "미수집" 이라 하한을 걸면 함께 빠지는 게 맞다 —
+  // 방패 막기는 언제나 양수라(실측 26~33) 0 이 정상값일 수 없다.
+  it("block 을 행에 싣고, 없으면 0", () => {
+    const snap = {
+      taken_at: 0,
+      bows: [
+        { pdps: 900, edps: 0, price: 1, cur: "exalted", block: 26 },
+        { pdps: 900, edps: 0, price: 1, cur: "exalted" },
+      ],
+    };
+    const { rows } = rowsFromSnapshot(snap, { exalted: 1 }, new Set(), 0);
+    expect(rows.map((r) => r.block)).toEqual([26, 0]);
   });
 });
 
@@ -214,8 +231,8 @@ describe("rowsFromSnapshot crit", () => {
 describe("metricRows", () => {
   // 물리 전용 초저가 활이 "원소" 지표에서 0 DPS 계단으로 새면 안 된다 (index.html v.d>0 동일)
   const rows: RichRow[] = [
-    { pdps: 300, edps: 0, p: 1, t: 0, crit: 0, offs: {} },
-    { pdps: 100, edps: 80, p: 5, t: 0, crit: 0, offs: {} },
+    { pdps: 300, edps: 0, p: 1, t: 0, crit: 0, block: 0, offs: {} },
+    { pdps: 100, edps: 80, p: 5, t: 0, crit: 0, block: 0, offs: {} },
   ];
   it("선택 지표가 0인 행은 제외", () => {
     expect(metricRows(rows, "ele")).toEqual([{ d: 80, p: 5, t: 0 }]);
@@ -325,6 +342,7 @@ describe("optRank (옵션 표시 순서)", () => {
         p: 1,
         t: 0,
         crit: 0,
+        block: 0,
         offs: { "반려수의 공격 속도 #% 증가": 10 },
       });
     for (let i = 0; i < 2; i++) rows[i].offs["모든 투사체 스킬 레벨 #"] = 2;
