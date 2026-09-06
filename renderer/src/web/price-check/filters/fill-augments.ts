@@ -77,7 +77,9 @@ function createNewStatFilter(
 ): StatFilter[] | undefined {
   if (!item.category) return;
   const newItem = JSON.parse(JSON.stringify(item)) as ParsedItem;
-  const augmentData = AUGMENT_DATA_BY_AUGMENT[newAugment].find((rune) =>
+  const allCatAugData = AUGMENT_DATA_BY_AUGMENT[newAugment];
+  if (!allCatAugData) return;
+  const augmentData = allCatAugData.find((rune) =>
     rune.categories.includes(item.category!),
   );
   if (!augmentData) return;
