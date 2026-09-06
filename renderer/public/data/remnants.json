@@ -63,8 +63,8 @@
             6
         ],
         "Adaptive|1|8": [
+            290,
             289,
-            288,
             266,
             265,
             260,
@@ -85,10 +85,10 @@
             6
         ],
         "Adaptive|1|9": [
+            297,
             296,
-            295,
+            290,
             289,
-            288,
             266,
             265,
             260,
@@ -122,8 +122,8 @@
             48
         ],
         "Adaptive|4|7": [
-            276,
-            271,
+            277,
+            272,
             195,
             194,
             153,
@@ -189,14 +189,14 @@
             73
         ],
         "Bloodletting|4|5": [
-            319,
+            320,
             207,
             135
         ],
         "Bloodletting|7|8": [
-            288,
-            279,
-            278
+            289,
+            280,
+            279
         ],
         "Bond|2|5": [
             233,
@@ -206,12 +206,12 @@
             180
         ],
         "Bond|2|8": [
+            287,
             286,
             285,
             284,
             283,
             282,
-            281,
             233,
             230,
             222,
@@ -288,8 +288,8 @@
             67
         ],
         "Celestial|1|9": [
+            293,
             292,
-            291,
             267,
             208,
             207,
@@ -356,7 +356,7 @@
             2
         ],
         "Cold|2|7": [
-            273,
+            274,
             232,
             221,
             179,
@@ -370,8 +370,8 @@
             2
         ],
         "Cold|8|8": [
-            289,
-            286
+            290,
+            287
         ],
         "Cyclonic|1|2": [
             47,
@@ -431,7 +431,7 @@
             25
         ],
         "Cyclonic|1|7": [
-            270,
+            271,
             268,
             201,
             200,
@@ -453,8 +453,8 @@
             25
         ],
         "Cyclonic|1|9": [
-            293,
-            270,
+            294,
+            271,
             268,
             201,
             200,
@@ -510,6 +510,7 @@
             188
         ],
         "Earth|1|3": [
+            319,
             318,
             317,
             316,
@@ -523,12 +524,12 @@
             308,
             307,
             306,
-            305,
             76,
             74,
             45
         ],
         "Earth|1|4": [
+            319,
             318,
             317,
             316,
@@ -542,7 +543,6 @@
             308,
             307,
             306,
-            305,
             175,
             158,
             155,
@@ -604,7 +604,7 @@
             3
         ],
         "Fire|2|7": [
-            274,
+            275,
             263,
             195,
             187,
@@ -615,8 +615,8 @@
             3
         ],
         "Fire|4|8": [
-            288,
-            281,
+            289,
+            282,
             196
         ],
         "Gasp|1|2": [
@@ -640,8 +640,8 @@
             35
         ],
         "Life|6|8": [
-            289,
-            285,
+            290,
+            286,
             236
         ],
         "Lightning|1|2": [
@@ -659,7 +659,7 @@
             8
         ],
         "Lightning|2|7": [
-            275,
+            276,
             206,
             201,
             199,
@@ -671,7 +671,7 @@
             1
         ],
         "Lightning|8|8": [
-            304
+            305
         ],
         "Momentum|1|2": [
             4,
@@ -684,8 +684,8 @@
             3
         ],
         "Momentum|1|6": [
+            321,
             320,
-            319,
             263,
             262,
             227,
@@ -704,7 +704,7 @@
             12
         ],
         "Momentum|3|7": [
-            272,
+            273,
             243,
             223,
             168,
@@ -765,16 +765,16 @@
             158
         ],
         "Moon|4|8": [
-            290,
-            287,
+            291,
+            288,
             244,
             243,
             182,
             158
         ],
         "Moon|7|8": [
-            289,
-            280
+            290,
+            281
         ],
         "Oath|1|4": [
             184,
@@ -794,18 +794,18 @@
             148
         ],
         "Power|1|9": [
-            298
+            299
         ],
         "Power|2|9": [
-            297
+            298
         ],
         "Power|3|10": [
+            304,
             303,
             302,
             301,
             300,
-            299,
-            294,
+            295,
             264,
             234,
             185
@@ -823,7 +823,7 @@
             185
         ],
         "Power|3|9": [
-            294,
+            295,
             264,
             234,
             185
@@ -833,7 +833,7 @@
             260
         ],
         "Power|4|9": [
-            291,
+            292,
             265,
             260
         ],
@@ -845,18 +845,18 @@
             247
         ],
         "Power|6|9": [
-            296,
+            297,
             247
         ],
         "Power|7|9": [
-            295,
-            270
+            296,
+            271
         ],
         "Power|8|8": [
-            290
+            291
         ],
         "Power|9|9": [
-            293
+            294
         ],
         "Prismatic|1|2": [
             44,
@@ -1035,8 +1035,8 @@
             43
         ],
         "Rebirth|2|7": [
+            273,
             272,
-            271,
             266,
             212,
             210,
@@ -1050,10 +1050,10 @@
             43
         ],
         "Rebirth|2|8": [
+            281,
             280,
-            279,
+            273,
             272,
-            271,
             266,
             212,
             210,
@@ -1072,8 +1072,8 @@
             59
         ],
         "Rebirth|8|8": [
-            288,
-            283
+            289,
+            284
         ],
         "Sky|1|4": [
             174,
@@ -1151,18 +1151,18 @@
             176
         ],
         "Soul|1|7": [
-            277,
+            278,
+            276,
             275,
-            274,
-            273
+            274
         ],
         "Soul|3|4": [
             151,
             138
         ],
         "Soul|6|7": [
-            278,
-            271,
+            279,
+            272,
             263,
             237
         ],
@@ -1191,6 +1191,7 @@
             4
         ],
         "Stone|3|3": [
+            319,
             318,
             317,
             316,
@@ -1204,7 +1205,6 @@
             308,
             307,
             306,
-            305,
             76,
             58,
             51
@@ -1241,8 +1241,8 @@
             5
         ],
         "Tempest|4|8": [
-            289,
-            284,
+            290,
+            285,
             188,
             171,
             170
@@ -1327,7 +1327,7 @@
             83
         ],
         "Toxic|2|7": [
-            277,
+            278,
             226,
             219,
             218,
@@ -1366,6 +1366,7 @@
             28
         ],
         "Vision|2|7": [
+            270,
             269,
             247,
             246,
@@ -1382,11 +1383,12 @@
             28
         ],
         "Vision|6|8": [
-            288,
-            282,
+            289,
+            283,
             268
         ],
         "Ward|2|3": [
+            319,
             318,
             317,
             316,
@@ -1400,13 +1402,13 @@
             308,
             307,
             306,
-            305,
             115,
             111,
             66,
             65
         ],
         "Ward|2|4": [
+            319,
             318,
             317,
             316,
@@ -1420,7 +1422,6 @@
             308,
             307,
             306,
-            305,
             146,
             145,
             144,
@@ -1443,7 +1444,7 @@
             93
         ],
         "Ward|3|5": [
-            319,
+            320,
             206,
             205,
             204,
@@ -1484,8 +1485,9 @@
             118
         ],
         "Wisdom|1|7": [
-            278,
-            276,
+            279,
+            277,
+            270,
             269
         ],
         "Wisdom|4|4": [
@@ -1504,7 +1506,7 @@
             "minLevel": 1,
             "refReward": "Krillson's Bay Key",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": []
         },
         {
@@ -1516,7 +1518,7 @@
             "minLevel": 1,
             "refReward": "Orb of Augmentation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 0,
                 126
@@ -1531,7 +1533,7 @@
             "minLevel": 1,
             "refReward": "Orb of Transmutation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 0,
                 10,
@@ -1548,7 +1550,7 @@
             "minLevel": 1,
             "refReward": "Uncut Skill Gem",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 1,
                 5,
@@ -1568,7 +1570,7 @@
             "minLevel": 1,
             "refReward": "Uncut Support Gem",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 1,
                 8,
@@ -1587,7 +1589,7 @@
             "minLevel": 1,
             "refReward": "Artificer's Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 7,
                 9,
@@ -1604,7 +1606,7 @@
             "minLevel": 1,
             "refReward": "Exalted Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 11,
                 27,
@@ -1627,7 +1629,7 @@
             "minLevel": 1,
             "refReward": "Armourer's Scrap",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 3,
                 8,
@@ -1644,7 +1646,7 @@
             "minLevel": 1,
             "refReward": "Arcanist's Etcher",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 4,
                 46,
@@ -1661,7 +1663,7 @@
             "minLevel": 1,
             "refReward": "Regal Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 11,
                 14,
@@ -1683,7 +1685,7 @@
             "minLevel": 1,
             "refReward": "Blacksmith's Whetstone",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 2,
                 8,
@@ -1700,7 +1702,7 @@
             "minLevel": 1,
             "refReward": "Lesser Vision Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 15,
                 22
@@ -1715,7 +1717,7 @@
             "minLevel": 1,
             "refReward": "Lesser Glacial Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 3,
                 6,
@@ -1731,7 +1733,7 @@
             "minLevel": 1,
             "refReward": "Lesser Adept Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 3,
                 7,
@@ -1747,7 +1749,7 @@
             "minLevel": 1,
             "refReward": "Lesser Iron Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 6,
                 12,
@@ -1763,7 +1765,7 @@
             "minLevel": 1,
             "refReward": "Lesser Desert Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 2,
                 6,
@@ -1779,7 +1781,7 @@
             "minLevel": 1,
             "refReward": "Lesser Resolve Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 4,
                 7,
@@ -1795,7 +1797,7 @@
             "minLevel": 1,
             "refReward": "Lesser Rebirth Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 14,
                 22,
@@ -1811,7 +1813,7 @@
             "minLevel": 1,
             "refReward": "Lesser Storm Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 4,
                 6,
@@ -1827,7 +1829,7 @@
             "minLevel": 1,
             "refReward": "Lesser Inspiration Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 10,
                 22,
@@ -1844,7 +1846,7 @@
             "minLevel": 1,
             "refReward": "Lesser Robust Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 2,
                 7,
@@ -1860,7 +1862,7 @@
             "minLevel": 1,
             "refReward": "Lesser Stone Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 10,
                 12,
@@ -1878,7 +1880,7 @@
             "minLevel": 1,
             "refReward": "Lesser Body Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 12,
                 15,
@@ -1894,7 +1896,7 @@
             "minLevel": 1,
             "refReward": "Lesser Mind Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 9,
                 15,
@@ -1911,7 +1913,7 @@
             "minLevel": 1,
             "refReward": "Lesser Ward Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 9,
                 14,
@@ -1929,7 +1931,7 @@
             "minLevel": 1,
             "refReward": "Lesser Charging Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 13,
                 35,
@@ -1949,7 +1951,7 @@
             "minLevel": 1,
             "refReward": "Vision Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 27,
                 33,
@@ -1965,7 +1967,7 @@
             "minLevel": 1,
             "refReward": "Glacial Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 18,
                 21,
@@ -1984,7 +1986,7 @@
             "minLevel": 1,
             "refReward": "Adept Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 18,
                 24,
@@ -2005,7 +2007,7 @@
             "minLevel": 1,
             "refReward": "Iron Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 20,
                 21,
@@ -2022,7 +2024,7 @@
             "minLevel": 1,
             "refReward": "Desert Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 17,
                 21,
@@ -2039,7 +2041,7 @@
             "minLevel": 1,
             "refReward": "Resolve Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 19,
                 24,
@@ -2058,7 +2060,7 @@
             "minLevel": 1,
             "refReward": "Body Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 20,
                 31
@@ -2073,7 +2075,7 @@
             "minLevel": 1,
             "refReward": "Rebirth Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 27,
                 33,
@@ -2089,7 +2091,7 @@
             "minLevel": 1,
             "refReward": "Storm Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 19,
                 21,
@@ -2106,7 +2108,7 @@
             "minLevel": 1,
             "refReward": "Mind Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 5,
                 23,
@@ -2125,7 +2127,7 @@
             "minLevel": 1,
             "refReward": "Inspiration Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 27,
                 33,
@@ -2141,7 +2143,7 @@
             "minLevel": 1,
             "refReward": "Robust Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 17,
                 24,
@@ -2160,7 +2162,7 @@
             "minLevel": 1,
             "refReward": "Stone Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 20,
                 31,
@@ -2176,7 +2178,7 @@
             "minLevel": 1,
             "refReward": "Ward Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 5,
                 23,
@@ -2195,7 +2197,7 @@
             "minLevel": 1,
             "refReward": "Artificer's Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 23,
                 24,
@@ -2215,7 +2217,7 @@
             "minLevel": 1,
             "refReward": "Orb of Augmentation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 16,
                 43,
@@ -2233,7 +2235,7 @@
             "minLevel": 1,
             "refReward": "Orb of Transmutation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 14,
                 16,
@@ -2278,7 +2280,7 @@
             "minLevel": 1,
             "refReward": "Uncut Spirit Gem",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 16,
                 25,
@@ -2296,7 +2298,7 @@
             "minLevel": 1,
             "refReward": "Glassblower's Bauble",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 25,
                 48,
@@ -2313,7 +2315,7 @@
             "minLevel": 1,
             "refReward": "Gemcutter's Prism",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 25,
                 70,
@@ -2329,7 +2331,7 @@
             "minLevel": 1,
             "refReward": "Regal Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 13,
                 25,
@@ -2349,7 +2351,7 @@
             "minLevel": 1,
             "refReward": "Armourer's Scrap",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 18,
                 26,
@@ -2369,7 +2371,7 @@
             "minLevel": 1,
             "refReward": "Arcanist's Etcher",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 19,
                 26,
@@ -2387,7 +2389,7 @@
             "minLevel": 1,
             "refReward": "Blacksmith's Whetstone",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 17,
                 26,
@@ -2405,7 +2407,7 @@
             "minLevel": 1,
             "refReward": "Charging Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 52,
                 70,
@@ -2422,7 +2424,7 @@
             "minLevel": 1,
             "refReward": "Greater Vision Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 33,
                 57
@@ -2437,7 +2439,7 @@
             "minLevel": 1,
             "refReward": "Greater Glacial Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 29,
                 32,
@@ -2454,7 +2456,7 @@
             "minLevel": 1,
             "refReward": "Greater Adept Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 29,
                 39,
@@ -2473,7 +2475,7 @@
             "minLevel": 1,
             "refReward": "Greater Iron Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 31,
                 32
@@ -2488,7 +2490,7 @@
             "minLevel": 1,
             "refReward": "Greater Desert Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 28,
                 32
@@ -2503,7 +2505,7 @@
             "minLevel": 1,
             "refReward": "Greater Resolve Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 30,
                 39,
@@ -2520,7 +2522,7 @@
             "minLevel": 1,
             "refReward": "Greater Body Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 31,
                 52
@@ -2535,7 +2537,7 @@
             "minLevel": 1,
             "refReward": "Greater Rebirth Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 33,
                 53,
@@ -2551,7 +2553,7 @@
             "minLevel": 1,
             "refReward": "Greater Storm Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 30,
                 32
@@ -2566,7 +2568,7 @@
             "minLevel": 1,
             "refReward": "Greater Mind Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 53,
                 73,
@@ -2584,7 +2586,7 @@
             "minLevel": 1,
             "refReward": "Greater Inspiration Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 33,
                 53,
@@ -2600,7 +2602,7 @@
             "minLevel": 1,
             "refReward": "Greater Robust Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 28,
                 39,
@@ -2617,7 +2619,7 @@
             "minLevel": 1,
             "refReward": "Greater Stone Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 31,
                 87
@@ -2632,7 +2634,7 @@
             "minLevel": 1,
             "refReward": "Greater Ward Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 31,
                 36,
@@ -2650,7 +2652,7 @@
             "minLevel": 1,
             "refReward": "Greater Charging Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 31,
                 36,
@@ -2668,7 +2670,7 @@
             "minLevel": 1,
             "refReward": "Unique Body Armour",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 37,
                 77,
@@ -2685,7 +2687,7 @@
             "minLevel": 1,
             "refReward": "Unique Boots",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 37,
                 77,
@@ -2703,7 +2705,7 @@
             "minLevel": 1,
             "refReward": "Unique Gloves",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 37,
                 77,
@@ -2721,7 +2723,7 @@
             "minLevel": 1,
             "refReward": "Unique Helmet",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 37,
                 77,
@@ -2738,7 +2740,7 @@
             "minLevel": 1,
             "refReward": "Artificer's Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 39,
                 49,
@@ -2757,7 +2759,7 @@
             "minLevel": 1,
             "refReward": "Exalted Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 34,
                 41,
@@ -2780,7 +2782,7 @@
             "minLevel": 1,
             "refReward": "Chaos Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 34,
                 45,
@@ -2801,7 +2803,7 @@
             "minLevel": 1,
             "refReward": "Regal Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 41,
                 46,
@@ -2865,7 +2867,7 @@
             "minLevel": 1,
             "refReward": "Lesser Jeweller's Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 43,
                 46,
@@ -2884,7 +2886,7 @@
             "minLevel": 1,
             "refReward": "Armourer's Scrap",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 29,
                 42,
@@ -2902,7 +2904,7 @@
             "minLevel": 1,
             "refReward": "Arcanist's Etcher",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 30,
                 42,
@@ -2940,7 +2942,7 @@
             "minLevel": 1,
             "refReward": "Blacksmith's Whetstone",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 28,
                 42,
@@ -2957,7 +2959,7 @@
             "minLevel": 1,
             "refReward": "Greater Orb of Augmentation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 44,
                 107,
@@ -2973,7 +2975,7 @@
             "minLevel": 1,
             "refReward": "Glassblower's Bauble",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 41,
                 43,
@@ -2993,7 +2995,7 @@
             "minLevel": 1,
             "refReward": "Greater Orb of Transmutation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 44,
                 107,
@@ -3032,7 +3034,7 @@
             "minLevel": 1,
             "refReward": "Detonate Living",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 35,
                 81,
@@ -3052,7 +3054,7 @@
             "minLevel": 1,
             "refReward": "Eternal March",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 35,
                 81,
@@ -3072,7 +3074,7 @@
             "minLevel": 1,
             "refReward": "Fragments Of The Past",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 35,
                 81,
@@ -3091,7 +3093,7 @@
             "minLevel": 1,
             "refReward": "Frostflame Nova",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 35,
                 81,
@@ -3111,7 +3113,7 @@
             "minLevel": 1,
             "refReward": "Repulsion",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 35,
                 81,
@@ -3129,7 +3131,7 @@
             "minLevel": 1,
             "refReward": "Conductive Runes",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 35,
                 81,
@@ -3148,7 +3150,7 @@
             "minLevel": 1,
             "refReward": "Concussive Runes",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 35,
                 81,
@@ -3166,7 +3168,7 @@
             "minLevel": 1,
             "refReward": "Bitter Dead",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 47,
                 80,
@@ -3183,7 +3185,7 @@
             "minLevel": 1,
             "refReward": "Grim Pillars",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 47,
                 73,
@@ -3202,7 +3204,7 @@
             "minLevel": 1,
             "refReward": "Remnants of Kalguur",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 47,
                 70,
@@ -3220,7 +3222,7 @@
             "minLevel": 1,
             "refReward": "Powered by Verisium",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 47,
                 64,
@@ -3237,7 +3239,7 @@
             "minLevel": 1,
             "refReward": "Verisium Manifestations",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 47,
                 54,
@@ -3254,7 +3256,7 @@
             "minLevel": 1,
             "refReward": "Runeforged Blades",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 47,
                 73,
@@ -3271,7 +3273,7 @@
             "minLevel": 1,
             "refReward": "Scouring Flame",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 47,
                 73,
@@ -3290,7 +3292,7 @@
             "minLevel": 1,
             "refReward": "Animus Splinters",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 50,
                 90,
@@ -3307,7 +3309,7 @@
             "minLevel": 1,
             "refReward": "Explosive Transmutation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 50,
                 90,
@@ -3324,7 +3326,7 @@
             "minLevel": 1,
             "refReward": "Hollow Shell",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 50,
                 64,
@@ -3342,7 +3344,7 @@
             "minLevel": 1,
             "refReward": "Voltaic Barrier",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 50,
                 90,
@@ -3358,7 +3360,7 @@
             "minLevel": 1,
             "refReward": "Wardbound Minions",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 50,
                 90,
@@ -3375,7 +3377,7 @@
             "minLevel": 1,
             "refReward": "Fist Of Kalguur",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 50,
                 90,
@@ -3391,7 +3393,7 @@
             "minLevel": 1,
             "refReward": "Runic Extraction",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 50,
                 90,
@@ -3408,7 +3410,7 @@
             "minLevel": 1,
             "refReward": "Runic Infusion",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 50,
                 90,
@@ -3424,7 +3426,7 @@
             "minLevel": 1,
             "refReward": "Rain of Blades",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 50,
                 64,
@@ -3442,7 +3444,7 @@
             "minLevel": 1,
             "refReward": "Gemcutter's Prism",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 43,
                 65,
@@ -3459,7 +3461,7 @@
             "minLevel": 1,
             "refReward": "Verisium Pile",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 35,
                 47,
@@ -3482,7 +3484,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Reinforcement",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 38,
@@ -3503,7 +3505,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Protection",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 33,
                 38,
@@ -3521,7 +3523,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Disintegration",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 38,
                 93,
@@ -3539,7 +3541,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Desperation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 38,
                 93,
@@ -3556,7 +3558,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Courage",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 38,
@@ -3577,7 +3579,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Nourishment",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 38,
                 93,
@@ -3594,7 +3596,7 @@
             "minLevel": 1,
             "refReward": "Orb of Alchemy",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 34,
                 40,
@@ -3621,7 +3623,7 @@
             "minLevel": 1,
             "refReward": "Animus Exchange",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 60,
                 81,
@@ -3641,7 +3643,7 @@
             "minLevel": 1,
             "refReward": "Leylines",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 60,
                 112,
@@ -3657,7 +3659,7 @@
             "minLevel": 1,
             "refReward": "Runic Reprieve",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 60,
                 160
@@ -3672,7 +3674,7 @@
             "minLevel": 1,
             "refReward": "Refutation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 60,
                 160
@@ -3687,7 +3689,7 @@
             "minLevel": 1,
             "refReward": "Triskelion Cascade",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 60,
                 111,
@@ -3703,7 +3705,7 @@
             "minLevel": 1,
             "refReward": "Skyfall",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 60,
                 160
@@ -3718,7 +3720,7 @@
             "minLevel": 1,
             "refReward": "Healing Runes",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 60,
                 160
@@ -3733,7 +3735,7 @@
             "minLevel": 1,
             "refReward": "Unique Bow",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 56,
                 77,
@@ -3752,7 +3754,7 @@
             "minLevel": 1,
             "refReward": "Unique Crossbow",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 56,
                 77,
@@ -3769,7 +3771,7 @@
             "minLevel": 1,
             "refReward": "Unique Focus",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 57,
                 77,
@@ -3787,7 +3789,7 @@
             "minLevel": 1,
             "refReward": "Unique One Hand Mace",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 54,
                 77,
@@ -3806,7 +3808,7 @@
             "minLevel": 1,
             "refReward": "Unique Quarterstaff",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 54,
                 77,
@@ -3825,7 +3827,7 @@
             "minLevel": 1,
             "refReward": "Unique Quiver",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 57,
                 77,
@@ -3842,7 +3844,7 @@
             "minLevel": 1,
             "refReward": "Unique Sceptre",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 57,
                 77,
@@ -3860,7 +3862,7 @@
             "minLevel": 1,
             "refReward": "Unique Shield",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 57,
                 77,
@@ -3877,7 +3879,7 @@
             "minLevel": 1,
             "refReward": "Unique Spear",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 54,
                 56,
@@ -3896,7 +3898,7 @@
             "minLevel": 1,
             "refReward": "Unique Staff",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 56,
                 77,
@@ -3914,7 +3916,7 @@
             "minLevel": 1,
             "refReward": "Unique Talisman",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 54,
                 77,
@@ -3933,7 +3935,7 @@
             "minLevel": 1,
             "refReward": "Unique Two Hand Mace",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 54,
                 77,
@@ -3951,7 +3953,7 @@
             "minLevel": 1,
             "refReward": "Unique Wand",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 56,
                 77,
@@ -3969,7 +3971,7 @@
             "minLevel": 1,
             "refReward": "Exalted Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 59,
                 61,
@@ -3990,7 +3992,7 @@
             "minLevel": 1,
             "refReward": "Glassblower's Bauble",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 58,
                 65,
@@ -4008,7 +4010,7 @@
             "minLevel": 1,
             "refReward": "Gemcutter's Prism",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 65,
                 89
@@ -4023,7 +4025,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Stability",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 62,
                 63,
@@ -4042,7 +4044,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Glancing",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 62,
                 63,
@@ -4059,7 +4061,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Heart",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 62,
                 63,
@@ -4076,7 +4078,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Annihilation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 62,
                 63,
@@ -4094,7 +4096,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Salvaging",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 62,
                 63,
@@ -4115,7 +4117,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Symbiosis",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 62,
                 63,
@@ -4132,7 +4134,7 @@
             "minLevel": 1,
             "refReward": "Orb of Alchemy",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 58,
                 59,
@@ -4152,7 +4154,7 @@
             "minLevel": 1,
             "refReward": "Chaos Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 66,
                 72,
@@ -4191,7 +4193,7 @@
             "minLevel": 1,
             "refReward": "Greater Jeweller's Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 61,
                 65,
@@ -4232,7 +4234,7 @@
             "minLevel": 1,
             "refReward": "Unique Jewellery",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 59,
                 61,
@@ -4250,7 +4252,7 @@
             "minLevel": 1,
             "refReward": "Rune of Vitality",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 68,
                 134,
@@ -4266,7 +4268,7 @@
             "minLevel": 1,
             "refReward": "Rune of the Hunt",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 69,
                 171
@@ -4281,7 +4283,7 @@
             "minLevel": 1,
             "refReward": "Rune of Acrobatics",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 69,
                 171
@@ -4296,7 +4298,7 @@
             "minLevel": 1,
             "refReward": "Rune of Culmination",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 68,
                 170
@@ -4311,7 +4313,7 @@
             "minLevel": 1,
             "refReward": "Rune of Renown",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 64,
                 169
@@ -4326,7 +4328,7 @@
             "minLevel": 1,
             "refReward": "Rune of Accumulation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 69,
                 103,
@@ -4343,7 +4345,7 @@
             "minLevel": 1,
             "refReward": "Rune of Foundations",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 64,
                 169
@@ -4358,7 +4360,7 @@
             "minLevel": 1,
             "refReward": "Rune of the Prism",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 70,
                 172
@@ -4373,7 +4375,7 @@
             "minLevel": 1,
             "refReward": "Rune of the Blossom",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 68,
                 170
@@ -4388,7 +4390,7 @@
             "minLevel": 1,
             "refReward": "Rune of Consistency",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 70,
                 123,
@@ -4404,7 +4406,7 @@
             "minLevel": 1,
             "refReward": "Rune of Reach",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 64,
                 169
@@ -4515,7 +4517,7 @@
             "minLevel": 1,
             "refReward": "Rune of Vital Flame",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 73,
                 126,
@@ -4532,7 +4534,7 @@
             "minLevel": 1,
             "refReward": "Rune of Confrontation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 70,
                 87,
@@ -4666,7 +4668,7 @@
             "minLevel": 1,
             "refReward": "Unique Amulet",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 74,
                 77,
@@ -4685,7 +4687,7 @@
             "minLevel": 1,
             "refReward": "Unique Belt",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 74,
                 77,
@@ -4705,7 +4707,7 @@
             "minLevel": 1,
             "refReward": "Unique Ring",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 74,
                 77,
@@ -4724,7 +4726,7 @@
             "minLevel": 1,
             "refReward": "Greater Regal Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 55,
                 100,
@@ -4741,7 +4743,7 @@
             "minLevel": 1,
             "refReward": "Greater Exalted Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 55,
                 84,
@@ -4758,7 +4760,7 @@
             "minLevel": 1,
             "refReward": "Greater Chaos Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 55,
                 100
@@ -4773,7 +4775,7 @@
             "minLevel": 1,
             "refReward": "Divine Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 75,
                 98,
@@ -4791,7 +4793,7 @@
             "minLevel": 1,
             "refReward": "Uncut Spirit Gem (Level 19)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 84,
                 96,
@@ -4808,7 +4810,7 @@
             "minLevel": 1,
             "refReward": "Uncut Skill Gem (Level 19)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 83,
                 93,
@@ -4825,7 +4827,7 @@
             "minLevel": 1,
             "refReward": "5x Random Currency",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 86,
                 95,
@@ -4845,7 +4847,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Armature",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 79,
                 104
@@ -4860,7 +4862,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Obsession",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 79
             ]
@@ -4874,7 +4876,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Equinox",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 79
             ]
@@ -4888,7 +4890,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Bodyguards",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 79
             ]
@@ -4902,7 +4904,7 @@
             "minLevel": 1,
             "refReward": "Warding Rune of Hollowing",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 79,
                 126
@@ -4917,7 +4919,7 @@
             "minLevel": 1,
             "refReward": "Greater Orb of Augmentation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 78,
                 84,
@@ -4934,7 +4936,7 @@
             "minLevel": 1,
             "refReward": "Greater Orb of Transmutation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 78,
                 83,
@@ -4951,7 +4953,7 @@
             "minLevel": 1,
             "refReward": "Detonate Living",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 81,
                 124,
@@ -4969,7 +4971,7 @@
             "minLevel": 1,
             "refReward": "Eternal March",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 81,
                 124,
@@ -4986,7 +4988,7 @@
             "minLevel": 1,
             "refReward": "Fragments Of The Past",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 81,
                 124,
@@ -5003,7 +5005,7 @@
             "minLevel": 1,
             "refReward": "Frostflame Nova",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 81,
                 124,
@@ -5021,7 +5023,7 @@
             "minLevel": 1,
             "refReward": "Repulsion",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 81,
                 124,
@@ -5038,7 +5040,7 @@
             "minLevel": 1,
             "refReward": "Conductive Runes",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 81,
                 124,
@@ -5056,7 +5058,7 @@
             "minLevel": 1,
             "refReward": "Bitter Dead",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 80
             ]
@@ -5070,7 +5072,7 @@
             "minLevel": 1,
             "refReward": "Grim Pillars",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 80
             ]
@@ -5084,7 +5086,7 @@
             "minLevel": 1,
             "refReward": "Remnants of Kalguur",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 80
             ]
@@ -5098,7 +5100,7 @@
             "minLevel": 1,
             "refReward": "Powered by Verisium",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 80
             ]
@@ -5112,7 +5114,7 @@
             "minLevel": 1,
             "refReward": "Verisium Manifestations",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 80,
                 126
@@ -5127,7 +5129,7 @@
             "minLevel": 1,
             "refReward": "Orb of Chance",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 77,
                 113,
@@ -5144,7 +5146,7 @@
             "minLevel": 1,
             "refReward": "Rare Unique Item",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 77,
                 78,
@@ -5161,7 +5163,7 @@
             "minLevel": 1,
             "refReward": "Perfect Jeweller's Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 89,
                 95
@@ -5195,7 +5197,7 @@
             "minLevel": 1,
             "refReward": "Masterwork Rune",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 82,
                 89,
@@ -5234,7 +5236,7 @@
             "minLevel": 1,
             "refReward": "Chaos Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 86,
                 95,
@@ -5252,7 +5254,7 @@
             "minLevel": 1,
             "refReward": "Craiceann's Rune of Warding",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 87
             ]
@@ -5266,7 +5268,7 @@
             "minLevel": 1,
             "refReward": "Saqawal's Rune of Erosion",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 90,
                 108
@@ -5281,7 +5283,7 @@
             "minLevel": 1,
             "refReward": "Farrul's Rune of the Hunt",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 88,
                 104
@@ -5296,7 +5298,7 @@
             "minLevel": 1,
             "refReward": "Craiceann's Rune of Recovery",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 87
             ]
@@ -5310,7 +5312,7 @@
             "minLevel": 1,
             "refReward": "Fenumus' Rune of Spinning",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 94,
                 107,
@@ -5326,7 +5328,7 @@
             "minLevel": 1,
             "refReward": "Fenumus' Rune of Draining",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 94,
                 128
@@ -5341,7 +5343,7 @@
             "minLevel": 1,
             "refReward": "Thane Myrk's Rune of Summer",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 85,
                 110,
@@ -5357,7 +5359,7 @@
             "minLevel": 1,
             "refReward": "Lady Hestra's Rune of Winter",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 92,
                 117,
@@ -5373,7 +5375,7 @@
             "minLevel": 1,
             "refReward": "Thane Leld's Rune of Spring",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 85,
                 112,
@@ -5389,7 +5391,7 @@
             "minLevel": 1,
             "refReward": "The Greatwolf's Rune of Claws",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 91,
                 123
@@ -5404,7 +5406,7 @@
             "minLevel": 1,
             "refReward": "The Greatwolf's Rune of Willpower",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 91
             ]
@@ -5418,7 +5420,7 @@
             "minLevel": 1,
             "refReward": "Saqawal's Rune of the Sky",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 90,
                 108
@@ -5433,7 +5435,7 @@
             "minLevel": 1,
             "refReward": "Fenumus' Rune of Agony",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 94,
                 128
@@ -5448,7 +5450,7 @@
             "minLevel": 1,
             "refReward": "Farrul's Rune of Grace",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 88,
                 107
@@ -5463,7 +5465,7 @@
             "minLevel": 1,
             "refReward": "Perfect Orb of Augmentation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 86,
                 97,
@@ -5482,7 +5484,7 @@
             "minLevel": 1,
             "refReward": "Perfect Orb of Transmutation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 86,
                 97,
@@ -5501,7 +5503,7 @@
             "minLevel": 1,
             "refReward": "Thane Grannell's Rune of Mastery",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 85,
                 138
@@ -5516,7 +5518,7 @@
             "minLevel": 1,
             "refReward": "Saqawal's Rune of Memory",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 90,
                 108
@@ -5531,7 +5533,7 @@
             "minLevel": 1,
             "refReward": "Courtesan Mannan's Rune of Cruelty",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 92,
                 125
@@ -5546,7 +5548,7 @@
             "minLevel": 1,
             "refReward": "Thane Girt's Rune of Wildness",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 85,
                 138
@@ -5561,7 +5563,7 @@
             "minLevel": 1,
             "refReward": "Divine Orb",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 98,
                 121,
@@ -5578,7 +5580,7 @@
             "minLevel": 1,
             "refReward": "Animus Exchange",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 160
             ]
@@ -5592,7 +5594,7 @@
             "minLevel": 1,
             "refReward": "Leylines",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 144,
                 160
@@ -5607,7 +5609,7 @@
             "minLevel": 1,
             "refReward": "Runic Reprieve",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 132,
                 160
@@ -5622,7 +5624,7 @@
             "minLevel": 1,
             "refReward": "Refutation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 160
             ]
@@ -5636,7 +5638,7 @@
             "minLevel": 1,
             "refReward": "Triskelion Cascade",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 160
             ]
@@ -5650,7 +5652,7 @@
             "minLevel": 1,
             "refReward": "Skyfall",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 160
             ]
@@ -5664,7 +5666,7 @@
             "minLevel": 1,
             "refReward": "Greater Exalted Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 100,
                 104
@@ -5679,7 +5681,7 @@
             "minLevel": 1,
             "refReward": "Greater Chaos Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 100,
                 105
@@ -5694,7 +5696,7 @@
             "minLevel": 1,
             "refReward": "Greater Regal Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 100,
                 103,
@@ -5711,7 +5713,7 @@
             "minLevel": 1,
             "refReward": "Medved's Saga",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 102,
                 103,
@@ -5728,7 +5730,7 @@
             "minLevel": 1,
             "refReward": "Uhtred's Saga",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 102,
                 105,
@@ -5744,7 +5746,7 @@
             "minLevel": 1,
             "refReward": "Vorana's Saga",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 102,
                 104,
@@ -5760,7 +5762,7 @@
             "minLevel": 1,
             "refReward": "Olroth's Saga",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 102,
                 106,
@@ -5777,7 +5779,7 @@
             "minLevel": 1,
             "refReward": "Animus Splinters",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 108
             ]
@@ -5791,7 +5793,7 @@
             "minLevel": 1,
             "refReward": "Explosive Transmutation",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 108
             ]
@@ -5805,7 +5807,7 @@
             "minLevel": 1,
             "refReward": "Hollow Shell",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 108
             ]
@@ -5819,7 +5821,7 @@
             "minLevel": 1,
             "refReward": "Voltaic Barrier",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 108
             ]
@@ -5833,7 +5835,7 @@
             "minLevel": 1,
             "refReward": "Wardbound Minions",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 108
             ]
@@ -5847,7 +5849,7 @@
             "minLevel": 1,
             "refReward": "Rain of Blades",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 108
             ]
@@ -5861,7 +5863,7 @@
             "minLevel": 1,
             "refReward": "Chilling Flux",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 109,
                 111
@@ -5876,7 +5878,7 @@
             "minLevel": 1,
             "refReward": "Blazing Flux",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 109,
                 110
@@ -5891,7 +5893,7 @@
             "minLevel": 1,
             "refReward": "Crackling Flux",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 109,
                 112
@@ -5906,7 +5908,7 @@
             "minLevel": 1,
             "refReward": "Countess Seske's Rune of Archery",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 115,
                 116
@@ -5921,7 +5923,7 @@
             "minLevel": 1,
             "refReward": "Hedgewitch Assandra's Rune of Wisdom",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 115,
                 118
@@ -5936,7 +5938,7 @@
             "minLevel": 1,
             "refReward": "Farrul's Rune of the Chase",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 115,
                 117
@@ -5951,7 +5953,7 @@
             "minLevel": 1,
             "refReward": "Perfect Exalted Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 101,
                 122,
@@ -5969,7 +5971,7 @@
             "minLevel": 1,
             "refReward": "Void Flux",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 114,
                 119
@@ -5984,7 +5986,7 @@
             "minLevel": 1,
             "refReward": "Uncut Spirit Gem (Level 20)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 107
             ]
@@ -5998,7 +6000,7 @@
             "minLevel": 1,
             "refReward": "Uncut Skill Gem (Level 20)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 107,
                 127,
@@ -6014,7 +6016,7 @@
             "minLevel": 1,
             "refReward": "Divine Orb",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 121,
                 152,
@@ -6030,7 +6032,7 @@
             "minLevel": 1,
             "refReward": "Perfect Chaos Orb",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 101,
                 122,
@@ -6068,7 +6070,7 @@
             "minLevel": 1,
             "refReward": "Orb of Chance",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 113,
                 154
@@ -6083,12 +6085,27 @@
             "minLevel": 1,
             "refReward": "Orb of Annulment",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 124,
                 142,
                 158,
                 159
+            ]
+        },
+        {
+            "cat": "Currency",
+            "count": 10,
+            "gemLevel": 0,
+            "id": "7SlotChaosOrb10",
+            "maxLevel": 100,
+            "minLevel": 1,
+            "refReward": "Chaos Orb",
+            "smallRecipeLabel": false,
+            "someFlags": 4839,
+            "weights": [
+                130,
+                131
             ]
         },
         {
@@ -6100,7 +6117,7 @@
             "minLevel": 1,
             "refReward": "Aldur's Saga",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 130,
                 131
@@ -6115,7 +6132,7 @@
             "minLevel": 1,
             "refReward": "Orb of Annulment",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 124,
                 150,
@@ -6164,7 +6181,7 @@
             "minLevel": 1,
             "refReward": "Breath of Aldur",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 125,
                 129
@@ -6179,7 +6196,7 @@
             "minLevel": 1,
             "refReward": "Passion of Aldur",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 127,
                 129
@@ -6194,7 +6211,7 @@
             "minLevel": 1,
             "refReward": "Ire of Aldur",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 126,
                 129
@@ -6209,7 +6226,7 @@
             "minLevel": 1,
             "refReward": "Astrid's Creativity",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 131,
                 134
@@ -6224,7 +6241,7 @@
             "minLevel": 1,
             "refReward": "Betrayal of Aldur",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 128,
                 129
@@ -6239,7 +6256,7 @@
             "minLevel": 1,
             "refReward": "Cadigan's Epiphany",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 131,
                 132,
@@ -6285,7 +6302,7 @@
             "minLevel": 1,
             "refReward": "Vorana's Carnage",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 138,
                 141
@@ -6300,7 +6317,7 @@
             "minLevel": 1,
             "refReward": "Katla's Gloom",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 138,
                 142
@@ -6315,7 +6332,7 @@
             "minLevel": 1,
             "refReward": "Thrud's Might",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 138,
                 140
@@ -6330,7 +6347,7 @@
             "minLevel": 1,
             "refReward": "Kolr's Hunt",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 138,
                 143
@@ -6345,7 +6362,7 @@
             "minLevel": 1,
             "refReward": "Medved's Tending",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 138,
                 144
@@ -6360,7 +6377,7 @@
             "minLevel": 1,
             "refReward": "Uhtred's Sidereus",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 138,
                 145
@@ -6375,7 +6392,7 @@
             "minLevel": 1,
             "refReward": "Serle's Triumph",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 146
             ]
@@ -6389,7 +6406,7 @@
             "minLevel": 1,
             "refReward": "Perfect Orb of Augmentation",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 135,
                 139,
@@ -6408,7 +6425,7 @@
             "minLevel": 1,
             "refReward": "Perfect Orb of Transmutation",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 136,
                 139,
@@ -6427,7 +6444,7 @@
             "minLevel": 1,
             "refReward": "Perfect Regal Orb",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 146,
                 147
@@ -6442,7 +6459,7 @@
             "minLevel": 1,
             "refReward": "Very Rare Unique item",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 148,
                 154
@@ -6457,7 +6474,7 @@
             "minLevel": 1,
             "refReward": "Orb of Chance",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 154
             ]
@@ -6471,7 +6488,7 @@
             "minLevel": 1,
             "refReward": "Orb of Annulment",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 151,
                 159
@@ -6486,7 +6503,7 @@
             "minLevel": 1,
             "refReward": "Divine Orb",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 152,
                 157
@@ -6501,7 +6518,7 @@
             "minLevel": 1,
             "refReward": "Perfect Exalted Orb",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 150,
                 153
@@ -6516,7 +6533,7 @@
             "minLevel": 1,
             "refReward": "Perfect Chaos Orb",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 149,
                 153
@@ -6531,7 +6548,7 @@
             "minLevel": 1,
             "refReward": "Hinekora's Lock",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 155
             ]
@@ -6545,7 +6562,7 @@
             "minLevel": 1,
             "refReward": "Mirror of Kalandra",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 156
             ]
@@ -6559,7 +6576,7 @@
             "minLevel": 1,
             "refReward": "Olroth's Boon",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 157
             ]
@@ -6573,7 +6590,7 @@
             "minLevel": 1,
             "refReward": "Vorana's Boon",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 157
             ]
@@ -6587,7 +6604,7 @@
             "minLevel": 1,
             "refReward": "Uhtred's Boon",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 157
             ]
@@ -6601,7 +6618,7 @@
             "minLevel": 1,
             "refReward": "Medved's Boon",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 157
             ]
@@ -6615,7 +6632,7 @@
             "minLevel": 1,
             "refReward": "Aldur's Legacy",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 157
             ]
@@ -6629,7 +6646,7 @@
             "minLevel": 1,
             "refReward": "Perfect Flux",
             "smallRecipeLabel": false,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 161
             ]
@@ -6643,7 +6660,7 @@
             "minLevel": 13,
             "refReward": "Thaumaturgic Flux (Level 5)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 48,
@@ -6664,7 +6681,7 @@
             "minLevel": 19,
             "refReward": "Thaumaturgic Flux (Level 6)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 48,
@@ -6685,7 +6702,7 @@
             "minLevel": 23,
             "refReward": "Thaumaturgic Flux (Level 7)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 48,
@@ -6706,7 +6723,7 @@
             "minLevel": 27,
             "refReward": "Thaumaturgic Flux (Level 8)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 48,
@@ -6727,7 +6744,7 @@
             "minLevel": 32,
             "refReward": "Thaumaturgic Flux (Level 9)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 48,
@@ -6748,7 +6765,7 @@
             "minLevel": 37,
             "refReward": "Thaumaturgic Flux (Level 10)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 48,
@@ -6769,7 +6786,7 @@
             "minLevel": 42,
             "refReward": "Thaumaturgic Flux (Level 11)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 48,
@@ -6790,7 +6807,7 @@
             "minLevel": 47,
             "refReward": "Thaumaturgic Flux (Level 12)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 48,
@@ -6811,7 +6828,7 @@
             "minLevel": 53,
             "refReward": "Thaumaturgic Flux (Level 13)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 48,
@@ -6832,7 +6849,7 @@
             "minLevel": 59,
             "refReward": "Thaumaturgic Flux (Level 14)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 48,
@@ -6853,7 +6870,7 @@
             "minLevel": 62,
             "refReward": "Thaumaturgic Flux (Level 15)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 48,
@@ -6874,7 +6891,7 @@
             "minLevel": 66,
             "refReward": "Thaumaturgic Flux (Level 16)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 48,
@@ -6895,7 +6912,7 @@
             "minLevel": 71,
             "refReward": "Thaumaturgic Flux (Level 17)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 48,
@@ -6916,7 +6933,7 @@
             "minLevel": 77,
             "refReward": "Thaumaturgic Flux (Level 18)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 36,
                 48,
@@ -6937,7 +6954,7 @@
             "minLevel": 1,
             "refReward": "Thaumaturgic Flux (Level 19)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 80,
                 107,
@@ -6953,7 +6970,7 @@
             "minLevel": 1,
             "refReward": "Thaumaturgic Flux (Level 20)",
             "smallRecipeLabel": true,
-            "someFlags": 4833,
+            "someFlags": 4839,
             "weights": [
                 107
             ]
