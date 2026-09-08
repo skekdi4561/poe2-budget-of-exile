@@ -752,9 +752,9 @@ vi.mock("@/web/background/IPC");
 
 describe("clientLog", () => {
   beforeEach(async () => {
+    vi.clearAllMocks();
     setupTests();
     await init("en");
-    vi.clearAllMocks();
     useClientLog().testOnlyResetGameMillis();
   });
 

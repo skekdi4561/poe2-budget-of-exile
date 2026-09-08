@@ -5,9 +5,9 @@ import { init } from "@/assets/data";
 
 describe("useTradeApi", () => {
   beforeEach(async () => {
+    vi.clearAllMocks();
     setupTests();
     await init("en");
-    vi.clearAllMocks();
   });
 
   it("parseXchg", () => {

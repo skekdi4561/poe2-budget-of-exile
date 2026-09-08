@@ -23,10 +23,10 @@ describe("useTradeApi", () => {
   let composableResult: ReturnType<typeof useTradeApi>;
 
   beforeEach(async () => {
+    vi.clearAllMocks();
     setupTests();
     await init("en");
     composableResult = useTradeApi();
-    vi.clearAllMocks();
   });
 
   it("initializes error and results as empty", () => {

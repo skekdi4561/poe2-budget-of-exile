@@ -54,7 +54,9 @@ export const setupFetchMock = () => {
       bodyUsed: false,
       json: async () => JSON.parse(body as string),
       text: async () => body,
-      arrayBuffer: async () => Buffer.from(body as string).buffer,
+      // body 가 이미 ArrayBuffer 면(.bin 분기) 그대로 준다. 문자열일 때만 변환한다.
+      arrayBuffer: async () =>
+        body instanceof ArrayBuffer ? body : Buffer.from(body as string).buffer,
       blob: async () => new Blob([body as string]),
       formData: async () => {
         throw new Error("formData not implemented");
@@ -68,7 +70,16 @@ export const setupFetchMock = () => {
       }
       if (filePath.endsWith(".bin")) {
         const data = fs.readFileSync(filePath);
-        return createResponse(data, 200);
+        // ⚠️ `data.buffer` 를 그대로 넘기면 **그 파일이 아니라 Node 의 공유 풀 전체**가 간다.
+        // 작은 Buffer 는 풀의 일부를 가리키는 뷰이기 때문이다(Buffer.poolSize/2 미만).
+        // 풀에 담기는지는 파일 크기와 그때까지의 할당 순서에 달려 있어 **플랫폼마다 결과가
+        // 다르다** — 이 때문에 .index.bin 을 읽는 테스트가 Windows 에서는 통과하고
+        // 리눅스 CI 에서만 깨졌다(pseudo 3건·repro-crossbow·magic-name·dataLoader).
+        // 자기 구간만 잘라 넘긴다. 원작(Kvan7/Exiled-Exchange-2)이 같은 수정을 했다.
+        return createResponse(
+          data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength),
+          200,
+        );
       }
       if (filePath.endsWith(".json")) {
         const data = fs.readFileSync(filePath, "utf8");
