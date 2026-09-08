@@ -201,9 +201,16 @@ describe("formatEx", () => {
   // 예전엔 "ko-KR" 이 박혀 있어서 독일·프랑스·러시아·포르투갈·스페인 사용자가
   // 소수점과 천단위 구분자가 뒤바뀐 숫자를 봤다. 값을 오독할 수 있는 결함이다.
   it("숫자 형식이 사용자 언어를 따른다", () => {
+    // de \uc758 \uad6c\ubd84\uc790(. \uacfc ,)\ub294 ICU \ubc84\uc804\uacfc \ubb34\uad00\ud558\uac8c \uace0\uc815\uc774\ub77c \uadf8\ub300\ub85c \ub2e8\uc5b8\ud55c\ub2e4.
     expect(formatEx(590800, rates, "de")).toBe("1.477 div");
     expect(formatEx(5, rates, "de")).toBe("5,00 ex");
-    expect(formatEx(590800, rates, "ru")).toBe("1 477 div".replace(" ", "\u00a0"));
+    // ru \uc758 \ucc9c\ub2e8\uc704 \uad6c\ubd84\uc790\ub294 **\uacf5\ubc31 \uacc4\uc5f4\uc774\uc9c0\ub9cc \uc5b4\ub5a4 \uacf5\ubc31\uc778\uc9c0\ub294 ICU \ubc84\uc804\ub9c8\ub2e4 \ub2e4\ub974\ub2e4**
+    // (fr \uc740 ICU 72 \uc5d0\uc11c U+00A0 -> U+202F \ub85c \ubc14\ub00c\uc5c8\ub2e4). \ubb38\uc790\ub97c \ubc15\uc544\ub450\uba74 \ub7ec\ub108\uc758 ICU \uc5d0
+    // \ub530\ub77c \uae68\uc9c4\ub2e4 \u2014 \uc2e4\uc81c\ub85c \uc774 \ub2e8\uc5b8\uc774 CI \uc5d0\uc11c \uae68\uc84c\ub2e4. \uc7a1\uc544\uc57c \ud560 \uac83\uc740 "en \uacfc \ub2e4\ub974\uac8c
+    // \ub098\ub204\ub294\uac00"\uc774\ubbc0\ub85c \uad6c\ubd84\uc790\uac00 \uc27c\ud45c\uac00 \uc544\ub2c8\uace0 \uacf5\ubc31\uc774\ub77c\ub294 \uac83\ub9cc \ubcf8\ub2e4.
+    const ru = formatEx(590800, rates, "ru");
+    expect(ru).not.toBe("1,477 div");
+    expect(ru).toMatch(/^1\s477 div$/u);
   });
 
   // 앱이 쓰는 10개 로케일 전부가 Intl 에서 살아야 한다. cmn-Hant 는 BCP-47 표준형이
