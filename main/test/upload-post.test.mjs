@@ -75,7 +75,11 @@ try {
 
   // 같은 내용은 같은 md5 → 같은 파일명(내용 주소화)
   const dup = await post(port, "/uploads/z.png", "IMG");
-  assert.strictEqual(JSON.parse(dup.body).name, JSON.parse(n.body).name, "md5 주소화 깨짐");
+  assert.strictEqual(
+    JSON.parse(dup.body).name,
+    JSON.parse(n.body).name,
+    "md5 주소화 깨짐",
+  );
 
   console.log("upload-post self-test PASS");
 } catch (e) {

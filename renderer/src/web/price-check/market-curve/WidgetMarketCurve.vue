@@ -1,5 +1,10 @@
 <template>
-  <Widget :config="config" move-handles="center" :removable="false" :inline-edit="false">
+  <Widget
+    :config="config"
+    move-handles="center"
+    :removable="false"
+    :inline-edit="false"
+  >
     <div
       class="widget-default-style p-5 text-gray-100 rounded-lg"
       style="width: 48rem"
@@ -8,12 +13,13 @@
       <div class="flex items-baseline justify-between mb-3">
         <div class="flex items-baseline gap-2">
           <span class="font-bold text-lg"
-            ><span class="text-yellow-500">{{ weaponName }}</span> {{ t(":title_rest") }}</span
+            ><span class="text-yellow-500">{{ weaponName }}</span>
+            {{ t(":title_rest") }}</span
           >
           <select
             v-model="leagueTag"
             class="bg-gray-900 rounded px-2 py-0.5 text-gray-200 text-sm"
-            :aria-label='t(":league_aria")'
+            :aria-label="t(':league_aria')"
           >
             <option v-for="l in LEAGUE_TAGS" :key="l.tag" :value="l.tag">
               {{ t(":" + l.key) }}
@@ -23,7 +29,7 @@
             v-model="curWeapon"
             @change="onWeaponChange"
             class="bg-gray-900 rounded px-2 py-0.5 text-gray-200 text-sm"
-            :aria-label='t(":weapon_aria")'
+            :aria-label="t(':weapon_aria')"
           >
             <option v-for="w in WEAPONS" :key="w.suffix" :value="w.suffix">
               {{ t(":" + w.key) }}
@@ -32,8 +38,13 @@
         </div>
         <span v-if="board" class="text-sm text-gray-400"
           >{{ t(":listings", { n: curveCount, m: board.sample }) }} ·
-          {{ board.ageHours < 1 ? t(":just_now") : t(":hours_ago", { h: Math.round(board.ageHours) })
-          }}<template v-if="board.rateFallback"> · {{ t(":rate_fallback") }}</template></span
+          {{
+            board.ageHours < 1
+              ? t(":just_now")
+              : t(":hours_ago", { h: Math.round(board.ageHours) })
+          }}<template v-if="board.rateFallback">
+            · {{ t(":rate_fallback") }}</template
+          ></span
         >
       </div>
 
@@ -50,7 +61,9 @@
         class="mb-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm"
         style="font-variant-numeric: tabular-nums"
       >
-        <span class="text-gray-500" style="font-size: 12px; letter-spacing: 0.05em"
+        <span
+          class="text-gray-500"
+          style="font-size: 12px; letter-spacing: 0.05em"
           >{{ t(":rates") }}</span
         >
         <span v-for="c in rateChips" :key="c.id" class="text-gray-300">
@@ -114,9 +127,9 @@
             }}</span>
             · {{ formatEx(best.p, board.rates) }}</span
           >
-          <span v-else-if="budgetEx > 0" class="ml-auto text-gray-500"
-            >{{ t(":none_in_budget") }}</span
-          >
+          <span v-else-if="budgetEx > 0" class="ml-auto text-gray-500">{{
+            t(":none_in_budget")
+          }}</span>
         </div>
 
         <!-- 아이템 치확 / 방패 막기 게이트 (근거는 script 의 minCrit 참고) -->
@@ -190,7 +203,13 @@
                 @focus="showDrop = true"
                 @blur="hideDropSoon"
                 type="text"
-                :placeholder='t(isArmour ? ":filter_placeholder_armour" : ":filter_placeholder")'
+                :placeholder="
+                  t(
+                    isArmour
+                      ? ':filter_placeholder_armour'
+                      : ':filter_placeholder',
+                  )
+                "
                 class="w-full bg-gray-900 rounded px-3 py-1.5 border border-gray-700 focus:border-gray-500"
               />
               <div
@@ -204,9 +223,9 @@
                   class="w-full text-left px-3 py-1.5 hover:bg-gray-800 flex justify-between gap-2"
                 >
                   <span class="truncate">{{ statText(s.key) }}</span>
-                  <span class="text-gray-500 whitespace-nowrap text-sm"
-                    >{{ t(":stat_meta", { n: s.n, lo: s.lo, hi: s.hi }) }}</span
-                  >
+                  <span class="text-gray-500 whitespace-nowrap text-sm">{{
+                    t(":stat_meta", { n: s.n, lo: s.lo, hi: s.hi })
+                  }}</span>
                 </button>
               </div>
             </div>
@@ -223,11 +242,13 @@
               :key="f.key + i"
               class="flex items-center gap-2 mb-1.5 bg-gray-900 rounded px-2 py-1.5 border border-gray-800"
             >
-              <span class="flex-1 truncate" :title="statText(f.key)">{{ statText(f.key) }}</span>
+              <span class="flex-1 truncate" :title="statText(f.key)">{{
+                statText(f.key)
+              }}</span>
               <input
                 v-model.number="f.min"
                 type="number"
-                :placeholder='t(":min")'
+                :placeholder="t(':min')"
                 class="w-20 bg-gray-950 rounded px-2 py-0.5 text-right border border-gray-700"
                 style="font-variant-numeric: tabular-nums"
               />
@@ -235,14 +256,14 @@
               <input
                 v-model.number="f.max"
                 type="number"
-                :placeholder='t(":max")'
+                :placeholder="t(':max')"
                 class="w-20 bg-gray-950 rounded px-2 py-0.5 text-right border border-gray-700"
                 style="font-variant-numeric: tabular-nums"
               />
               <button
                 @click="filters.splice(i, 1)"
                 class="text-gray-500 hover:text-red-400 px-1"
-                :title='t(":remove")'
+                :title="t(':remove')"
               >
                 ✕
               </button>
@@ -268,20 +289,24 @@
                 @click="sortDesc = !sortDesc"
                 class="text-sm text-gray-400 hover:text-gray-200 underline"
               >
-                {{ sortDesc ? t(":sort_desc", { m: metricLabel }) : t(":sort_asc", { m: metricLabel }) }}
+                {{
+                  sortDesc
+                    ? t(":sort_desc", { m: metricLabel })
+                    : t(":sort_asc", { m: metricLabel })
+                }}
               </button>
             </div>
             <div
               class="overflow-y-auto rounded border border-gray-700 bg-gray-900"
               style="max-height: 15rem"
             >
-              <table
-                class="w-full"
-                style="font-variant-numeric: tabular-nums"
-              >
+              <table class="w-full" style="font-variant-numeric: tabular-nums">
                 <tbody>
                   <tr v-if="front.length < 2">
-                    <td colspan="2" class="text-gray-500 text-center py-3 text-sm">
+                    <td
+                      colspan="2"
+                      class="text-gray-500 text-center py-3 text-sm"
+                    >
                       {{ t(":too_few") }}
                     </td>
                   </tr>
@@ -289,7 +314,9 @@
                     v-for="(r, i) in rungs"
                     :key="i"
                     class="border-b border-gray-800 last:border-0 hover:bg-gray-800"
-                    :class="{ 'text-teal-400 font-bold': best && r.d === best.d }"
+                    :class="{
+                      'text-teal-400 font-bold': best && r.d === best.d,
+                    }"
                   >
                     <td class="py-1 px-2">{{ Math.round(r.d) }}</td>
                     <td class="py-1 px-2 text-right">
@@ -303,7 +330,10 @@
         </div>
 
         <!-- 가격 추세 (있을 때만) — 지금 살까 기다릴까 -->
-        <div v-if="trendAnchors.length" class="mt-5 pt-4 border-t border-gray-800">
+        <div
+          v-if="trendAnchors.length"
+          class="mt-5 pt-4 border-t border-gray-800"
+        >
           <div class="flex items-center gap-2 mb-2">
             <span
               class="text-gray-500"
@@ -315,9 +345,11 @@
               }}</span
             >
             <!-- 앵커가 하나(수집기 기본 "top")면 고를 게 없으니 라벨만 -->
-            <span v-if="trendAnchors.length === 1" class="text-gray-300 text-sm ml-1">{{
-              anchorLabel(trendAnchors[0])
-            }}</span>
+            <span
+              v-if="trendAnchors.length === 1"
+              class="text-gray-300 text-sm ml-1"
+              >{{ anchorLabel(trendAnchors[0]) }}</span
+            >
             <div v-else class="flex bg-gray-900 rounded p-0.5 ml-1">
               <button
                 v-for="a in trendAnchors"
@@ -439,7 +471,10 @@ export default defineComponent({
     // 화면 문자열은 전부 app_i18n.json 의 market_curve 아래에 있다(ko/en). 다른 언어는
     // 키가 없어 en 으로 대체된다 — 즉 앱 언어 설정을 그대로 따라간다.
     const { t } = useI18nNs("market_curve");
-    void initStatText(); // 옵션 이름을 앱 언어로 보여주기 위한 표(한국어면 아무것도 안 받는다)
+    // 옵션 이름을 앱 언어로 보여주기 위한 표(한국어면 아무것도 안 받는다).
+    // 일부러 기다리지 않는다 — 표가 늦게 와도 statTextRev 가 다시 그리게 한다.
+    // void 대신 catch 를 붙인다: void 는 거부를 미처리로 남긴다.
+    initStatText().catch(() => {});
     const wm = inject<WidgetManager>("wm")!;
 
     // 브라우저 미리보기 전용 훅 — ?web-preview&show-curve 로 열면 즉시 표시
@@ -477,15 +512,23 @@ export default defineComponent({
     let shownAt = 0;
     let overlayFocused = false;
     function requestOverlayFocus(attempt: number) {
-      Host.sendEvent({ name: "OVERLAY->MAIN::focus-overlay", payload: undefined });
+      Host.sendEvent({
+        name: "OVERLAY->MAIN::focus-overlay",
+        payload: undefined,
+      });
       if (attempt >= 2) return;
       setTimeout(() => {
-        if (props.config.wmWants === "show" && !overlayFocused) requestOverlayFocus(attempt + 1);
+        if (props.config.wmWants === "show" && !overlayFocused)
+          requestOverlayFocus(attempt + 1);
       }, 300);
     }
     Host.onEvent("MAIN->OVERLAY::focus-change", (state) => {
       overlayFocused = state.overlay;
-      if (!state.overlay && props.config.wmWants === "show" && Date.now() - shownAt > 300) {
+      if (
+        !state.overlay &&
+        props.config.wmWants === "show" &&
+        Date.now() - shownAt > 300
+      ) {
         wm.hide(props.config.wmId); // ESC → 메인이 게임에 포커스를 돌려주며 overlay:false 를 보낸다
       }
     });
@@ -531,7 +574,7 @@ export default defineComponent({
       { tag: "", key: "league_sc" },
       { tag: "hc", key: "league_hc" },
     ];
-    const curLeagueTag = ref<string | null>(null);   // null = 아직 사용자가 안 골랐다(자동)
+    const curLeagueTag = ref<string | null>(null); // null = 아직 사용자가 안 골랐다(자동)
     const autoTag = computed(() =>
       (leagues.selectedId.value ?? "").startsWith("HC ") ? "hc" : "",
     );
@@ -579,14 +622,18 @@ export default defineComponent({
     // 약 26px 뿐이라 즉시 줄바꿈된다(한국어만 보고 넣으면 영어에서만 깨진다).
     const minCrit = ref<number | "">("");
     const minCritN = computed(() =>
-      typeof minCrit.value === "number" && minCrit.value > 0 ? minCrit.value : 0,
+      typeof minCrit.value === "number" && minCrit.value > 0
+        ? minCrit.value
+        : 0,
     );
 
     // 방패 막기 하한. 치확과 같은 자리에 서로 배타적으로 뜬다(무기=치확 / 방패=막기).
     // block 0 은 "미수집"이라 하한을 걸면 함께 빠진다 — 방패 막기는 언제나 양수다.
     const minBlock = ref<number | "">("");
     const minBlockN = computed(() =>
-      typeof minBlock.value === "number" && minBlock.value > 0 ? minBlock.value : 0,
+      typeof minBlock.value === "number" && minBlock.value > 0
+        ? minBlock.value
+        : 0,
     );
 
     // 거래소식 자유 필터
@@ -619,8 +666,12 @@ export default defineComponent({
 
     // 무기 선택 — 활은 접미사 "", 다른 공격무기는 latest.<접미사>.json 을 읽는다.
     const curWeapon = ref("");
-    const weaponName = computed(
-      () => t(":" + (WEAPONS.find((w) => w.suffix === curWeapon.value)?.key ?? "weapon_bow")),
+    const weaponName = computed(() =>
+      t(
+        ":" +
+          (WEAPONS.find((w) => w.suffix === curWeapon.value)?.key ??
+            "weapon_bow"),
+      ),
     );
     // 리그 목록은 앱 시작 직후엔 아직 안 와서 selectedId 가 undefined 다.
     // 도착하면 자동 기본값이 바뀔 수 있으므로 그때 한 번 다시 부른다(사용자가 이미 골랐으면 안 건드린다).
@@ -644,7 +695,8 @@ export default defineComponent({
       const want = curWeapon.value; // 요청 시점의 무기를 고정
       const wantTag = leagueTag.value; // 리그도 같이 고정 — 아래 경합 가드가 둘 다 본다
       loading.value = true;
-      void initStatText(); // 설정에서 언어를 바꿨을 수 있다 — 같은 언어면 즉시 반환
+      // 설정에서 언어를 바꿨을 수 있다 — 같은 언어면 즉시 반환한다.
+      initStatText().catch(() => {});
       // marketBoard 가 리그+접미사를 한 키로 접어 캐시까지 가른다(snapKey).
       // 여기에 "HC …" 형태의 거래소 리그 id 를 넘겨야 한다 — 태그가 아니다.
       const b = await marketBoard(want, wantTag ? "HC " : "");
@@ -703,9 +755,12 @@ export default defineComponent({
 
     // ---------- 차트 ----------
     const canvasEl = ref<HTMLCanvasElement | null>(null);
-    const hover = ref<{ left: number; top: number; d: number; p: number } | null>(
-      null,
-    );
+    const hover = ref<{
+      left: number;
+      top: number;
+      d: number;
+      p: number;
+    } | null>(null);
     let chartScale: { X: (d: number) => number } | null = null;
 
     const PAD = { l: 60, r: 18, t: 12, b: 24 };
@@ -714,7 +769,7 @@ export default defineComponent({
 
     // 눈금 라벨 — "25.0 div" 대신 "25 div" 처럼 군더더기 없이
     function fmtTick(pEx: number, rates: Record<string, number>): string {
-      const dv = rates["divine"] ?? 0;
+      const dv = rates.divine ?? 0;
       const useDiv = dv > 1 && pEx >= dv;
       const v = useDiv ? pEx / dv : pEx;
       const s =
@@ -920,12 +975,17 @@ export default defineComponent({
       );
     });
     watch(trendAnchors, (list) => {
-      if (list.length && (trendAnchor.value == null || !list.includes(trendAnchor.value)))
+      if (
+        list.length &&
+        (trendAnchor.value == null || !list.includes(trendAnchor.value))
+      )
         trendAnchor.value = list[Math.floor(list.length / 2)] ?? list[0]; // 가운데(중간 DPS) 기본
     });
     // "top" = TOP100 진입 최저가(수집기 기본, 한 선). 숫자 앵커는 옛 스냅샷 호환
     const anchorLabel = (a: number | string) =>
-      a === "top" ? t(":anchor_top") : t(":anchor_dps", { a, m: metricLabel.value });
+      a === "top"
+        ? t(":anchor_top")
+        : t(":anchor_dps", { a, m: metricLabel.value });
     // 선택 앵커의 (시각, 가격) 시계열
     const trendSeries = computed<{ t: number; p: number }[]>(() => {
       const tr = board.value?.trend;
@@ -945,9 +1005,13 @@ export default defineComponent({
     const trendShortSpan = computed(
       () => trendSpanH.value > 0 && trendSpanH.value < 24,
     );
-    const trendHours = computed(() => Math.max(1, Math.round(trendSpanH.value)));
+    const trendHours = computed(() =>
+      Math.max(1, Math.round(trendSpanH.value)),
+    );
     const trendDays = computed(() =>
-      trendSpanH.value <= 0 ? 0 : Math.max(1, Math.round(trendSpanH.value / 24)),
+      trendSpanH.value <= 0
+        ? 0
+        : Math.max(1, Math.round(trendSpanH.value / 24)),
     );
     const trendChange = computed(() => {
       const s = trendSeries.value;
@@ -979,21 +1043,31 @@ export default defineComponent({
       const t1 = s[s.length - 1].t;
       const lo = Math.log10(Math.min(...s.map((x) => x.p)));
       const hi = Math.log10(Math.max(...s.map((x) => x.p)));
-      const X = (t: number) => P.l + ((t - t0) / (t1 - t0 || 1)) * (W - P.l - P.r);
+      const X = (t: number) =>
+        P.l + ((t - t0) / (t1 - t0 || 1)) * (W - P.l - P.r);
       const Y = (p: number) =>
         H - P.b - ((Math.log10(p) - lo) / (hi - lo || 1)) * (H - P.t - P.b);
       // 가격 눈금(양끝)
       ctx.font = "11px sans-serif";
       ctx.fillStyle = "#93a8a5";
       ctx.textAlign = "right";
-      ctx.fillText(formatEx(Math.pow(10, hi), board.value.rates), P.l - 6, P.t + 8);
-      ctx.fillText(formatEx(Math.pow(10, lo), board.value.rates), P.l - 6, H - P.b);
+      ctx.fillText(
+        formatEx(Math.pow(10, hi), board.value.rates),
+        P.l - 6,
+        P.t + 8,
+      );
+      ctx.fillText(
+        formatEx(Math.pow(10, lo), board.value.rates),
+        P.l - 6,
+        H - P.b,
+      );
       // 추세선 + 채움
       const path = new Path2D();
       s.forEach((x, i) => {
         const px = X(x.t);
         const py = Y(x.p);
-        i ? path.lineTo(px, py) : path.moveTo(px, py);
+        if (i) path.lineTo(px, py);
+        else path.moveTo(px, py);
       });
       const fill = new Path2D(path);
       fill.lineTo(X(t1), H - P.b);
@@ -1001,7 +1075,9 @@ export default defineComponent({
       fill.closePath();
       const rising = s[s.length - 1].p >= s[0].p;
       const col = rising ? "#d97066" : "#2dd4bf"; // 오르면 빨강(사기 나쁨), 내리면 청록
-      ctx.fillStyle = rising ? "rgba(217,112,102,0.10)" : "rgba(45,212,191,0.10)";
+      ctx.fillStyle = rising
+        ? "rgba(217,112,102,0.10)"
+        : "rgba(45,212,191,0.10)";
       ctx.fill(fill);
       ctx.strokeStyle = col;
       ctx.lineWidth = 2;

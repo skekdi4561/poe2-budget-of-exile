@@ -42,7 +42,13 @@ export function harvestCtxOf(item: ParsedItem, league: string): HarvestCtx {
 export const HARVEST_URL = "https://poe2-bow-harvest.skekdi4561.workers.dev";
 
 // 감정소가 가격으로 받는 화폐 — serve.py PRICE_CURRENCIES 와 같아야 한다(미러 포함: 시장 최상위가 미러 가격)
-const TRADE_CURRENCIES = new Set(["exalted", "chaos", "divine", "annul", "mirror"]);
+const TRADE_CURRENCIES = new Set([
+  "exalted",
+  "chaos",
+  "divine",
+  "annul",
+  "mirror",
+]);
 const MOD_KEYS = [
   "implicitMods",
   "explicitMods",
@@ -83,15 +89,17 @@ interface HarvestRow {
 // 올라가므로, 남의 시장 매물이면 그 확인에서 떨어진다.
 
 function toNumber(s: unknown): number {
-  const m = String(s ?? "").replace(/,/g, "").match(/[\d.]+/);
+  const m = String(s ?? "")
+    .replace(/,/g, "")
+    .match(/[\d.]+/);
   return m ? +m[0] : 0;
 }
 
 // 거래소 property 의 type 코드. serve.py PROP_CRIT/PROP_APS/PROP_BLOCK 과 같은 값이고
 // 출처는 EE2 자신의 TradePropType 열거(pathofexile-trade.ts)다.
-const PROP_CRIT = 12,
-  PROP_APS = 13,
-  PROP_BLOCK = 15;
+const PROP_CRIT = 12;
+const PROP_APS = 13;
+const PROP_BLOCK = 15;
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
@@ -156,7 +164,8 @@ const FRAME_RARITY: Record<number, string> = {
 // Rare 필터에서 빠졌다 — 수집기는 frameType 으로 "Rare"로 넣으므로 크라우드만 조용히 누락됐다.
 function rarityOf(item: any): string {
   const r = item.rarity;
-  if (r === "Normal" || r === "Magic" || r === "Rare" || r === "Unique") return r;
+  if (r === "Normal" || r === "Magic" || r === "Rare" || r === "Unique")
+    return r;
   return FRAME_RARITY[item.frameType] ?? "";
 }
 
@@ -177,7 +186,8 @@ export function normalizeResult(
   // 주 지표(pdps)에 방어도를 담고 부 지표(edps)는 0 으로 둔다. 그래야 최전선·탐침·
   // 추세·크라우드 게이트가 손 안 대고 그대로 돈다(전부 pdps+edps 를 본다).
   const armour = cat.startsWith("armour.");
-  if (armour ? ext.ar == null : ext.pdps == null && ext.edps == null) return null;
+  if (armour ? ext.ar == null : ext.pdps == null && ext.edps == null)
+    return null;
   const name = [item.name, item.typeLine || item.baseType]
     .filter(Boolean)
     .join(" ")

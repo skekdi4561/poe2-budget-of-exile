@@ -15,7 +15,12 @@ function isAllowedWsOrigin(origin) {
   } catch {
     return false;
   }
-  return host === "127.0.0.1" || host === "localhost" || host === "::1" || host === "[::1]";
+  return (
+    host === "127.0.0.1" ||
+    host === "localhost" ||
+    host === "::1" ||
+    host === "[::1]"
+  );
 }
 
 // --- A) 렌더러의 정당한 연결은 절대 안 끊긴다 (window.location.host = 로컬 서버) ---
@@ -26,7 +31,11 @@ for (const ok of [
   "http://[::1]:8584", // IPv6 loopback
   undefined, // 네이티브 클라이언트(Origin 없음) — CSWSH 벡터 아님
 ]) {
-  assert.strictEqual(isAllowedWsOrigin(ok), true, `정당한 오리진을 끊음: ${ok}`);
+  assert.strictEqual(
+    isAllowedWsOrigin(ok),
+    true,
+    `정당한 오리진을 끊음: ${ok}`,
+  );
 }
 
 // --- A) 외부 웹페이지는 차단 (브라우저가 Origin 을 붙이고 페이지가 못 위조) ---
@@ -38,7 +47,11 @@ for (const bad of [
   "null", // URL 파싱 실패 → 거부
   "not a url",
 ]) {
-  assert.strictEqual(isAllowedWsOrigin(bad), false, `외부 오리진을 통과시킴: ${bad}`);
+  assert.strictEqual(
+    isAllowedWsOrigin(bad),
+    false,
+    `외부 오리진을 통과시킴: ${bad}`,
+  );
 }
 
 // --- B) message 핸들러: 비-JSON 프레임은 던지지 않고 조용히 버린다 ---
@@ -54,12 +67,21 @@ function handleMessage(bytesStr, emit) {
 }
 let emitted = [];
 const emit = (n, p) => emitted.push([n, p]);
-assert.doesNotThrow(() => handleMessage("네트워크쓰레기{{{", emit), "비-JSON 이 throw");
+assert.doesNotThrow(
+  () => handleMessage("네트워크쓰레기{{{", emit),
+  "비-JSON 이 throw",
+);
 assert.doesNotThrow(() => handleMessage("123", emit), "숫자 JSON 이 throw");
 assert.doesNotThrow(() => handleMessage("null", emit), "null JSON 이 throw");
-assert.doesNotThrow(() => handleMessage('{"payload":1}', emit), "이름 없는 이벤트가 throw");
+assert.doesNotThrow(
+  () => handleMessage('{"payload":1}', emit),
+  "이름 없는 이벤트가 throw",
+);
 assert.strictEqual(emitted.length, 0, "잘못된 프레임이 이벤트를 냄");
-handleMessage('{"name":"CLIENT->MAIN::used-recently","payload":{"isOverlay":true}}', emit);
+handleMessage(
+  '{"name":"CLIENT->MAIN::used-recently","payload":{"isOverlay":true}}',
+  emit,
+);
 assert.strictEqual(emitted.length, 1, "정상 이벤트가 안 나감");
 assert.strictEqual(emitted[0][0], "CLIENT->MAIN::used-recently");
 

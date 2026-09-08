@@ -148,7 +148,10 @@ export class GameLogWatcher {
       // \n 은 ASCII 라 UTF-8 멀티바이트 시퀀스(연속 바이트 0x80~0xBF) 안에 절대 안 나타나므로,
       // 개행 바이트에서 자르면 항상 문자 경계라 한글 등이 쪼개지지 않는다. 개행 뒤 미완성
       // 바이트는 carry 로 남겨 다음 읽기 앞에 붙인다(라인이 경계에 걸려 반토막 나는 것도 방지).
-      const combined = Buffer.concat([this._state.carry, readBuff.subarray(0, bytesRead)]);
+      const combined = Buffer.concat([
+        this._state.carry,
+        readBuff.subarray(0, bytesRead),
+      ]);
       let cut = combined.lastIndexOf(0x0a);
       // 개행 없는 비정상 초장문으로 carry 가 무한히 커지는 것 방지 — 상한 넘으면 통째로 흘려보낸다.
       if (cut < 0 && combined.length > 1 << 20) cut = combined.length - 1;

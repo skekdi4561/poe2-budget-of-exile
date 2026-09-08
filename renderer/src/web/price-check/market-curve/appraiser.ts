@@ -192,9 +192,18 @@ const COUNTED = [
 const JUNK_MOD =
   /^결속됨|^Allocates|시야 반경|Light Radius|투사체 사거리|Projectile Range|능력치 요구사항|Attribute Requirements/;
 const JUNK_EXACT = new Set([
-  "민첩 #", "힘 #", "지능 #", "모든 능력치 #",
-  "+# to Dexterity", "+# to Strength", "+# to Intelligence", "+# to all Attributes",
-  "# to Dexterity", "# to Strength", "# to Intelligence", "# to all Attributes",
+  "민첩 #",
+  "힘 #",
+  "지능 #",
+  "모든 능력치 #",
+  "+# to Dexterity",
+  "+# to Strength",
+  "+# to Intelligence",
+  "+# to all Attributes",
+  "# to Dexterity",
+  "# to Strength",
+  "# to Intelligence",
+  "# to all Attributes",
 ]);
 
 // "[Physical|물리] 피해" 같은 게임 마크업을 벗긴다
@@ -348,7 +357,7 @@ export function formatEx(
   rates: Record<string, number>,
   locale: string | undefined = uiLocale(),
 ): string {
-  const dv = rates["divine"] ?? 0;
+  const dv = rates.divine ?? 0;
   const useDiv = okRate(dv) && dv > 1 && Math.abs(vEx) >= dv;
   const v = useDiv ? vEx / dv : vEx;
   const a = Math.abs(v);

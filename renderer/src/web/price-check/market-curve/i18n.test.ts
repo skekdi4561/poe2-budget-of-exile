@@ -54,10 +54,7 @@ describe("위젯 다국어", () => {
     const leaked = vue
       .split(/\r?\n/)
       .map((l, i) => [i + 1, l.trim()] as const)
-      .filter(
-        ([, s]) =>
-          /[가-힣]/.test(s) && !/^(\/\/|\*|\/\*|<!--)/.test(s),
-      )
+      .filter(([, s]) => /[가-힣]/.test(s) && !/^(\/\/|\*|\/\*|<!--)/.test(s))
       // 줄 끝 주석(코드 뒤 // …)은 화면에 안 나간다
       .filter(([, s]) => /[가-힣]/.test(s.replace(/\/\/.*$/, "")));
     expect(leaked.map(([n, s]) => `${n}: ${s}`)).toEqual([]);

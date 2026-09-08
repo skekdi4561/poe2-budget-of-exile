@@ -5,18 +5,20 @@ import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const STATS: Record<string, { ref: string; matchers: Array<{ string: string }> }> =
-  {
-    "#% increased Physical Damage": {
-      ref: "#% increased Physical Damage",
-      matchers: [{ string: "#% increased Physical Damage" }],
-    },
-    "Adds # to # Fire Damage": {
-      ref: "Adds # to # Fire Damage",
-      matchers: [{ string: "Adds # to # Fire Damage" }],
-    },
-    "표기없음": { ref: "표기없음", matchers: [] },
-  };
+const STATS: Record<
+  string,
+  { ref: string; matchers: Array<{ string: string }> }
+> = {
+  "#% increased Physical Damage": {
+    ref: "#% increased Physical Damage",
+    matchers: [{ string: "#% increased Physical Damage" }],
+  },
+  "Adds # to # Fire Damage": {
+    ref: "Adds # to # Fire Damage",
+    matchers: [{ string: "Adds # to # Fire Damage" }],
+  },
+  "표기없음": { ref: "표기없음", matchers: [] },
+};
 vi.mock("@/assets/data", () => ({
   STAT_BY_REF: (r: string) => STATS[r],
 }));
@@ -67,12 +69,16 @@ describe("statText", () => {
   });
 
   it("표에 있으면 지금 언어 표기로", () => {
-    _setRefIndex(new Map([["물리 피해 #% 증가", "#% increased Physical Damage"]]));
+    _setRefIndex(
+      new Map([["물리 피해 #% 증가", "#% increased Physical Damage"]]),
+    );
     expect(statText("물리 피해 #% 증가")).toBe("#% increased Physical Damage");
   });
 
   it("표에 없는 옵션은 원문 그대로", () => {
-    _setRefIndex(new Map([["물리 피해 #% 증가", "#% increased Physical Damage"]]));
+    _setRefIndex(
+      new Map([["물리 피해 #% 증가", "#% increased Physical Damage"]]),
+    );
     expect(statText("듣도 보도 못한 옵션 #")).toBe("듣도 보도 못한 옵션 #");
   });
 

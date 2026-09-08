@@ -53,7 +53,10 @@ const expected = src
 for (const cs of [3, 4, 5, 7, 8, 13, 64, 100000]) {
   const got = drain(buf, cs);
   assert.deepStrictEqual(got, expected, `chunk=${cs} 재조립 불일치`);
-  assert.ok(!got.join("|").includes("�"), `chunk=${cs} 에서 멀티바이트 문자 깨짐(�)`);
+  assert.ok(
+    !got.join("|").includes("�"),
+    `chunk=${cs} 에서 멀티바이트 문자 깨짐(�)`,
+  );
 }
 
 // 개행 없는 초장문(비정상)이라도 1MB 상한에서 흘려보내 OOM/무한 carry 를 막는다.

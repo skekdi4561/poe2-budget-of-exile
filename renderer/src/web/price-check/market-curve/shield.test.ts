@@ -15,16 +15,22 @@ const appraiser = readFileSync(resolve(here, "appraiser.ts"), "utf-8");
 
 describe("방패(방어구) 지원", () => {
   it("무기 목록에 방패가 있다", () => {
-    expect(vue).toMatch(/\{\s*suffix:\s*"shield",\s*key:\s*"weapon_shield"\s*\}/);
+    expect(vue).toMatch(
+      /\{\s*suffix:\s*"shield",\s*key:\s*"weapon_shield"\s*\}/,
+    );
   });
 
   it("지표는 카테고리가 정한다 — isArmour 가 방패 접미사로 갈린다", () => {
-    expect(vue).toMatch(/isArmour\s*=\s*computed\(\(\)\s*=>\s*curWeapon\.value\s*===\s*"shield"\)/);
+    expect(vue).toMatch(
+      /isArmour\s*=\s*computed\(\(\)\s*=>\s*curWeapon\.value\s*===\s*"shield"\)/,
+    );
   });
 
   it("물리·원소 토글이 방패에서 숨는다", () => {
     // 방패는 edps 가 전부 0 이라 '원소'는 빈 화면, '물리'는 '총'과 같은 값이다.
-    expect(vue).toMatch(/<div v-if="!isArmour" class="flex bg-gray-900 rounded p-0\.5">/);
+    expect(vue).toMatch(
+      /<div v-if="!isArmour" class="flex bg-gray-900 rounded p-0\.5">/,
+    );
   });
 
   it("무기를 바꾸면 방패에서 지표를 total 로 되돌린다", () => {
@@ -40,13 +46,17 @@ describe("방패(방어구) 지원", () => {
     expect(crit).toBeGreaterThan(-1);
     expect(block).toBeGreaterThan(-1);
     // 치확 블록은 v-if="!isArmour", 막기 블록은 그 바로 뒤 v-else
-    expect(vue.slice(Math.max(0, crit - 200), crit)).toContain('v-if="!isArmour"');
+    expect(vue.slice(Math.max(0, crit - 200), crit)).toContain(
+      'v-if="!isArmour"',
+    );
     expect(vue.slice(Math.max(0, block - 200), block)).toContain("v-else");
   });
 
   it("두 게이트가 모두 filtered 에 걸린다", () => {
     // 조기 반환이 되살아나면 조건 필터가 빈 기본 상태에서 게이트가 통째로 무시된다.
-    expect(vue).not.toMatch(/if \(!normFilters\.value\.length\) return board\.value\.rows;/);
+    expect(vue).not.toMatch(
+      /if \(!normFilters\.value\.length\) return board\.value\.rows;/,
+    );
     expect(vue).toMatch(/r\.crit >= lo/);
     expect(vue).toMatch(/r\.block >= bl/);
   });
@@ -84,7 +94,9 @@ describe("방패(방어구) 지원", () => {
     expect(appraiser).toMatch(/armour \? COUNTED_ARM : COUNTED/);
     // 판정이 실제로 배선돼야 한다 — 함수만 있고 offMods 가 안 넘기면 아무 일도 안 일어난다
     expect(appraiser).toMatch(/offMods\(b\.mods \?\? \[\], armourCat\)/);
-    expect(appraiser).toMatch(/snap\.category \?\? ""\)\.startsWith\("armour\."\)/);
+    expect(appraiser).toMatch(
+      /snap\.category \?\? ""\)\.startsWith\("armour\."\)/,
+    );
   });
 
   it("막기가 행까지 실린다 — 골라 담는 리터럴에 있어야 한다", () => {

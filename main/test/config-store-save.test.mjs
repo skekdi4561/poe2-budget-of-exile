@@ -31,16 +31,29 @@ try {
   await save('{"configVersion":35,"fontSize":22}', false); // 또 영구 저장
 
   // 영구 저장은 config.json 으로 가야 한다(예전 버그는 .tmp 로 샜다)
-  assert.ok(existsSync(cfgPath), "config.json 이 안 만들어짐(영구 저장이 .tmp 로 샘)");
+  assert.ok(
+    existsSync(cfgPath),
+    "config.json 이 안 만들어짐(영구 저장이 .tmp 로 샘)",
+  );
   const saved = JSON.parse(readFileSync(cfgPath, "utf8"));
-  assert.strictEqual(saved.fontSize, 22, "config.json 이 마지막 영구 저장을 반영 안 함");
-  assert.ok(!("__" in saved), "config.json 이 손상 폴백 기본값에 갇힘 — 자가치유 실패");
+  assert.strictEqual(
+    saved.fontSize,
+    22,
+    "config.json 이 마지막 영구 저장을 반영 안 함",
+  );
+  assert.ok(
+    !("__" in saved),
+    "config.json 이 손상 폴백 기본값에 갇힘 — 자가치유 실패",
+  );
 
   // 폴백 스크래치는 .tmp 에 남고 원본 자리를 안 침범
   assert.ok(existsSync(cfgPath + ".tmp"), ".tmp 폴백이 사라짐");
 
   // B) 원자성: 중간 산출물(.writing)이 남지 않아야(성공 시 rename 으로 소비됨)
-  assert.ok(!existsSync(cfgPath + ".writing"), ".writing 임시 파일이 남음(원자 교체 실패)");
+  assert.ok(
+    !existsSync(cfgPath + ".writing"),
+    ".writing 임시 파일이 남음(원자 교체 실패)",
+  );
 
   // 정상 경로(전부 영구): 항상 config.json, 완결된 JSON
   await save('{"configVersion":35,"ok":true}', false);

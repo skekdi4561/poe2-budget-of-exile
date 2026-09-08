@@ -12,7 +12,14 @@ vi.mock("@/web/overlay/widget-registry", () => ({
         widget: {
           type: "price-check",
           instances: "single",
-          initInstance: () => ({ wmId: 0, wmType: "price-check", wmTitle: "", wmWants: "hide", wmZorder: null, wmFlags: [] }),
+          initInstance: () => ({
+            wmId: 0,
+            wmType: "price-check",
+            wmTitle: "",
+            wmWants: "hide",
+            wmZorder: null,
+            wmFlags: [],
+          }),
         },
       },
     ],
@@ -20,7 +27,8 @@ vi.mock("@/web/overlay/widget-registry", () => ({
   },
 }));
 
-const real = await vi.importActual<typeof import("@/web/Config")>("@/web/Config");
+const real =
+  await vi.importActual<typeof import("@/web/Config")>("@/web/Config");
 
 const marketCurves = () =>
   real.AppConfig().widgets.filter((w) => w.wmType === "market-curve");
@@ -45,10 +53,19 @@ describe("upgradeConfig 36 → 37 (V41 — 지운 시장 곡선 위젯 복구)",
   });
   it("이미 위젯이 있는 v36 설정은 중복 생성하지 않는다", async () => {
     const mc = {
-      wmId: 9, wmType: "market-curve", wmTitle: "", wmWants: "hide", wmZorder: null, wmFlags: [],
-      anchor: { pos: "cc", x: 50, y: 50 }, toggleKey: "F7",
+      wmId: 9,
+      wmType: "market-curve",
+      wmTitle: "",
+      wmWants: "hide",
+      wmZorder: null,
+      wmFlags: [],
+      anchor: { pos: "cc", x: 50, y: 50 },
+      toggleKey: "F7",
     } as unknown as Config["widgets"][number];
-    await init({ configVersion: 36, widgets: [...real.defaultConfig().widgets, mc] });
+    await init({
+      configVersion: 36,
+      widgets: [...real.defaultConfig().widgets, mc],
+    });
     expect(marketCurves()).toHaveLength(1); // 존재 검사가 빠지면 2
     expect(marketCurves()[0].wmId).toBe(9); // 있던 위젯을 갈아치우지 않는다
   });

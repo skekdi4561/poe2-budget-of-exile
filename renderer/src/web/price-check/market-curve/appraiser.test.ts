@@ -75,7 +75,9 @@ describe("marketBoard 캐시가 리그로 갈린다", () => {
       globalThis.fetch = orig;
     }
     expect(urls.filter((u) => u.endsWith("latest.spear.json"))).toHaveLength(1);
-    expect(urls.filter((u) => u.endsWith("latest.hc.spear.json"))).toHaveLength(1);
+    expect(urls.filter((u) => u.endsWith("latest.hc.spear.json"))).toHaveLength(
+      1,
+    );
   });
 });
 
@@ -195,7 +197,9 @@ describe("formatEx", () => {
     expect(formatEx(590800, rates, "en")).toBe("1,477 div");
   });
   it("디바인 환율이 깨져 있으면 ex 로 남는다", () => {
-    expect(formatEx(590800, { exalted: 1, divine: 0 }, "en")).toBe("590,800 ex");
+    expect(formatEx(590800, { exalted: 1, divine: 0 }, "en")).toBe(
+      "590,800 ex",
+    );
   });
 
   // 예전엔 "ko-KR" 이 박혀 있어서 독일·프랑스·러시아·포르투갈·스페인 사용자가
@@ -216,7 +220,18 @@ describe("formatEx", () => {
   // 앱이 쓰는 10개 로케일 전부가 Intl 에서 살아야 한다. cmn-Hant 는 BCP-47 표준형이
   // 아니라 예외가 날 수 있는 후보였다(실측: 안 난다). 새 언어를 넣을 때 여기서 걸린다.
   it("앱의 모든 언어 코드가 Intl 에서 던지지 않는다", () => {
-    for (const l of ["en", "ko", "ja", "cmn-Hant", "de", "es", "fr", "pt", "ru", "th"]) {
+    for (const l of [
+      "en",
+      "ko",
+      "ja",
+      "cmn-Hant",
+      "de",
+      "es",
+      "fr",
+      "pt",
+      "ru",
+      "th",
+    ]) {
       expect(() => formatEx(1234.5, rates, l)).not.toThrow();
     }
   });
@@ -273,7 +288,15 @@ describe("statOptions", () => {
         block: 0,
         offs: { "치명타 확률 #%": 2, "희귀 옵션 #": 9 },
       },
-      { pdps: 1, edps: 0, p: 1, t: 0, crit: 0, block: 0, offs: { "치명타 확률 #%": 5 } },
+      {
+        pdps: 1,
+        edps: 0,
+        p: 1,
+        t: 0,
+        crit: 0,
+        block: 0,
+        offs: { "치명타 확률 #%": 5 },
+      },
     ];
     const s = statOptions(rows);
     expect(s).toHaveLength(1);
@@ -569,8 +592,10 @@ describe("fetchSnapshot 타임아웃 (V28)", () => {
           }),
         } as Response);
       // 응답이 영원히 안 오는 서버 — 신호가 끊길 때만 실패한다(실제 fetch 와 같은 계약)
-      return new Promise((_, rej) =>
-        init.signal!.addEventListener("abort", () => rej(new Error("aborted"))),
+      return new Promise((_resolve, reject) =>
+        init.signal!.addEventListener("abort", () =>
+          reject(new Error("aborted")),
+        ),
       );
     }) as typeof fetch;
     try {

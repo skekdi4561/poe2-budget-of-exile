@@ -26,7 +26,13 @@ export default defineConfig({
             next();
           } catch {
             res.setHeader("content-type", "application/json");
-            res.end(JSON.stringify({ version: "web-preview", updater: { state: "initial" }, contents: null }));
+            res.end(
+              JSON.stringify({
+                version: "web-preview",
+                updater: { state: "initial" },
+                contents: null,
+              }),
+            );
           }
         });
         // 미리보기 프록시 — 정적 카탈로그(GET /api/trade2/data|leagues)만 통과.

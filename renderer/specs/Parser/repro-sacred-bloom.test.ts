@@ -43,13 +43,15 @@ describe("거래소 정적 데이터로 채운 리그 아이템", () => {
   it("영어 DB에도 같은 항목이 있고, 새 룬도 찾힌다", async () => {
     setupTests();
     await init("en");
-    expect(ITEM_BY_REF("ITEM", "Sacred Bloom")?.[0]?.tradeTag).toBe("sacred-bloom");
+    expect(ITEM_BY_REF("ITEM", "Sacred Bloom")?.[0]?.tradeTag).toBe(
+      "sacred-bloom",
+    );
     expect(ITEM_BY_REF("ITEM", "Legacy of Bramblejack")?.[0]?.tradeTag).toBe(
       "legacy-of-bramblejack",
     );
-    expect(ITEM_BY_REF("ITEM", "Kamasa's Orb of Sacrifice")?.[0]?.tradeTag).toBe(
-      "kamasas-orb-of-sacrifice",
-    );
+    expect(
+      ITEM_BY_REF("ITEM", "Kamasa's Orb of Sacrifice")?.[0]?.tradeTag,
+    ).toBe("kamasas-orb-of-sacrifice");
     const rune = parseClipboard(EN_LEGACY_RUNE);
     expect(rune.isOk()).toBe(true);
     expect(rune._unsafeUnwrap().info.refName).toBe("Legacy of Bramblejack");

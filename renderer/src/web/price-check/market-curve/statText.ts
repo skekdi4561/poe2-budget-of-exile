@@ -62,7 +62,11 @@ export async function initStatText(): Promise<void> {
 
 /** 옵션 열쇠(한국어 정규형)를 지금 언어의 표기로. 모르면 그대로 돌려준다. */
 export function statText(key: string): string {
-  statTextRev.value; // 표가 늦게 오면 다시 그리도록 의존성을 남긴다
+  // 표가 늦게 오면 다시 그리도록 **일부러** 반응형 의존성만 읽는다(값은 안 쓴다).
+  // Vue 에서 흔한 관용이라 규칙을 이 한 줄만 끈다 — void 는 no-void 에 걸리고,
+  // 변수에 담으면 미사용 변수가 된다.
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  statTextRev.value;
   if (!refByKo) return key;
   const r = refByKo.get(key);
   if (!r) return key;

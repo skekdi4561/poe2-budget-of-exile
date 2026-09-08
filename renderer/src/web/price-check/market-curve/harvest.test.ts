@@ -1,6 +1,15 @@
 // 업로드 큐: 배치 초과분이 유실되지 않고 이어 전송되는지 (2회차 자가검증에서 잡은 결함)
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { _queue, _flush, FLUSH_MAX } from "./harvest";
+import {
+  _queue,
+  _flush,
+  FLUSH_MAX,
+  harvestCtxOf,
+  normalizeResult,
+  harvestFetchResults,
+} from "./harvest";
+
+import { ItemCategory } from "@/parser/meta";
 
 function fakeRow(i: number) {
   return {
@@ -58,9 +67,6 @@ describe("flush 배치", () => {
   });
 });
 
-import { harvestCtxOf } from "./harvest";
-import { ItemCategory } from "@/parser/meta";
-
 describe("harvestCtxOf (수집 대상 무기 판정 · 경쟁 조건 방지)", () => {
   it("검색마다 독립 문맥 — 나중 검색이 앞 검색 문맥을 덮지 않는다", () => {
     const bow = harvestCtxOf(
@@ -109,8 +115,6 @@ describe("harvestCtxOf (수집 대상 무기 판정 · 경쟁 조건 방지)", (
     expect(harvestCtxOf({} as never, "L").cat).toBeNull();
   });
 });
-
-import { normalizeResult } from "./harvest";
 
 describe("normalizeResult — serve.py normalize 정합", () => {
   const base = {
@@ -178,8 +182,6 @@ describe("normalizeResult 미러 가격", () => {
     expect(r?.cur).toBe("mirror");
   });
 });
-
-import { harvestFetchResults } from "./harvest";
 
 // 2026-09-05: 카카오/글로벌 거래소에 뜨는 매물이 같다는 것이 확인돼 realm 게이트를 풀었다.
 // 이제는 어느 거래소 응답이든 큐에 넣는다 — 리그 대조와 진위 확인이 뒤에서 거른다.
