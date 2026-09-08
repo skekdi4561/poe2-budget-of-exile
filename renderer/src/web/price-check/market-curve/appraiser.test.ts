@@ -3,6 +3,7 @@ import { describe, it, expect, vi } from "vitest";
 import {
   frontier,
   formatEx,
+  uiLocale,
   matchesFilters,
   statOptions,
   metricRows,
@@ -185,14 +186,37 @@ describe("frontier", () => {
 
 describe("formatEx", () => {
   const rates = { exalted: 1, divine: 400 };
+  // 로케일을 **명시**한다 — 안 주면 실행 환경의 기본 로케일을 타서 CI 러너에 따라
+  // 1,477 이 1.477 로 나올 수 있다(테스트가 환경에 흔들리면 안 된다).
   it("1 디바인어치부터 div 표기 (감정소 money 와 같은 규칙)", () => {
-    expect(formatEx(5, rates)).toBe("5.00 ex");
-    expect(formatEx(399, rates)).toBe("399 ex");
-    expect(formatEx(400, rates)).toBe("1.00 div");
-    expect(formatEx(590800, rates)).toBe("1,477 div");
+    expect(formatEx(5, rates, "en")).toBe("5.00 ex");
+    expect(formatEx(399, rates, "en")).toBe("399 ex");
+    expect(formatEx(400, rates, "en")).toBe("1.00 div");
+    expect(formatEx(590800, rates, "en")).toBe("1,477 div");
   });
   it("디바인 환율이 깨져 있으면 ex 로 남는다", () => {
-    expect(formatEx(590800, { exalted: 1, divine: 0 })).toBe("590,800 ex");
+    expect(formatEx(590800, { exalted: 1, divine: 0 }, "en")).toBe("590,800 ex");
+  });
+
+  // 예전엔 "ko-KR" 이 박혀 있어서 독일·프랑스·러시아·포르투갈·스페인 사용자가
+  // 소수점과 천단위 구분자가 뒤바뀐 숫자를 봤다. 값을 오독할 수 있는 결함이다.
+  it("숫자 형식이 사용자 언어를 따른다", () => {
+    expect(formatEx(590800, rates, "de")).toBe("1.477 div");
+    expect(formatEx(5, rates, "de")).toBe("5,00 ex");
+    expect(formatEx(590800, rates, "ru")).toBe("1 477 div".replace(" ", "\u00a0"));
+  });
+
+  // 앱이 쓰는 10개 로케일 전부가 Intl 에서 살아야 한다. cmn-Hant 는 BCP-47 표준형이
+  // 아니라 예외가 날 수 있는 후보였다(실측: 안 난다). 새 언어를 넣을 때 여기서 걸린다.
+  it("앱의 모든 언어 코드가 Intl 에서 던지지 않는다", () => {
+    for (const l of ["en", "ko", "ja", "cmn-Hant", "de", "es", "fr", "pt", "ru", "th"]) {
+      expect(() => formatEx(1234.5, rates, l)).not.toThrow();
+    }
+  });
+
+  // node 환경(테스트)에는 document 가 없다 — 여기서 던지면 앱이 아니라 테스트가 죽는다.
+  it("uiLocale 은 document 가 없어도 던지지 않는다", () => {
+    expect(() => uiLocale()).not.toThrow();
   });
 });
 

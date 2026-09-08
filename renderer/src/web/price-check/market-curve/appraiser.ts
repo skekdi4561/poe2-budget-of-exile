@@ -331,14 +331,29 @@ export function frontier(rows: Row[]): Row[] {
   return out.reverse();
 }
 
+// 숫자 형식은 **사용자 언어**를 따라야 한다. 예전엔 "ko-KR" 이 박혀 있어서 독일·프랑스·
+// 러시아·포르투갈·스페인 사용자가 소수점과 천단위 구분자가 뒤바뀐 숫자를 봤다
+// (de 는 1.234.567,89 가 맞는데 1,234,567.89 로 나왔다 — 값을 오독할 수 있다).
+// i18n 의 loadLang 이 document.documentElement.lang 을 이미 설정하므로 그걸 읽는다.
+// 테스트는 node 환경이라 document 가 없다 — 방어하고, 호출부가 로케일을 직접 줄 수도 있게 한다
+// (그래야 테스트가 실행 환경의 기본 로케일에 흔들리지 않는다).
+export function uiLocale(): string | undefined {
+  if (typeof document === "undefined") return undefined;
+  return document.documentElement.lang || undefined;
+}
+
 // 1 디바인어치부터 div 표기 — 감정소 money() 와 같은 규칙
-export function formatEx(vEx: number, rates: Record<string, number>): string {
+export function formatEx(
+  vEx: number,
+  rates: Record<string, number>,
+  locale: string | undefined = uiLocale(),
+): string {
   const dv = rates["divine"] ?? 0;
   const useDiv = okRate(dv) && dv > 1 && Math.abs(vEx) >= dv;
   const v = useDiv ? vEx / dv : vEx;
   const a = Math.abs(v);
   const d = a >= 100 ? 0 : a >= 10 ? 1 : a >= 1 ? 2 : a >= 0.1 ? 3 : 4;
-  const num = v.toLocaleString("ko-KR", {
+  const num = v.toLocaleString(locale, {
     minimumFractionDigits: d,
     maximumFractionDigits: d,
   });

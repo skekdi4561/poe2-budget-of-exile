@@ -393,6 +393,7 @@ import {
   StatOption,
   StatFilter,
   Row,
+  uiLocale,
 } from "./appraiser";
 
 // 감정소 serve.py ATTACK_WEAPONS / index.html WEAPONS 와 같은 순서·접미사·표시명.
@@ -509,7 +510,7 @@ export default defineComponent({
           // (2026-09-05 리그 첫날 실측). 가격 눈금과 같은 규칙: 10 이상은 정수, 아래는 한 자리.
           ex:
             r[c.id] >= 10
-              ? Math.round(r[c.id]).toLocaleString("ko-KR")
+              ? Math.round(r[c.id]).toLocaleString(uiLocale())
               : r[c.id].toFixed(1),
         }));
     });
