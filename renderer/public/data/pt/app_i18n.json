@@ -21,7 +21,8 @@
     "quit": "Sair",
     "name": "PoE2 Budget of Exile",
     "made_by": "Criado por",
-    "based_on": "Um fork de Exiled Exchange 2 (Awakened PoE Trade) · MIT"
+    "based_on": "Um fork de Exiled Exchange 2 (Awakened PoE Trade) · MIT",
+    "deprecated": "Essa funcionalidade foi descontinuada e será removida no update {0}"
   },
   "map.mods.heist": "assalto",
   "map.mods.uber": "T17",
@@ -117,7 +118,8 @@
     "uses_remaining": "Usos restantes: {0}",
     "victorious": "Triunfante",
     "cowardly": "Covarde",
-    "deadly": "Mortal"
+    "deadly": "Mortal",
+    "open_on_craftofexile": "Abrir item base no Craft of Exile"
   },
   "item_category": {
     "prop": "Categoria: {0}",

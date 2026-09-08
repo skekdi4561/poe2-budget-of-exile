@@ -14,6 +14,8 @@ export class OverlayWindow {
   private window?: BrowserWindow;
   private overlayKey: string = "Shift + Space";
   private isOverlayKeyUsed = false;
+  private shouldShowOverlay = true;
+  private hideOverlayOnBlur = false;
 
   constructor(
     private server: ServerEvents,
@@ -36,6 +38,11 @@ export class OverlayWindow {
     });
 
     if (process.argv.includes("--no-overlay")) return;
+
+    this.server.onEventAnyClient("OVERLAY->MAIN::render-state", (e) => {
+      this.shouldShowOverlay = e.shouldShow;
+      this.syncWindowVisibility();
+    });
 
     this.window = new BrowserWindow({
       icon: path.join(__dirname, process.env.STATIC!, "icon.png"),
@@ -94,6 +101,9 @@ export class OverlayWindow {
     // 다음 요청을 건너뛰면 ESC 가 게임으로 가서 위젯이 안 닫힌다(F7 위젯에서 실측, 간헐).
     // activateOverlay 는 이미 활성일 때 다시 불러도 해가 없다.
     this.isInteractable = true;
+    // 원작 795c4d0b 이 넣은 호출 — showOverlay() 가 이미 보이면 바로 반환하므로 멱등이라
+    // 위 가드 제거와 충돌하지 않는다.
+    this.onOverlayActive();
     OverlayController.activateOverlay();
     this.poeWindow.isActive = false;
   };
@@ -103,6 +113,8 @@ export class OverlayWindow {
       this.isInteractable = false;
       OverlayController.focusTarget();
       this.poeWindow.isActive = true;
+
+      this.onGameActive();
     }
   };
 
@@ -115,9 +127,14 @@ export class OverlayWindow {
     }
   };
 
-  updateOpts(overlayKey: string, windowTitle: string) {
+  updateOpts(
+    overlayKey: string,
+    windowTitle: string,
+    hideOverlayOnBlur: boolean,
+  ) {
     this.overlayKey = overlayKey;
     this.poeWindow.attach(this.window, windowTitle);
+    this.hideOverlayOnBlur = hideOverlayOnBlur;
   }
 
   private handleExtraCommands = (
@@ -177,6 +194,7 @@ export class OverlayWindow {
         payload: undefined,
       });
     }
+    this.syncWindowVisibility();
   };
 
   private handlePoeWindowActiveChange = (isActive: boolean) => {
@@ -192,5 +210,35 @@ export class OverlayWindow {
       },
     });
     this.isOverlayKeyUsed = false;
+    this.syncWindowVisibility();
   };
+
+  private syncWindowVisibility() {
+    if (!this.window || !this.hideOverlayOnBlur) return;
+
+    if (
+      this.isInteractable ||
+      (this.shouldShowOverlay && this.poeWindow.isActive)
+    ) {
+      this.showOverlay();
+    } else if (this.window.isVisible()) {
+      this.window.hide();
+    }
+  }
+
+  private showOverlay() {
+    if (!this.window || this.window.isVisible() || !this.hideOverlayOnBlur)
+      return;
+
+    this.window.showInactive();
+    this.window.setAlwaysOnTop(true, "screen-saver");
+  }
+
+  private onGameActive() {
+    this.syncWindowVisibility();
+  }
+
+  private onOverlayActive() {
+    this.showOverlay();
+  }
 }

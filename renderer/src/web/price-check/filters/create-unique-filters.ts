@@ -7,7 +7,6 @@ import {
 } from "./create-stat-filters";
 import { propToFilter } from "./pseudo/item-property";
 import { createFilters } from "./create-item-filters";
-import { PriceCheckWidget } from "@/web/overlay/widgets";
 
 export const PRESET_UNIQUES = new Set(["Mageblood"]);
 
@@ -28,7 +27,6 @@ export function createUniquePresets(
     searchStatRange: number;
     useEn: boolean;
     defaultAllSelected: boolean;
-    autoFillEmptyAugmentSockets: PriceCheckWidget["autoFillEmptyRuneSockets"];
   },
 ): {
   presets: FilterPreset[];
@@ -127,7 +125,9 @@ function createMagebloodFilters(
 
   ctx.filters.push(
     ...legacies.map((mod) => {
-      const source = mod.sources[0];
+      // copy to not modify original, causing infinite refEffect loop
+      const copiedMod = JSON.parse(JSON.stringify(mod));
+      const source = copiedMod.sources[0];
       source.contributes = {
         value: 0,
         min: 0,
@@ -135,8 +135,8 @@ function createMagebloodFilters(
         option: source.contributes?.option,
       };
 
-      mod.sources = [source];
-      const f = calculatedStatToFilter(mod, ctx.searchInRange, item);
+      copiedMod.sources = [source];
+      const f = calculatedStatToFilter(copiedMod, ctx.searchInRange, item);
       f.roll = undefined;
 
       return f;

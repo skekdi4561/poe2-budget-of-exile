@@ -130,6 +130,7 @@ export interface Config {
   overlayKey: string;
   overlayBackground: string;
   overlayBackgroundClose: boolean;
+  hideOverlayOnBlur: boolean;
   restoreClipboard: boolean;
   commands: Array<{
     text: string;
@@ -156,11 +157,12 @@ export interface Config {
 }
 
 export const defaultConfig = (): Config => ({
-  configVersion: 37,
+  configVersion: 38,
   overlayKey: "Shift + Space",
   overlayBackground: "rgba(129, 139, 149, 0.15)",
   overlayBackgroundClose: true,
   overlayAlwaysClose: false,
+  hideOverlayOnBlur: false,
   restoreClipboard: false,
   showAttachNotification: true,
   commands: [
@@ -667,6 +669,7 @@ function upgradeConfig(_config: Config): Config {
     libraryWidget.selectedProfile = "chaos";
     libraryWidget.profiles.chaos!.modOpts.generation = true;
 
+    // why is this one higher?
     config.configVersion = 34;
   }
 
@@ -716,6 +719,24 @@ function upgradeConfig(_config: Config): Config {
       });
     }
     config.configVersion = 37;
+  }
+
+  if (config.configVersion < 38) {
+    // 원작 0.16.0 이 자기네 <35 블록에 넣은 마이그레이션을 여기서 준다.
+    // 우리 사용자는 이미 35~37 이라 그 블록을 **다시 지나지 않는다** — 그대로 두면
+    // savedAugments 가 undefined 인 채 augment-builder.getSavedAugments 의
+    // lookup[item.category] 에서 즉시 터진다(소켓 있는 아이템을 가격검사할 때마다).
+    // 원작과 달리 위젯이 없거나 값이 이미 있는 경우를 막아 멱등으로 만든다.
+    const priceCheck = config.widgets.find(
+      (w) => w.wmType === "price-check",
+    ) as widget.PriceCheckWidget | undefined;
+    if (priceCheck && !priceCheck.savedAugments) {
+      priceCheck.savedAugments = {};
+    }
+    if (config.hideOverlayOnBlur === undefined) {
+      config.hideOverlayOnBlur = false;
+    }
+    config.configVersion = 38;
   }
   /* eslint-enable */
 
@@ -880,5 +901,6 @@ function getConfigForHost(): HostConfig {
     libraryAlpha: config.enableAlphas && config.alphas.includes("library"),
     libraryOutputPath: library.libraryOutputPath,
     initialDelay: priceCheck.initialDelay,
+    hideOverlayOnBlur: config.hideOverlayOnBlur,
   };
 }

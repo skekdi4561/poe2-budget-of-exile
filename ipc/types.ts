@@ -12,6 +12,7 @@ export interface HostConfig {
   libraryAlpha: boolean;
   libraryOutputPath: string | null;
   initialDelay: number;
+  hideOverlayOnBlur: boolean;
 }
 
 export interface ShortcutAction {
@@ -79,6 +80,7 @@ export type IpcEvent =
   | IpcVisibility
   | IpcFocusGame
   | IpcFocusOverlay
+  | IpcOverlayRenderState
   | IpcHideExclusiveWidget
   | IpcTrackArea
   // events used by any type of Client:
@@ -123,6 +125,12 @@ type IpcFocusGame = Event<"OVERLAY->MAIN::focus-game">;
 
 // 위젯(시장 곡선 등)이 스스로 입력 포커스를 요청할 때 — focus-game 의 대칭
 type IpcFocusOverlay = Event<"OVERLAY->MAIN::focus-overlay">;
+type IpcOverlayRenderState = Event<
+  "OVERLAY->MAIN::render-state",
+  {
+    shouldShow: boolean;
+  }
+>;
 
 type IpcHideExclusiveWidget = Event<"MAIN->OVERLAY::hide-exclusive-widget">;
 

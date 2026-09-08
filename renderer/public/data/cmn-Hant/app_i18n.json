@@ -12,7 +12,7 @@
     "leagues_failed": "加載聯盟失敗",
     "leagues_failed_help": "確保該區域未進行維護。也嘗試點擊“瀏覽器”按鈕，可能需要在那裡完成 CAPTCHA 驗證。",
     "leagues_failed_help_alt": "價格檢查一個物品，並遵循那裡錯誤描述中的指示。",
-    "thanks_3rd_party": "這個工具依賴於 {0} 和 {1}，考慮支持它們",
+    "thanks_3rd_party": "這個工具依賴於 {0}，考慮支持它們！",
     "toggle_browser_hint": "按 {0} 在瀏覽器和遊戲間切換。",
     "contact_me": "可在 PoE Discord 群組中聯繫我，",
     "version": "版本 {0}",
@@ -112,7 +112,19 @@
     "uses_remaining": "還能夠使用{0}次。",
     "victorious": "勝利",
     "cowardly": "怯懦",
-    "deadly": "致命"
+    "deadly": "致命",
+    "has_elemental_affix": "任何",
+    "has_elemental_fire_affix": "火焰",
+    "has_elemental_cold_affix": "冰冷",
+    "has_elemental_lightning_affix": "閃電",
+    "open_on_craftofexile": "已褻瀆",
+    "not_sanctified": "未聖化",
+    "ascendancy_points": "天賦：{0}",
+    "mod_desecrated": "已褻瀆",
+    "find_same_price": "篩選",
+    "find_same_price_type": "篩選：",
+    "price": "僅限價格",
+    "price_and_item": "價格與物品"
   },
   "item_category": {
     "prop": "類別：{0}",
@@ -159,7 +171,9 @@
     "weapon_spear": "長鋒",
     "weapon_flail": "鏈錘",
     "armour_buckler": "輕盾",
-    "weapon_talisman": "魔符"
+    "weapon_talisman": "魔符",
+    "map_tablet": "碑牌",
+    "armour_focus": "法器2"
   },
   "filters": {
     "selected_some": "已選擇：{0}/{1}，屬性",
@@ -205,7 +219,17 @@
     "tag_sanctum": "聖域聯盟",
     "tag_desecrated": "褻瀆",
     "grade": "等級 {0}",
-    "hybrid_note": "階級可能因複合詞綴的存在而顯示不正確"
+    "hybrid_note": "階級可能因複合詞綴的存在而顯示不正確",
+    "hide_for_map": "大多數地圖詞綴沒有價值",
+    "selected_open_runes": "已選擇：{0}/{1}，空",
+    "selected_full_runes": "滿符文",
+    "empty_rune_socket": "空的符文插槽",
+    "hide_low_ilvl": "物品等級過低，無法重骰所有模組",
+    "hide_not_max_level": "非滿級技能幾乎沒有價值",
+    "hide_revives": "仅在数值不为 0，而且你不打算用崇高石时才选择吗？",
+    "tag_skill": "技能",
+    "tag_mutated": "污染的",
+    "fill_rune_iron": "镶嵌满鍛鐵符文"
   },
   "online_filter": {
     "offline_toggle": "離線 & 在線",
@@ -222,7 +246,8 @@
     "currency_only_div": "神聖石",
     "currency_chaos_div": "兩者皆可",
     "currency_exalted_div": "兩者皆可",
-    "currency_only_exalted": "崇高石"
+    "currency_only_exalted": "崇高石",
+    "ratio_tooltip": "用於本地排序比例\n官方交易網站默認 7.5:1"
   },
   "widget": {
     "title": "小工具標題",
@@ -308,7 +333,8 @@
     "getting_price_from": "來自 poe.ninja …",
     "you_have": "您有",
     "stack": "堆疊",
-    "fix_complex_query": "請在設定中禁用\"偽屬性\"選項，或通過內置瀏覽器登錄。"
+    "fix_complex_query": "請在設定中禁用\"偽屬性\"選項，或通過內置瀏覽器登錄。",
+    "gem_sockets": "插槽"
   },
   "settings": {
     "title": "設置 - PoE2 Budget of Exile",
@@ -350,7 +376,11 @@
     "tip_frequency_5": "非常少",
     "tip_frequency_6": "從不",
     "tips_header": "循環查看所有提示：",
-    "tip_number_header": "提示 #{0}"
+    "tip_number_header": "提示 #{0}",
+    "enable_alphas": "啟用實驗性功能",
+    "read_client_log": "允許讀取 Client.txt 檔案",
+    "client_log_explain": "Client.txt 日誌檔案包含偵錯資訊和聊天記錄。它用於檢測區域變化和玩家等級提升。",
+    "preferred_trade_site": "主要交易網站"
   },
   "price_check": {
     "name": "價格檢查",
@@ -380,7 +410,10 @@
     "tier_numbering_poe2": "POE2（數值越大越好）",
     "tier_numbering_help": "為了減少因遊戲內命名衝突而導致的混淆，POE1的層級將使用\"Grade\"而非\"Tier\"來命名。 ",
     "always_show_tier": "始終顯示階級",
-    "remember_ratio": "記住通貨比例"
+    "remember_ratio": "記住通貨比例",
+    "core_currency": "主要基礎通貨：",
+    "default_all_selected": "預設勾選所有篩選",
+    "open_editor_above": "在上方開啟符文插槽選擇器"
   },
   "poe2_new": {
     "beta_warning": "這是 POE2 的測試版，某些功能可能無法正常運作。",
@@ -422,5 +455,19 @@
     "tip_27": "日誌顯示在設定中的「調試」選項卡下。",
     "tip_28": "你可以在設定中更改聯盟。",
     "tip_29": "你可以在設定中添加自定義聊天命令快捷鍵。"
+  },
+  "notepad": {
+    "name": "記事本",
+    "placeholder": "在這裡輸入你的筆記…",
+    "width": "寬度："
+  },
+  "leveling": {
+    "name": "升級",
+    "enable_read_client_logs": "升級小工具需要允許讀取客戶端日誌",
+    "exp_tracking": "經驗值追蹤器",
+    "show_exp": "顯示經驗值獲取率",
+    "exp_tracking_help_tldr": "簡單來說：盡量將 \"Over\" 維持在 0 或 1",
+    "exp_inspire": "根據： ",
+    "exp_astrict": "*當角色等級高於 95 級、怪物等級高於 70 級，或是在某些情況下經驗值倍率並非 100% 時，顯示的經驗值獲取比例可能尚未經過完整測試，數值僅供參考，未必完全精確。"
   }
 }
