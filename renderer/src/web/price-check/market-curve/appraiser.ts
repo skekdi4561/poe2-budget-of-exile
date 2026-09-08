@@ -22,24 +22,27 @@ export const snapKey = (league = "", suffix = ""): string =>
 const CACHE_MS = 10 * 60 * 1000; // 사이트 CDN 캐시와 같은 10분
 const ROW_TTL = 24 * 60 * 60 * 1000; // 감정소와 같은 규칙: 수집 24시간이 지난 매물은 제외
 // 환율 수집이 실패한 스냅샷에서도 축척이 살도록 — 감정소 RATE_DEFAULT 와 같은 값
-// ⚠️ mirror 가 빠지면 rateOf 가 0 을 돌려 미러 가격 활이 '공짜'로 최전선을 점령한다
-// (감정소 index.html RATE_DEFAULT 와 같은 이유). 스냅샷 환율이 없을 때의 안전망.
-// 스냅샷이 오기 전에만 쓰이는 안전망. 2026-09-06 poe.ninja 실측으로 갱신 —
-// 직전 값은 지난 리그 것이라 chaos 19.4배·annul 29.9배·divine 4.4배 어긋나 있었다.
+// **콜드 스타트 전용.** 수집기가 미러 없는 리그(하드코어 — poe.ninja 응답에 mirror 항목이
+// 아예 없다)에도 다른 리그의 배수를 빌려 스냅샷에 실어주므로(serve.py _MIRROR_MULT),
+// 정상 동작에서는 이 값에 도달하지 않는다.
+// ⚠ 안 썩는 값이 아니다: 지난 리그 6500 -> 350(09-06) -> 920(09-08), 같은 리그 안에서도
+//   3일에 240~1188 로 움직였다. 값을 키우지 말고 수집기 파생을 고칠 것.
+// serve.py MIRROR_IN_DIVINE / index.html MIRROR_IN_DIVINE 과 같은 값.
+export const MIRROR_IN_DIVINE = 920; // 2026-09-08 실측 (mirror 116,773 ex / divine 127.2 ex)
+
+// ⚠️ mirror 가 빠지면 rateOf 가 0 을 돌려주지만, 값이 0 인 행은 이미 걸러지므로
+// (frontier 의 `r <= 0 || price <= 0` 가드) '공짜로 최전선을 점령'하지는 않는다 —
+// 옛 주석이 그렇게 말했지만 사실이 아니다. 폴백의 역할은 그 행을 화면에 남기는 것이다.
+// 스냅샷이 오기 전에만 쓰이는 안전망. 2026-09-08 poe.ninja 실측으로 갱신 —
+// 직전(09-06) 값은 이틀 만에 chaos 2.28배·divine 1.84배·annul 5.72배 어긋나 있었다.
 // 감정소 serve.py DEFAULT_RATES / index.html RATE_DEFAULT 와 같은 값.
 const DEFAULT_RATES: Record<string, number> = {
   exalted: 1,
-  chaos: 3.4,
-  divine: 69,
-  annul: 9.3,
-  mirror: 69 * 350,
+  chaos: 7.77,
+  divine: 127.2,
+  annul: 53.2,
+  mirror: 127.2 * MIRROR_IN_DIVINE,
 };
-// 미러만 절대값을 안 쓴다. 2,000,000 엑잘은 divine 이 300 엑잘이던 리그의 실측이라
-// 리그가 바뀌면 그대로 틀린다(이 리그 divine 은 65.6 — 절대값이면 4.6배 부풀린다).
-// 미러는 시장에서 디바인의 배수로 매겨지고 디바인은 수집기가 매 사이클 실측하므로,
-// 디바인 기준 배수로 두면 리그가 바뀌어도 같이 따라간다.
-// serve.py MIRROR_IN_DIVINE / index.html MIRROR_IN_DIVINE 과 같은 값.
-export const MIRROR_IN_DIVINE = 350; // 2026-09-06 실측 (mirror 24,104 ex / divine 68.9 ex)
 
 interface SnapshotBow {
   pdps?: number;
