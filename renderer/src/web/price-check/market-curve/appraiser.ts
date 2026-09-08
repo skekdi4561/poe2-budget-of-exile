@@ -8,6 +8,17 @@ const SNAPSHOT_BASE = "https://skekdi4561.github.io/poe2-bow/";
 export function snapshotUrl(suffix = ""): string {
   return SNAPSHOT_BASE + (suffix ? `latest.${suffix}.json` : "latest.json");
 }
+
+/**
+ * 리그와 무기 접미사를 **한 문자열로 접는다**: "hc" + "crossbow" -> "hc.crossbow".
+ * snapshotUrl 이 그대로 latest.hc.crossbow.json 을 만들고(감정소 serve.py latest_path 와 같은 규칙),
+ * 캐시·inflight 키도 이 문자열 하나라 리그가 섞일 자리가 **원천적으로 없다**.
+ *
+ * 도전 리그 하드코어만 "hc" 다. 상시 하드코어("Hardcore")는 별개 리그이고 감정소가 안 모으므로
+ * 태그를 붙이지 않는다 — 거래소 id 판정은 Prices.ts 의 `startsWith("HC ")` 선례를 따른다.
+ */
+export const snapKey = (league = "", suffix = ""): string =>
+  [league.startsWith("HC ") ? "hc" : "", suffix].filter(Boolean).join(".");
 const CACHE_MS = 10 * 60 * 1000; // 사이트 CDN 캐시와 같은 10분
 const ROW_TTL = 24 * 60 * 60 * 1000; // 감정소와 같은 규칙: 수집 24시간이 지난 매물은 제외
 // 환율 수집이 실패한 스냅샷에서도 축척이 살도록 — 감정소 RATE_DEFAULT 와 같은 값
@@ -400,8 +411,11 @@ export function rowsFromSnapshot(
  *  인터넷이 끊긴 사용자가 활에서는 "못 불러왔다", 방패에서는 "아직 수집 안 됨"을 본다. */
 export let lastBoardError: "fetch" | "empty" | null = null;
 
-export async function marketBoard(suffix = ""): Promise<MarketBoard | null> {
-  const snap = await fetchSnapshot(suffix);
+export async function marketBoard(
+  suffix = "",
+  league = "",
+): Promise<MarketBoard | null> {
+  const snap = await fetchSnapshot(snapKey(league, suffix));
   if (!snap) {
     lastBoardError = "fetch";
     return null;

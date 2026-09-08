@@ -9,12 +9,74 @@ import {
   rowsFromSnapshot,
   RichRow,
   snapshotUrl,
+  snapKey,
   marketBoard,
   optRank,
   isOffDps,
   priceTicks,
   MIRROR_IN_DIVINE,
 } from "./appraiser";
+
+describe("snapKey — 리그와 접미사를 한 키로 접는다", () => {
+  // 감정소 serve.py latest_path() 와 같은 규칙이어야 파일을 찾는다.
+  // **소프트코어는 접미사만** — 배포된 v1.1.1 이 옛 URL 을 계속 fetch 하므로 여기가 바뀌면 안 된다.
+  it("도전 리그 하드코어만 hc 태그를 붙인다", () => {
+    expect(snapKey("Forbidden Rites", "crossbow")).toBe("crossbow");
+    expect(snapKey("HC Forbidden Rites", "crossbow")).toBe("hc.crossbow");
+    expect(snapKey("HC Forbidden Rites", "")).toBe("hc");
+    expect(snapKey("Forbidden Rites", "")).toBe("");
+    expect(snapKey()).toBe("");
+  });
+
+  it("상시 하드코어는 별개 리그라 태그를 안 붙인다", () => {
+    // 감정소는 도전 리그만 모은다. "Hardcore"/"Standard" 는 수집 대상이 아니므로
+    // hc 태그를 붙이면 없는 파일을 부르게 된다.
+    expect(snapKey("Hardcore", "")).toBe("");
+    expect(snapKey("Standard", "crossbow")).toBe("crossbow");
+  });
+
+  it("접힌 키가 그대로 파일 이름이 된다", () => {
+    expect(snapshotUrl(snapKey("HC Forbidden Rites", "crossbow"))).toBe(
+      "https://skekdi4561.github.io/poe2-bow/latest.hc.crossbow.json",
+    );
+    expect(snapshotUrl(snapKey("HC Forbidden Rites", ""))).toBe(
+      "https://skekdi4561.github.io/poe2-bow/latest.hc.json",
+    );
+  });
+});
+
+describe("marketBoard 캐시가 리그로 갈린다", () => {
+  // 캐시 키가 접미사만이면 하드코어 요청이 소프트코어 캐시를 그대로 돌려받는다.
+  // 컴파일·타입·스모크를 다 통과하고 화면에도 '곡선은 나오는' 형태라 이 단언 없이는
+  // 어떤 그물에도 안 걸린다 — 값만 조용히 틀린다.
+  it("같은 무기·다른 리그는 각각 받아온다", async () => {
+    const urls: string[] = [];
+    const snap = {
+      taken_at: Date.now(),
+      rates: { exalted: { rate: 1 } },
+      bows: [
+        { pdps: 100, edps: 0, price: 1, cur: "exalted", rarity: "Rare" },
+        { pdps: 200, edps: 0, price: 2, cur: "exalted", rarity: "Rare" },
+      ],
+    };
+    const orig = globalThis.fetch;
+    globalThis.fetch = (async (u: string) => {
+      urls.push(String(u));
+      return { json: async () => snap } as unknown as Response;
+    }) as typeof fetch;
+    try {
+      // 접미사는 이 테스트 전용이어야 한다 — 모듈 캐시가 파일 전역이라
+      // 다른 테스트가 세는 무기("", crossbow, warstaff)를 쓰면 그쪽 fetch 수를 깎는다.
+      await marketBoard("spear", "Forbidden Rites");
+      await marketBoard("spear", "HC Forbidden Rites");
+      await marketBoard("spear", "Forbidden Rites"); // 캐시 적중이라 요청이 안 늘어야 한다
+    } finally {
+      globalThis.fetch = orig;
+    }
+    expect(urls.filter((u) => u.endsWith("latest.spear.json"))).toHaveLength(1);
+    expect(urls.filter((u) => u.endsWith("latest.hc.spear.json"))).toHaveLength(1);
+  });
+});
 
 describe("snapshotUrl", () => {
   it("활은 latest.json, 다른 무기는 latest.<접미사>.json", () => {

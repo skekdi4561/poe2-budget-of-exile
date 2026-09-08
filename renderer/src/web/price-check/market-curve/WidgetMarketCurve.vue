@@ -11,6 +11,15 @@
             ><span class="text-yellow-500">{{ weaponName }}</span> {{ t(":title_rest") }}</span
           >
           <select
+            v-model="leagueTag"
+            class="bg-gray-900 rounded px-2 py-0.5 text-gray-200 text-sm"
+            :aria-label='t(":league_aria")'
+          >
+            <option v-for="l in LEAGUE_TAGS" :key="l.tag" :value="l.tag">
+              {{ t(":" + l.key) }}
+            </option>
+          </select>
+          <select
             v-model="curWeapon"
             @change="onWeaponChange"
             class="bg-gray-900 rounded px-2 py-0.5 text-gray-200 text-sm"
@@ -369,6 +378,7 @@ import Widget from "@/web/overlay/Widget.vue";
 import { useI18nNs } from "@/web/i18n";
 import { statText, initStatText } from "./statText";
 import { Host } from "@/web/background/IPC";
+import { useLeagues } from "@/web/background/Leagues";
 import type { WidgetManager, WidgetSpec } from "@/web/overlay/interfaces";
 import type { MarketCurveWidget } from "@/web/overlay/interfaces";
 import {
@@ -511,6 +521,27 @@ export default defineComponent({
     // 활에서는 "못 불러왔다", 나머지 7종에서는 "아직 수집 안 됨"이라는 거짓말을 본다.
     const boardError = ref<"fetch" | "empty" | null>(null);
 
+    // 리그. 감정소가 모으는 건 도전 리그의 소프트코어/하드코어 둘뿐이다.
+    // 기본값은 **접속 리그에서 자동으로** 고른다(하드코어 캐릭터면 하드코어 곡선이 그냥 뜬다).
+    // 다만 사용자가 덮어쓸 수 있어야 한다 — 상시 하드코어·사설 리그 사용자는 자동 판정이
+    // 소프트코어로 떨어지는데, 그들에게 곡선이 통째로 사라지는 것보다 고를 수 있는 게 낫다.
+    const leagues = useLeagues();
+    const LEAGUE_TAGS = [
+      { tag: "", key: "league_sc" },
+      { tag: "hc", key: "league_hc" },
+    ];
+    const curLeagueTag = ref<string | null>(null);   // null = 아직 사용자가 안 골랐다(자동)
+    const autoTag = computed(() =>
+      (leagues.selectedId.value ?? "").startsWith("HC ") ? "hc" : "",
+    );
+    const leagueTag = computed({
+      get: () => curLeagueTag.value ?? autoTag.value,
+      set: (v: string) => {
+        curLeagueTag.value = v;
+        load();
+      },
+    });
+
     const isArmour = computed(() => curWeapon.value === "shield");
     const metricLabel = computed(() =>
       t(isArmour.value ? ":metric_name_armour" : ":metric_name_dps"),
@@ -590,6 +621,12 @@ export default defineComponent({
     const weaponName = computed(
       () => t(":" + (WEAPONS.find((w) => w.suffix === curWeapon.value)?.key ?? "weapon_bow")),
     );
+    // 리그 목록은 앱 시작 직후엔 아직 안 와서 selectedId 가 undefined 다.
+    // 도착하면 자동 기본값이 바뀔 수 있으므로 그때 한 번 다시 부른다(사용자가 이미 골랐으면 안 건드린다).
+    watch(autoTag, () => {
+      if (curLeagueTag.value === null) load();
+    });
+
     function onWeaponChange() {
       filters.splice(0); // 이전 무기 기준 옵션 필터는 다른 무기엔 의미가 없다
       // 치확 하한도 같이 지운다. 베이스 치확이 무기군마다 달라 그대로 들고 가면 뜻이 바뀌고,
@@ -604,13 +641,16 @@ export default defineComponent({
 
     async function load() {
       const want = curWeapon.value; // 요청 시점의 무기를 고정
+      const wantTag = leagueTag.value; // 리그도 같이 고정 — 아래 경합 가드가 둘 다 본다
       loading.value = true;
       void initStatText(); // 설정에서 언어를 바꿨을 수 있다 — 같은 언어면 즉시 반환
-      const b = await marketBoard(want); // 10분 캐시(무기별)라 매번 불러도 싸다
+      // marketBoard 가 리그+접미사를 한 키로 접어 캐시까지 가른다(snapKey).
+      // 여기에 "HC …" 형태의 거래소 리그 id 를 넘겨야 한다 — 태그가 아니다.
+      const b = await marketBoard(want, wantTag ? "HC " : "");
       const err = lastBoardError;
-      // 느린 fetch 가 도는 사이 사용자가 무기를 바꿨으면 이 결과는 버린다 — 안 그러면
-      // A 의 늦은 응답이 B 의 곡선을 덮어써 엉뚱한 무기가 뜬다(무기 전환 경합). 최신 load 가 loading 을 끈다.
-      if (want !== curWeapon.value) return;
+      // 느린 fetch 가 도는 사이 사용자가 무기나 리그를 바꿨으면 이 결과는 버린다 — 안 그러면
+      // A 의 늦은 응답이 B 의 곡선을 덮어써 엉뚱한 것이 뜬다. 최신 load 가 loading 을 끈다.
+      if (want !== curWeapon.value || wantTag !== leagueTag.value) return;
       board.value = b;
       boardError.value = err;
       loading.value = false;
@@ -1010,6 +1050,8 @@ export default defineComponent({
       minBlockN,
       isArmour,
       metricLabel,
+      leagueTag,
+      LEAGUE_TAGS,
       currencies,
       budgetEx,
       filters,

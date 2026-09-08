@@ -507,6 +507,9 @@
   "market_curve": {
     "title_rest": "Market Appraiser",
     "weapon_aria": "Weapon type",
+    "league_sc": "Softcore",
+    "league_hc": "Hardcore",
+    "league_aria": "League",
     "listings": "{n}/{m} listings",
     "just_now": "just now",
     "hours_ago": "{h}h ago",
