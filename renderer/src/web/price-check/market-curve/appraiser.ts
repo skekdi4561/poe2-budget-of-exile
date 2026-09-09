@@ -369,6 +369,38 @@ export function formatEx(
   return num + (useDiv ? " div" : " ex");
 }
 
+// 가격축 눈금 라벨 — "25.0 div" 대신 "25 div" 처럼 군더더기 없이.
+// **숫자는 로케일을 따른다** — 독일어에서 1.3 은 1,3 이다. 최전선 표(toLocaleString)와
+// 축이 서로 다른 소수점을 쓰고 있었다.
+export function fmtTick(
+  pEx: number,
+  rates: Record<string, number>,
+  locale: string | undefined = uiLocale(),
+): string {
+  const dv = rates.divine ?? 0;
+  const useDiv = dv > 1 && pEx >= dv;
+  const v = useDiv ? pEx / dv : pEx;
+  const whole = v >= 10 || Number.isInteger(v);
+  const num = (whole ? Math.round(v) : v).toLocaleString(locale, {
+    minimumFractionDigits: whole ? 0 : 1,
+    maximumFractionDigits: whole ? 0 : 1,
+  });
+  return num + (useDiv ? " div" : " ex");
+}
+
+/**
+ * 추세 이력 길이를 "시간" 과 "일" 중 무엇으로 말할지 정한다.
+ *
+ * 48시간을 경계로 삼는 이유: 일 단위는 반올림이라 24~36시간이 전부 1일로 뭉개지고,
+ * 그러면 영어가 "1 days" 를 낸다(복수형 분기가 없다). 경계를 48로 올리면 일 단위는
+ * 항상 2 이상이라 어느 언어에서도 1을 안 만든다. 원래 24 였고 "하루가 안 되면 시간으로"
+ * 라는 같은 취지였다 — 이틀까지 넓힌 것뿐이다.
+ */
+export function trendSpan(spanH: number): { unit: "h" | "d"; value: number } {
+  if (spanH < 48) return { unit: "h", value: Math.max(1, Math.round(spanH)) };
+  return { unit: "d", value: Math.round(spanH / 24) };
+}
+
 // 가격축 눈금 — lo/hi 는 log10 가격, first/last 는 최전선 양 끝 가격(엑잘).
 // 10 의 거듭제곱 눈금이 2개 미만(가격 폭이 한 자릿수 안)이면 축이 비므로 양 끝값으로 대신한다.
 export function priceTicks(

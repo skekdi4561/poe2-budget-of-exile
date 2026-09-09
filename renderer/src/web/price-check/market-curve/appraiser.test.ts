@@ -15,6 +15,8 @@ import {
   optRank,
   isOffDps,
   priceTicks,
+  fmtTick,
+  trendSpan,
   MIRROR_IN_DIVINE,
 } from "./appraiser";
 
@@ -621,5 +623,64 @@ describe("fetchSnapshot 타임아웃 (V28)", () => {
       vi.useRealTimers();
       timeoutSpy.mockRestore();
     }
+  });
+});
+
+describe("fmtTick — 가격축 눈금", () => {
+  const rates = { exalted: 1, divine: 400 };
+
+  it("디바인 이상은 div, 미만은 ex", () => {
+    expect(fmtTick(400, rates, "en")).toBe("1 div");
+    expect(fmtTick(200, rates, "en")).toBe("200 ex");
+    expect(fmtTick(600, rates, "en")).toBe("1.5 div");
+  });
+
+  it("10 이상이거나 정수면 소수점을 안 붙인다", () => {
+    expect(fmtTick(4000, rates, "en")).toBe("10 div");
+    expect(fmtTick(5, rates, "en")).toBe("5 ex");
+    expect(fmtTick(2.5, rates, "en")).toBe("2.5 ex");
+  });
+
+  // 표(toLocaleString)와 축이 서로 다른 소수점을 쓰고 있었다. 축만 String()/toFixed 였다.
+  it("숫자가 사용자 언어를 따른다", () => {
+    expect(fmtTick(600, rates, "de")).toBe("1,5 div");
+    expect(fmtTick(2.5, rates, "de")).toBe("2,5 ex");
+    // 천단위 구분자는 ICU 버전마다 문자가 달라(fr 은 72 에서 U+00A0 -> U+202F) 박아두면 CI 가 깨진다.
+    // en 과 다른 형태가 나오는지만 본다.
+    const ru = fmtTick(400_000, rates, "ru");
+    expect(ru).toMatch(/^1\s?000 div$/u);
+    expect(fmtTick(400_000, rates, "en")).toBe("1,000 div");
+  });
+
+  it("디바인 환율이 없으면 ex 로 남는다", () => {
+    expect(fmtTick(600, { exalted: 1 }, "en")).toBe("600 ex");
+    expect(fmtTick(600, { exalted: 1, divine: 0 }, "en")).toBe("600 ex");
+  });
+});
+
+describe("trendSpan — 추세 길이를 시간/일 중 무엇으로 말할까", () => {
+  // 핵심: 일 단위가 1 이 되면 영어가 "1 days" 를 낸다(복수형 분기가 없다).
+  // 실제로 화면에 뜨고 있던 결함이라 여기서 못박는다.
+  it("일 단위는 절대 1 이 되지 않는다", () => {
+    for (let h = 0; h <= 24 * 30; h += 0.5) {
+      const r = trendSpan(h);
+      if (r.unit === "d")
+        expect(`${h}h -> ${r.value}일`).not.toBe(`${h}h -> 1일`);
+    }
+  });
+
+  it("48시간 미만은 시간으로, 그 이상은 일로", () => {
+    expect(trendSpan(3)).toEqual({ unit: "h", value: 3 });
+    expect(trendSpan(30)).toEqual({ unit: "h", value: 30 }); // 예전엔 "1일" 이었다
+    expect(trendSpan(47.4)).toEqual({ unit: "h", value: 47 });
+    expect(trendSpan(48)).toEqual({ unit: "d", value: 2 });
+    // 내림이 아니라 반올림이다 — 71시간(2.96일)은 3일이라고 말해야 맞다
+    expect(trendSpan(71)).toEqual({ unit: "d", value: 3 });
+    expect(trendSpan(24 * 7)).toEqual({ unit: "d", value: 7 });
+  });
+
+  it("이력이 없거나 아주 짧아도 0시간이라고 말하지 않는다", () => {
+    expect(trendSpan(0)).toEqual({ unit: "h", value: 1 });
+    expect(trendSpan(0.2)).toEqual({ unit: "h", value: 1 });
   });
 });

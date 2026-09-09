@@ -421,6 +421,8 @@ import {
   matchesFilters,
   metricRows,
   priceTicks,
+  fmtTick,
+  trendSpan,
   MarketBoard,
   StatOption,
   StatFilter,
@@ -767,16 +769,6 @@ export default defineComponent({
     const GOLD = "#eab308";
     const TEAL = "#2dd4bf";
 
-    // 눈금 라벨 — "25.0 div" 대신 "25 div" 처럼 군더더기 없이
-    function fmtTick(pEx: number, rates: Record<string, number>): string {
-      const dv = rates.divine ?? 0;
-      const useDiv = dv > 1 && pEx >= dv;
-      const v = useDiv ? pEx / dv : pEx;
-      const s =
-        v >= 10 || Number.isInteger(v) ? String(Math.round(v)) : v.toFixed(1);
-      return s + (useDiv ? " div" : " ex");
-    }
-
     // DPS 눈금을 보기 좋은 단위(10/25/50/100…)로
     function niceTicks(min: number, max: number, want: number): number[] {
       const span = max - min || 1;
@@ -847,7 +839,7 @@ export default defineComponent({
         ctx.moveTo(x, PAD.t);
         ctx.lineTo(x, H - PAD.b);
         ctx.stroke();
-        ctx.fillText(String(Math.round(d)), x, H - 8);
+        ctx.fillText(Math.round(d).toLocaleString(uiLocale()), x, H - 8);
       }
       // 축선
       ctx.strokeStyle = "rgba(156,163,175,0.5)";
@@ -995,23 +987,22 @@ export default defineComponent({
         .filter((p) => p.floors[key] != null && isFinite(p.floors[key]))
         .map((p) => ({ t: p.t, p: p.floors[key] }));
     });
-    // 이력 길이. 하루가 안 되면 "1일간"이라고 반올림해 말하지 말고 시간으로 쓴다 —
+    // 이력 길이. 짧으면 일 단위로 반올림해 말하지 않고 시간으로 쓴다 —
     // 새로 추가된 무기는 첫날 내내 이 상태다(방패 실측: 이력 몇 시간인데 "1일 전 대비").
+    // 경계는 trendSpan() 에 있다(48시간). 24 였을 때는 24~36시간이 전부 1일로 뭉개져
+    // 영어가 "1 days" 를 냈다.
     const trendSpanH = computed(() => {
       const s = trendSeries.value;
       if (s.length < 2) return 0;
       return (s[s.length - 1].t - s[0].t) / 3_600_000;
     });
+    const trendUnit = computed(() => trendSpan(trendSpanH.value));
     const trendShortSpan = computed(
-      () => trendSpanH.value > 0 && trendSpanH.value < 24,
+      () => trendSpanH.value > 0 && trendUnit.value.unit === "h",
     );
-    const trendHours = computed(() =>
-      Math.max(1, Math.round(trendSpanH.value)),
-    );
+    const trendHours = computed(() => trendUnit.value.value);
     const trendDays = computed(() =>
-      trendSpanH.value <= 0
-        ? 0
-        : Math.max(1, Math.round(trendSpanH.value / 24)),
+      trendSpanH.value <= 0 ? 0 : trendUnit.value.value,
     );
     const trendChange = computed(() => {
       const s = trendSeries.value;
