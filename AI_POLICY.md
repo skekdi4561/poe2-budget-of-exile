@@ -1,4 +1,1 @@
-# AI 정책 (이 포크)
-
-이 포크는 AI(Claude) 페어 프로그래밍으로 개발됩니다 — README 의 "투명성 고지"를 보세요.
-원본(Exiled Exchange 2)의 AI 코드 금지 정책은 원본 저장소에만 적용되며, 그래서 이 포크는 업스트림에 PR 을 보내지 않습니다.
+Maximum generally allowed is end of line completion. Please do not use agents or copy-paste blocks of code from llms.
