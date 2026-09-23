@@ -28,7 +28,9 @@ export class ConfigStore {
         return await fs.readFile(this.cfgPath, "utf8");
       } catch (e) {
         if ((e as NodeJS.ErrnoException).code === "ENOENT") return null;
-        await new Promise((r) => setTimeout(r, 250 * (attempt + 1)));
+        await new Promise((resolve) =>
+          setTimeout(resolve, 250 * (attempt + 1)),
+        );
       }
     }
     return null;
