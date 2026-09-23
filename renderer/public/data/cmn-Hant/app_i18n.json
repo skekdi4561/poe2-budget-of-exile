@@ -534,5 +534,21 @@
     "price": "價格檢查",
     "curve": "行情鑑價",
     "settings": "設置"
-  }
+  },
+  "hide_harvest_and_instilling": "買家可能會更改附魔",
+  "hide_attr_same_2nd_n_3rd": "較小的兩項能力值相同且偏低，幾乎沒有價值",
+  "hide_attr_smallest_total": "最小的能力值偏低，幾乎沒有價值",
+  "pseudo": "偽屬性",
+  "explicit": "隨機",
+  "implicit": "隨機",
+  "crafted": "已製作",
+  "enchant": "附魔",
+  "scourge": "災厄",
+  "veiled": "隱匿",
+  "fractured": "破裂",
+  "rune": "符文",
+  "added-rune": "符文",
+  "sanctum": "聖域聯盟",
+  "desecrated": "褻瀆",
+  "skill": "技能"
 }

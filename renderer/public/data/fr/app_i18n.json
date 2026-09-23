@@ -560,5 +560,21 @@
     "price": "Vérifier le prix",
     "curve": "Cote du marché",
     "settings": "Paramètres"
-  }
+  },
+  "hide_harvest_and_instilling": "L'acheteur changera probablement l'enchantement",
+  "hide_attr_same_2nd_n_3rd": "Les deux plus petits attributs sont égaux et faibles et ajoutent peu de valeur",
+  "hide_attr_smallest_total": "Le plus petit attribut est faible et ajoute peu de valeur",
+  "pseudo": "pseudo",
+  "explicit": "explicite",
+  "implicit": "implicite",
+  "crafted": "fabriqué",
+  "enchant": "enchante",
+  "scourge": "fléau",
+  "veiled": "Voilé",
+  "fractured": "fissuré",
+  "rune": "Augmentation",
+  "added-rune": "Augmentation",
+  "sanctum": "Sanctuaire",
+  "desecrated": "Profané",
+  "skill": "Compétence"
 }

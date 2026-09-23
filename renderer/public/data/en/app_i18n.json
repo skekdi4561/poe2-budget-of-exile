@@ -582,5 +582,23 @@
     "price": "Price check",
     "curve": "Market Appraiser",
     "settings": "Settings"
-  }
+  },
+  "hide_harvest_and_instilling": "Buyer will likely change this enchant",
+  "hide_attr_same_2nd_n_3rd": "The two smaller attributes are equal and low, so they add little value",
+  "hide_attr_smallest_total": "The smallest attribute is low and adds little value",
+  "low_tier_reflection": "Low-value reflection modifier",
+  "pseudo": "pseudo",
+  "explicit": "explicit",
+  "implicit": "implicit",
+  "crafted": "crafted",
+  "enchant": "enchant",
+  "scourge": "scourge",
+  "veiled": "Veiled",
+  "fractured": "fractured",
+  "rune": "Augment",
+  "added-rune": "Augment",
+  "sanctum": "Sanctum",
+  "desecrated": "Desecrated",
+  "skill": "Skill",
+  "necropolis": "necropolis"
 }

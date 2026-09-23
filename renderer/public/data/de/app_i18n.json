@@ -556,5 +556,21 @@
     "price": "Preisprüfung",
     "curve": "Marktanalyse",
     "settings": "Einstellungen"
-  }
+  },
+  "hide_harvest_and_instilling": "Käufer wird die Verzauberung wahrscheinlich ändern",
+  "hide_attr_same_2nd_n_3rd": "Die zwei kleineren Attribute sind gleich und niedrig und bringen kaum Wert",
+  "hide_attr_smallest_total": "Das kleinste Attribut ist niedrig und bringt kaum Wert",
+  "pseudo": "Pseudo",
+  "explicit": "explizit",
+  "implicit": "implizit",
+  "crafted": "gefertigt",
+  "enchant": "Verzauberung",
+  "scourge": "Geißel",
+  "veiled": "Verschleiert",
+  "fractured": "brüchig",
+  "rune": "Augmentations",
+  "added-rune": "Augmentations",
+  "sanctum": "Heiligtum",
+  "desecrated": "Entweihtes",
+  "skill": "Fertigkeit"
 }

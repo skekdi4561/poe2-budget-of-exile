@@ -498,5 +498,21 @@
     "price": "เช็คราคา",
     "curve": "ราคาตลาด",
     "settings": "ตั้งค่า"
-  }
+  },
+  "hide_harvest_and_instilling": "ผู้ซื้อน่าจะเปลี่ยน enchant เอง",
+  "hide_attr_same_2nd_n_3rd": "Attribute สองค่าที่เล็กกว่าเท่ากันและต่ำ จึงแทบไม่เพิ่มมูลค่า",
+  "hide_attr_smallest_total": "Attribute ที่เล็กที่สุดมีค่าต่ำ จึงแทบไม่เพิ่มมูลค่า",
+  "pseudo": "pseudo",
+  "explicit": "explicit",
+  "implicit": "implicit",
+  "crafted": "crafted",
+  "enchant": "enchant",
+  "scourge": "scourge",
+  "veiled": "Veiled",
+  "fractured": "fractured",
+  "rune": "Augment",
+  "added-rune": "Augment",
+  "sanctum": "Sanctum",
+  "desecrated": "Desecrated",
+  "skill": "Skill"
 }

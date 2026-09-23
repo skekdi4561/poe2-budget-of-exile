@@ -555,5 +555,21 @@
     "price": "Comprobación de precios",
     "curve": "Tasador de mercado",
     "settings": "Configuración"
-  }
+  },
+  "hide_harvest_and_instilling": "Es probable que el comprador cambie el encantamiento",
+  "hide_attr_same_2nd_n_3rd": "Los dos atributos menores son iguales y bajos, así que apenas añaden valor",
+  "hide_attr_smallest_total": "El atributo menor es bajo y apenas añade valor",
+  "pseudo": "falsedad",
+  "explicit": "explícito",
+  "implicit": "implícito",
+  "crafted": "elaborado",
+  "enchant": "encantado",
+  "scourge": "azote",
+  "veiled": "Velado",
+  "fractured": "fracturado",
+  "rune": "mejora",
+  "added-rune": "mejora",
+  "sanctum": "Santuario",
+  "desecrated": "profanado",
+  "skill": "Habilidad"
 }

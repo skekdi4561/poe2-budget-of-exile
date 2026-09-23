@@ -484,5 +484,19 @@
     "price": "価格チェック",
     "curve": "相場鑑定所",
     "settings": "設定"
-  }
+  },
+  "hide_harvest_and_instilling": "購入者はおそらくエンチャントを変更するでしょう",
+  "hide_attr_same_2nd_n_3rd": "小さい2つの能力値が同じで低いため、ほとんど価値がありません",
+  "hide_attr_smallest_total": "最小の能力値は低く、ほとんど価値がありません",
+  "pseudo": "疑似",
+  "explicit": "明示",
+  "implicit": "暗黙",
+  "crafted": "クラフト",
+  "enchant": "エンチャント",
+  "scourge": "スカージ",
+  "veiled": "ヴェール",
+  "fractured": "フラクチャー",
+  "rune": "オーグメント",
+  "added-rune": "オーグメント",
+  "desecrated": "冒涜"
 }

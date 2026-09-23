@@ -629,5 +629,22 @@
     "price": "가격 검색",
     "curve": "시세 감정소",
     "settings": "설정"
-  }
+  },
+  "hide_harvest_and_instilling": "구매자가 인챈트를 바꿀 가능성이 높습니다",
+  "hide_attr_same_2nd_n_3rd": "작은 두 능력치가 같고 낮아 가치를 거의 더하지 않습니다",
+  "hide_attr_smallest_total": "가장 작은 능력치는 낮아 가치를 거의 더하지 않습니다",
+  "low_tier_reflection": "가치가 낮은 반사 속성",
+  "pseudo": "합산",
+  "explicit": "부여된 속성",
+  "implicit": "고정 속성",
+  "crafted": "제작된",
+  "enchant": "인챈트",
+  "scourge": "스컬지",
+  "veiled": "장막",
+  "fractured": "분열된",
+  "rune": "증강물",
+  "added-rune": "증강물",
+  "sanctum": "성역",
+  "desecrated": "훼손된",
+  "skill": "스킬"
 }

@@ -514,5 +514,19 @@
     "price": "Verificação de preços",
     "curve": "Avaliador de Mercado",
     "settings": "Configurações"
-  }
+  },
+  "hide_harvest_and_instilling": "É provável que o comprador altere o encantamento",
+  "hide_attr_same_2nd_n_3rd": "Os dois atributos menores são iguais e baixos, então agregam pouco valor",
+  "hide_attr_smallest_total": "O menor atributo é baixo e agrega pouco valor",
+  "pseudo": "pseudo",
+  "explicit": "explícito",
+  "implicit": "implícito",
+  "crafted": "criado",
+  "enchant": "encantado",
+  "scourge": "flagelo",
+  "veiled": "Velado",
+  "fractured": "trincado",
+  "rune": "aprimoramento",
+  "desecrated": "Profanado",
+  "skill": "Habilidade"
 }

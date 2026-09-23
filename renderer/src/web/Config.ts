@@ -62,17 +62,19 @@ export async function initConfig() {
     updateConfig(JSON.parse(e.contents));
   });
 
+  // 첫 실행(설정 파일 없음)과 설정 파일이 깨진 경우 — OS 언어를 따른다. 기본값(ko)을 그대로 쓰면
+  // 해외 사용자가 한국어 화면·한국어 게임 데이터·카카오 거래소로 시작해서, 자기 게임 아이템의
+  // 가격 검색이 언어 불일치로 막힌다. 한국어가 Windows 언어 목록에 있으면 그대로 ko 다.
+  const freshConfig = (): Config => ({
+    ...defaultConfig(),
+    language: languageFromLocales(
+      typeof navigator === "undefined" ? [] : navigator.languages,
+    ),
+  });
+
   const contents = await Host.getConfig();
   if (!contents) {
-    // 첫 실행 — OS 언어를 따른다. 기본값(ko)을 그대로 쓰면 해외 사용자가 한국어 화면·한국어
-    // 게임 데이터·카카오 거래소로 시작해서, 자기 게임 아이템의 가격 검색이 언어 불일치로 막힌다.
-    // 한국어 Windows 는 그대로 ko 다. 기존 설정 파일이 있으면 여기 안 온다.
-    updateConfig({
-      ...defaultConfig(),
-      language: languageFromLocales(
-        typeof navigator === "undefined" ? [] : navigator.languages,
-      ),
-    });
+    updateConfig(freshConfig());
     return;
   }
 
@@ -80,7 +82,7 @@ export async function initConfig() {
   try {
     config = JSON.parse(contents);
   } catch {
-    updateConfig(defaultConfig());
+    updateConfig(freshConfig());
     saveConfig({ isTemporary: true });
     return;
 

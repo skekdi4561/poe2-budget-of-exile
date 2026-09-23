@@ -165,6 +165,13 @@ describe("첫 실행 언어 — OS 언어를 따른다", () => {
     expect(real.AppConfig().language).toBe("ja");
   });
 
+  it("설정 파일이 깨졌어도 OS 언어로 시작한다(첫 실행과 같다)", async () => {
+    vi.stubGlobal("navigator", { languages: ["de-DE"] });
+    vi.mocked(Host.getConfig).mockResolvedValueOnce("{깨진 json");
+    await real.initConfig();
+    expect(real.AppConfig().language).toBe("de");
+  });
+
   it("설정 파일이 있으면 OS 언어와 상관없이 저장된 언어 그대로", async () => {
     vi.stubGlobal("navigator", { languages: ["ja-JP"] });
     await init({ language: "ko" });
