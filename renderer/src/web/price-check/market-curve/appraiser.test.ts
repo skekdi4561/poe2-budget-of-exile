@@ -17,6 +17,7 @@ import {
   priceTicks,
   fmtTick,
   fmtMetric,
+  modKey,
   trendSpan,
   MIRROR_IN_DIVINE,
 } from "./appraiser";
@@ -793,5 +794,46 @@ describe("옵션 값 읽기 — 부호와 숫자 없는 영어 원문", () => {
     expect(o["Loads an additional bolt"]).toBe(1);
     expect(o["최근 #초 이내 재장전한 경우 #% 확률"]).toBe(30);
     expect(o["피해 #-# 추가 테스트"]).toBe(20);
+  });
+});
+
+describe("크라우드 옵션 문자열 방어", () => {
+  // 옵션 문구는 다른 사용자가 보낸 크라우드 행에서 온다. 마크업 정규식의 문자 클래스에 '[' 가
+  // 있으면 "[[[[…" 같은 줄에서 역추적이 제곱으로 늘어 렌더러가 수 초 멎었다(전수 자가 검증).
+  it("'[' 가 잔뜩 든 줄도 곧바로 처리한다", () => {
+    const evil = "[".repeat(20000) + "|" + "[".repeat(20000);
+    const t0 = performance.now();
+    modKey(evil);
+    modKey("[".repeat(40000));
+    expect(performance.now() - t0).toBeLessThan(200);
+  });
+
+  it("게임 마크업은 예전과 같이 벗긴다", () => {
+    expect(modKey("[Physical|물리] 피해 12% 증가")).toBe("물리 피해 #% 증가");
+    expect(modKey("[Attack] 속도 +5%")).toBe("Attack 속도 #%");
+    expect(modKey("Adds 3 to 7 [Fire|Fire] Damage")).toBe(
+      "Adds # to # Fire Damage",
+    );
+  });
+
+  it("영어 'Bonded:' 옵션도 한국어 '결속됨' 처럼 걸러진다", () => {
+    const snap = {
+      taken_at: 0,
+      bows: [
+        {
+          pdps: 100,
+          edps: 0,
+          price: 1,
+          cur: "exalted",
+          mods: [
+            "Bonded: +20 to maximum Life",
+            "결속됨: 최대 생명력 +20",
+            "정확도 +50",
+          ],
+        },
+      ],
+    };
+    const { rows } = rowsFromSnapshot(snap, { exalted: 1 }, new Set(), 0);
+    expect(Object.keys(rows[0].offs)).toEqual(["정확도 #"]);
   });
 });

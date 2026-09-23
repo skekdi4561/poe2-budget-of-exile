@@ -193,7 +193,7 @@ const COUNTED = [
 // 크라우드 행에는 영어 클라이언트에서 온 것이 섞인다(실측: 전체 mod 줄의 1.6%).
 // 한국어 표기만 막으면 같은 옵션이 영문으로 그대로 드롭다운에 오른다.
 const JUNK_MOD =
-  /^결속됨|^Allocates|시야 반경|Light Radius|투사체 사거리|Projectile Range|능력치 요구사항|Attribute Requirements/;
+  /^결속됨|^Bonded:|^Allocates|시야 반경|Light Radius|투사체 사거리|Projectile Range|능력치 요구사항|Attribute Requirements/;
 const JUNK_EXACT = new Set([
   "민첩 #",
   "힘 #",
@@ -209,11 +209,14 @@ const JUNK_EXACT = new Set([
   "# to all Attributes",
 ]);
 
-// "[Physical|물리] 피해" 같은 게임 마크업을 벗긴다
+// "[Physical|물리] 피해" 같은 게임 마크업을 벗긴다.
+// 문자 클래스에 '[' 를 넣지 않는다 — 넣으면 크라우드가 보낸 "[[[[…" 같은 줄에서 역추적이
+// 제곱으로 늘어 렌더러가 수 초 멎는다(전수 자가 검증에서 실측). 게임 마크업은 중첩되지 않아
+// 실제 옵션 26,927줄에서 결과가 같다. 사이트 index.html·serve.py 와 같은 식이어야 한다.
 const cleanMod = (m: string) =>
   String(m)
-    .replace(/\[([^\]|]*)\|([^\]]*)\]/g, "$2")
-    .replace(/\[([^\]]*)\]/g, "$1");
+    .replace(/\[([^\][|]*)\|([^\][]*)\]/g, "$2")
+    .replace(/\[([^\][]*)\]/g, "$1");
 // 숫자를 # 으로 지워 같은 옵션을 같은 열쇠로 묶는다 — 수집기 mod_key 와 글자까지 같아야 한다
 export const modKey = (m: string) =>
   cleanMod(m)

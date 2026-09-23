@@ -82,7 +82,13 @@ export async function initConfig() {
   try {
     config = JSON.parse(contents);
   } catch {
-    updateConfig(freshConfig());
+    // 깨진 파일 안에 수집을 끈 선택이 있었을 수 있다 — 모를 땐 보내지 않는다(첫 실행만 기본 켬).
+    const cfg = freshConfig();
+    const pc = cfg.widgets.find((w) => w.wmType === "price-check") as
+      | widget.PriceCheckWidget
+      | undefined;
+    if (pc) pc.harvest = false;
+    updateConfig(cfg);
     saveConfig({ isTemporary: true });
     return;
 
@@ -98,21 +104,32 @@ export async function initConfig() {
   updateConfig(upgradeConfig(config));
 }
 
-/** OS 선호 언어 목록(navigator.languages) → 앱 언어. 앞에서부터 처음 맞는 것, 없으면 en.
- *  번체 중국어만 cmn-Hant 다 — 간체(zh-CN)는 앱에 없으므로 en 으로 둔다.
- *  단 한국어가 목록 **어디에든** 있으면 ko — 이 포크의 주 사용자(카카오)다. Electron 은 첫 항목을
+/** OS 선호 언어 목록(navigator.languages) → 앱 언어.
+ *  1) 첫 항목이 영어가 아닌 지원 언어면 그것. 2) 아니면(첫 항목이 영어이거나 앱에 없는 언어)
+ *  목록 어디에든 한국어가 있으면 ko — 이 포크의 주 사용자(카카오)다. Electron 은 첫 항목을
  *  Windows **지역 형식**에서 가져오므로, 표시 언어가 한국어여도 지역 형식이 영어면
- *  ["en-US", "ko"] 가 된다(출시 전 리뷰에서 Electron·ICU 소스로 확인). */
+ *  ["en-US", "ko"] 가 된다(출시 전 리뷰에서 Electron·ICU 소스로 확인). 3) 그 밖엔 앞에서부터
+ *  처음 맞는 지원 언어, 없으면 en. 번체 중국어만 cmn-Hant(간체 zh-CN 은 앱에 없다). */
 export function languageFromLocales(
   locales: readonly string[],
 ): Config["language"] {
-  if (locales.some((l) => /^ko(-|$)/i.test(l))) return "ko";
-  for (const raw of locales) {
+  const pick = (raw: string): Config["language"] | null => {
     const l = raw.toLowerCase();
     if (/^zh-(tw|hk|mo)\b|^zh-hant\b/.test(l)) return "cmn-Hant";
     const base = l.split("-")[0];
-    if (["ko", "ja", "de", "es", "pt", "fr", "ru", "en"].includes(base))
-      return base as Config["language"];
+    return ["ko", "ja", "de", "es", "pt", "fr", "ru", "en"].includes(base)
+      ? (base as Config["language"])
+      : null;
+  };
+  // 첫 항목이 영어가 아닌 지원 언어면 그 사람의 언어다 — 일본어 사용자가 한국어 입력기를
+  // 추가했다고 ko 로 돌리면 안 된다. 첫 항목이 영어(지역 형식이 영어일 수 있다)거나 앱에
+  // 없는 언어일 때만 목록 어디에든 있는 ko 를 고른다.
+  const first = locales.length ? pick(locales[0]) : null;
+  if (first && first !== "en") return first;
+  if (locales.some((l) => /^ko(-|$)/i.test(l))) return "ko";
+  for (const raw of locales) {
+    const p = pick(raw);
+    if (p) return p;
   }
   return "en";
 }

@@ -668,7 +668,7 @@ export default defineComponent({
     const matchedStats = computed<StatOption[]>(() => {
       if (!board.value) return [];
       const q = query.value.trim().toLowerCase();
-      const used = new Set(filters.map((f) => f.key));
+      const used = new Set(filters.map(filterKey));
       const pool = stats.value.filter((s) => !used.has(s.key));
       if (!q) return pool.slice(0, 20); // 비어 있으면 자주 보이는 옵션 순
       // 표시문(현재 언어)으로도 찾게 한다 — 영어 UI 에서 한국어 원문만 뒤지면 아무것도 안 걸린다
@@ -738,10 +738,16 @@ export default defineComponent({
       { immediate: true },
     );
 
+    // 필터의 비교 열쇠는 **지금** statId 로 다시 만든다. 표(statText)가 오기 전에 고른 필터는
+    // 원문 열쇠를 들고 있어서, 표가 온 뒤 옵션 열쇠(ref)와 어긋나 0건이 되고 같은 옵션이
+    // 목록에 다시 떴다(전수 자가 검증). 묶인 원문은 전부 같은 statId 로 가므로 첫 것이면 된다.
+    const filterKey = (f: StatFilter) =>
+      f.keys?.length ? statId(f.keys[0]) : f.key;
+
     // v-model.number 는 빈 입력을 "" 로 만든다 — null 로 정규화
     const normFilters = computed<StatFilter[]>(() =>
       filters.map((f) => ({
-        key: f.key,
+        key: filterKey(f),
         min: typeof f.min === "number" ? f.min : null,
         max: typeof f.max === "number" ? f.max : null,
       })),

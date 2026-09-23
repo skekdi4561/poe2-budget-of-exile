@@ -21,11 +21,17 @@ export class ConfigStore {
   }
 
   async load(): Promise<string | null> {
-    let contents: string | null = null;
-    try {
-      contents = await fs.readFile(this.cfgPath, "utf8");
-    } catch {}
-    return contents;
+    // 없음(ENOENT)만 첫 실행이다. 백신·동기화가 잠깐 잡은 오류(EBUSY·EPERM)를 첫 실행으로 보면
+    // 기본값(시장 곡선 수집 켬)으로 시작하고 다음 저장이 사용자 설정을 덮는다 — 몇 번 다시 읽는다.
+    for (let attempt = 0; attempt < 4; attempt++) {
+      try {
+        return await fs.readFile(this.cfgPath, "utf8");
+      } catch (e) {
+        if ((e as NodeJS.ErrnoException).code === "ENOENT") return null;
+        await new Promise((r) => setTimeout(r, 250 * (attempt + 1)));
+      }
+    }
+    return null;
   }
 
   private async save(contents: string, tmp: boolean) {

@@ -149,6 +149,10 @@ describe("첫 실행 언어 — OS 언어를 따른다", () => {
     expect(f(["ko-KR"])).toBe("ko");
     // 표시 언어는 한국어, 지역 형식은 영어 — Electron 은 지역 형식을 첫 항목으로 둔다
     expect(f(["en-US", "ko"])).toBe("ko");
+    expect(f(["pl-PL", "ko"])).toBe("ko"); // 첫 항목이 앱에 없는 언어
+    // 첫 항목이 영어가 아닌 지원 언어면 그 사람의 언어 — 한국어 입력기를 추가했다고 ko 가 아니다
+    expect(f(["ja-JP", "ko-KR"])).toBe("ja");
+    expect(f(["de-DE", "ko"])).toBe("de");
     expect(f(["de-DE", "en-US"])).toBe("de");
     expect(f(["pl-PL", "ja-JP"])).toBe("ja");
     expect(f(["pt-BR"])).toBe("pt");
@@ -170,6 +174,27 @@ describe("첫 실행 언어 — OS 언어를 따른다", () => {
     vi.mocked(Host.getConfig).mockResolvedValueOnce("{깨진 json");
     await real.initConfig();
     expect(real.AppConfig().language).toBe("de");
+    // 깨진 파일 안에 수집을 끈 선택이 있었을 수 있다 — 모를 땐 보내지 않는다
+    const pc = real
+      .AppConfig()
+      .widgets.find((w) => w.wmType === "price-check") as
+      | { harvest?: boolean }
+      | undefined;
+    expect(pc?.harvest).toBe(false);
+  });
+
+  it("첫 실행(설정 파일 없음)은 수집을 끄지 않는다 — 끄는 건 깨진 설정뿐", async () => {
+    vi.stubGlobal("navigator", { languages: ["ko-KR"] });
+    vi.mocked(Host.getConfig).mockResolvedValueOnce("");
+    await real.initConfig();
+    const pc = real
+      .AppConfig()
+      .widgets.find((w) => w.wmType === "price-check") as
+      | { harvest?: boolean }
+      | undefined;
+    // 초기값(harvest: true)은 실제 PriceCheckWindow initInstance 가 준다 — 이 파일의 가짜 레지스트리엔
+    // 그 필드가 없다(38→39 마이그레이션 테스트가 그 부재에 기댄다). 여기선 '끄지 않는다'만 본다.
+    expect(pc?.harvest).not.toBe(false);
   });
 
   it("설정 파일이 있으면 OS 언어와 상관없이 저장된 언어 그대로", async () => {
