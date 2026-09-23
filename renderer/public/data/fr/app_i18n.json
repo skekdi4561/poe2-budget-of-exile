@@ -437,7 +437,7 @@
     "travel_option_button": "Bouton",
     "travel_option_row": "Ctrl‑clic",
     "harvest": "Partager les vérifications de prix avec la courbe du marché (F7)",
-    "harvest_help": "Envoie les données publiques des annonces déjà affichées par ta vérification de prix (id de l'annonce, prix, DPS, modificateurs). Ton compte n'est jamais envoyé et aucune requête supplémentaire n'est faite au marché."
+    "harvest_help": "Envoie les données publiques des annonces déjà affichées par ta vérification de prix (id de l'annonce, nom et rareté, prix, DPS et autres valeurs, modificateurs). Ton compte n'est jamais envoyé et aucune requête supplémentaire n'est faite au marché."
   },
   "poe2_new": {
     "beta_warning": "Ceci est en BETA pour POE2, les choses ne fonctionneront pas toujours comme prévu.",

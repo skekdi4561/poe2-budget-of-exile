@@ -399,7 +399,7 @@
     "show_suggest_warning_help": "Mostrar alerta e ajuda",
     "default_all_selected": "Por padrão, todos os filtros habilitados",
     "harvest": "Compartilhar consultas de preço com a curva de mercado (F7)",
-    "harvest_help": "Envia os dados públicos dos anúncios já exibidos na sua consulta de preço (id do anúncio, preço, DPS, modificadores). Sua conta nunca é enviada e nenhuma solicitação extra é feita ao mercado."
+    "harvest_help": "Envia os dados públicos dos anúncios já exibidos na sua consulta de preço (id do anúncio, nome e raridade, preço, DPS e outros valores, modificadores). Sua conta nunca é enviada e nenhuma solicitação extra é feita ao mercado."
   },
   "poe2_new": {
     "beta_warning": "Isto está em BETA para o POE2, nem sempre as coisas funcionarão como esperado.",

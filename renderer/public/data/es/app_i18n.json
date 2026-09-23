@@ -425,7 +425,7 @@
     "core_currency": "Moneda base principal:",
     "show_volume": "Mostrar volumen de cambio de divisas por hora:",
     "harvest": "Compartir consultas de precio con la curva de mercado (F7)",
-    "harvest_help": "Envía los datos públicos de las ofertas que ya muestra tu consulta de precio (id de la oferta, precio, DPS, modificadores). Nunca se envía tu cuenta y no se hacen solicitudes adicionales al mercado."
+    "harvest_help": "Envía los datos públicos de las ofertas que ya muestra tu consulta de precio (id de la oferta, nombre y rareza, precio, DPS y otros valores, modificadores). Nunca se envía tu cuenta y no se hacen solicitudes adicionales al mercado."
   },
   "poe2_new": {
     "beta_warning": "Esto está en BETA para POE2, las cosas no siempre funcionarán como se espera.",

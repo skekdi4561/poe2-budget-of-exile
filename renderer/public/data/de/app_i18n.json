@@ -430,7 +430,7 @@
     "travel_option_button": "Schaltfläche",
     "travel_option_row": "Strg-Klick",
     "harvest": "Preisabfragen mit der Marktkurve (F7) teilen",
-    "harvest_help": "Sendet die öffentlichen Angebotsdaten, die deine Preisabfrage ohnehin anzeigt (Angebots-ID, Preis, DPS, Mods). Dein Account wird nie gesendet, und es werden keine zusätzlichen Handelsanfragen gestellt."
+    "harvest_help": "Sendet die öffentlichen Angebotsdaten, die deine Preisabfrage ohnehin anzeigt (Angebots-ID, Name und Seltenheit, Preis, DPS und weitere Werte, Mods). Dein Account wird nie gesendet, und es werden keine zusätzlichen Handelsanfragen gestellt."
   },
   "poe2_new": {
     "beta_warning": "Dies ist eine BETA für POE2, es wird nicht immer wie erwartet funktionieren.",

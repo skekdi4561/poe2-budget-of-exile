@@ -444,7 +444,7 @@
     "warn_advanced": "Advanced settings, don't change unless you are experiencing issues",
     "initial_delay": "Initial clipboard check delay(after copy-item keybind is pressed)",
     "harvest": "Share price-check results with the market curve (F7)",
-    "harvest_help": "Sends the public listing data already shown in your price-check results (listing id, price, DPS, modifiers). Your account is never sent, and no extra trade requests are made."
+    "harvest_help": "Sends the public listing data already shown in your price-check results (listing id, item name and rarity, price, DPS and other stats, modifiers). Your account is never sent, and no extra trade requests are made."
   },
   "poe2_new": {
     "beta_warning": "This is in BETA for POE2, things will not work always as expected.",
