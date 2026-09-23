@@ -138,3 +138,34 @@ describe("upgradeConfig 38 → 39 (시장 곡선 수집 토글)", () => {
     expect(priceCheck()?.harvest).toBe(false);
   });
 });
+
+describe("첫 실행 언어 — OS 언어를 따른다", () => {
+  beforeEach(() => {
+    vi.stubGlobal("document", { documentElement: { style: {} } });
+  });
+
+  it("languageFromLocales — 앞에서부터 처음 맞는 언어, 없으면 en", () => {
+    const f = real.languageFromLocales;
+    expect(f(["ko-KR"])).toBe("ko");
+    expect(f(["de-DE", "en-US"])).toBe("de");
+    expect(f(["pl-PL", "ja-JP"])).toBe("ja");
+    expect(f(["pt-BR"])).toBe("pt");
+    expect(f(["zh-TW"])).toBe("cmn-Hant");
+    expect(f(["zh-Hant-HK"])).toBe("cmn-Hant");
+    expect(f(["zh-CN"])).toBe("en"); // 간체는 앱에 없다
+    expect(f([])).toBe("en");
+  });
+
+  it("설정 파일이 없으면 OS 언어로 시작한다", async () => {
+    vi.stubGlobal("navigator", { languages: ["ja-JP", "en-US"] });
+    vi.mocked(Host.getConfig).mockResolvedValueOnce("");
+    await real.initConfig();
+    expect(real.AppConfig().language).toBe("ja");
+  });
+
+  it("설정 파일이 있으면 OS 언어와 상관없이 저장된 언어 그대로", async () => {
+    vi.stubGlobal("navigator", { languages: ["ja-JP"] });
+    await init({ language: "ko" });
+    expect(real.AppConfig().language).toBe("ko");
+  });
+});

@@ -64,7 +64,15 @@ export async function initConfig() {
 
   const contents = await Host.getConfig();
   if (!contents) {
-    updateConfig(defaultConfig());
+    // 첫 실행 — OS 언어를 따른다. 기본값(ko)을 그대로 쓰면 해외 사용자가 한국어 화면·한국어
+    // 게임 데이터·카카오 거래소로 시작해서, 자기 게임 아이템의 가격 검색이 언어 불일치로 막힌다.
+    // 한국어 Windows 는 그대로 ko 다. 기존 설정 파일이 있으면 여기 안 온다.
+    updateConfig({
+      ...defaultConfig(),
+      language: languageFromLocales(
+        typeof navigator === "undefined" ? [] : navigator.languages,
+      ),
+    });
     return;
   }
 
@@ -86,6 +94,21 @@ export async function initConfig() {
   }
 
   updateConfig(upgradeConfig(config));
+}
+
+/** OS 선호 언어 목록(navigator.languages) → 앱 언어. 앞에서부터 처음 맞는 것, 없으면 en.
+ *  번체 중국어만 cmn-Hant 다 — 간체(zh-CN)는 앱에 없으므로 en 으로 둔다. */
+export function languageFromLocales(
+  locales: readonly string[],
+): Config["language"] {
+  for (const raw of locales) {
+    const l = raw.toLowerCase();
+    if (/^zh-(tw|hk|mo)\b|^zh-hant\b/.test(l)) return "cmn-Hant";
+    const base = l.split("-")[0];
+    if (["ko", "ja", "de", "es", "pt", "fr", "ru", "en"].includes(base))
+      return base as Config["language"];
+  }
+  return "en";
 }
 
 export function poeWebApi() {
