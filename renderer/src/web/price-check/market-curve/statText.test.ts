@@ -36,16 +36,33 @@ const STATS: Record<
     matchers: [{ string: "Fügt # bis # Blitzschaden hinzu" }],
   },
 };
+// 스탯 id 대체 경로용 — 지금 언어 표의 줄들(STATS_ITERATOR 는 부분 문자열로 줄을 고른다)
+const LINES: Array<{
+  ref: string;
+  matchers: Array<{ string: string; negate?: true }>;
+  trade: { ids: Record<string, string[]> };
+}> = [];
 vi.mock("@/assets/data", () => ({
   STAT_BY_REF: (r: string) => STATS[r],
+  STATS_ITERATOR: function* (s: string) {
+    for (const l of LINES) if (JSON.stringify(l).includes(s)) yield l;
+  },
 }));
 const lang = vi.hoisted(() => ({ value: "en" }));
 vi.mock("@/web/Config", () => ({
   AppConfig: () => ({ language: lang.value }),
 }));
 
-const { buildRefIndex, statText, _setRefIndex, tablesFor, initStatText } =
-  await import("./statText");
+const {
+  buildRefIndex,
+  statText,
+  statId,
+  statLabel,
+  preferLocal,
+  _setRefIndex,
+  SOURCE_LANGS,
+  initStatText,
+} = await import("./statText");
 const { modKey } = await import("./appraiser");
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -173,18 +190,186 @@ describe("statText", () => {
   });
 });
 
-describe("tablesFor — 지금 언어가 아닌 쪽 표만 받는다", () => {
-  // 영어·한국어 사용자에게 회귀가 없다는 걸 여기서 못박는다: 자기 언어 표를 받으면
-  // 원문이 matchers[0] 표기로 바뀌어 보일 수 있다(번역이 아니라 재표기).
-  it("영어 UI 는 한국어 표만 — 지금과 같다", () => {
-    expect(tablesFor("en")).toEqual(["ko"]);
+describe("묶기(statId) — 같은 스탯이면 원문 언어와 상관없이 한 옵션", () => {
+  const IDX = () =>
+    new Map([
+      [
+        "공격 피해 #% 증폭",
+        { ref: "#% more Attack Damage", neg: false, lang: "ko" },
+      ],
+      [
+        "공격 피해 #% 감폭",
+        { ref: "#% more Attack Damage", neg: true, lang: "ko" },
+      ],
+      [
+        "#% more Attack Damage",
+        { ref: "#% more Attack Damage", neg: false, lang: "en" },
+      ],
+      [
+        "모든 원소 저항 #%",
+        { ref: "#% to all Elemental Resistances", neg: false, lang: "ko" },
+      ],
+    ]);
+  beforeEach(() => _setRefIndex(IDX()));
+  afterEach(() => {
+    lang.value = "en";
+    _setRefIndex(null);
   });
-  it("한국어 UI 는 영어 표만 — 영어 크라우드 옵션을 한국어로", () => {
-    expect(tablesFor("ko")).toEqual(["en"]);
+
+  it("한국어·영어 원문이 같은 열쇠, 부호가 다르면 다른 열쇠, 모르면 원문 그대로", () => {
+    expect(statId("공격 피해 #% 증폭")).toBe(statId("#% more Attack Damage"));
+    expect(statId("공격 피해 #% 감폭")).not.toBe(statId("공격 피해 #% 증폭"));
+    expect(statId("듣도 보도 못한 옵션 #")).toBe("듣도 보도 못한 옵션 #");
   });
-  it("그 외 언어는 둘 다", () => {
-    for (const l of ["de", "ja", "ru", "cmn-Hant"])
-      expect(tablesFor(l)).toEqual(["ko", "en"]);
+
+  it("음수 값이 붙은 원문(-#)도 같은 스탯으로 본다", () => {
+    expect(statId("모든 원소 저항 -#%")).toBe(statId("모든 원소 저항 #%"));
+  });
+
+  it("원문이 지금 언어면 다시 쓰지 않는다 — 한국어·영어 사용자의 표시는 그대로", () => {
+    lang.value = "ko";
+    expect(statText("공격 피해 #% 증폭")).toBe("공격 피해 #% 증폭");
+    lang.value = "en";
+    expect(statText("#% more Attack Damage")).toBe("#% more Attack Damage");
+  });
+
+  it("statLabel 은 지금 언어 원문을 먼저 고른다", () => {
+    lang.value = "ko";
+    expect(statLabel(["#% more Attack Damage", "공격 피해 #% 증폭"])).toBe(
+      "공격 피해 #% 증폭",
+    );
+    lang.value = "en";
+    expect(statLabel(["공격 피해 #% 증폭", "#% more Attack Damage"])).toBe(
+      "#% more Attack Damage",
+    );
+  });
+
+  it("원문 표는 언제나 한국어·영어 둘 다다", () => {
+    expect([...SOURCE_LANGS]).toEqual(["ko", "en"]);
+  });
+});
+
+describe("표 데이터의 흠을 견딘다", () => {
+  afterEach(() => {
+    lang.value = "en";
+    LINES.length = 0;
+    delete STATS["Causes #% increased Stun Buildup"];
+    _setRefIndex(null);
+  });
+
+  it("양수 표기가 하나도 없는 항목은 부호 표시가 틀린 것 — 양수로 읽는다(ru 기절 축적)", () => {
+    lang.value = "ru";
+    STATS["Causes #% increased Stun Buildup"] = {
+      ref: "Causes #% increased Stun Buildup",
+      matchers: [
+        {
+          string: "Вызывает увеличенное на #% накопление оглушения",
+          negate: true,
+        },
+      ],
+    };
+    _setRefIndex(
+      new Map([
+        [
+          "유발하는 기절 축적 #% 증가",
+          { ref: "Causes #% increased Stun Buildup", neg: false, lang: "ko" },
+        ],
+        [
+          "유발하는 기절 축적 #% 감소",
+          { ref: "Causes #% increased Stun Buildup", neg: true, lang: "ko" },
+        ],
+      ]),
+    );
+    expect(statText("유발하는 기절 축적 #% 증가")).toBe(
+      "Вызывает увеличенное на #% накопление оглушения",
+    );
+    // 음수는 그 문구로 옮기면 뜻이 뒤집히므로 원문 그대로
+    expect(statText("유발하는 기절 축적 #% 감소")).toBe(
+      "유발하는 기절 축적 #% 감소",
+    );
+  });
+
+  it("ref 로 못 찾으면 거래소 스탯 id 로 찾는다 — 문구가 하나일 때만", () => {
+    lang.value = "ko";
+    LINES.push({
+      ref: "Leech #% of Physical Attack Damage as Life",
+      matchers: [{ string: "물리 공격 피해의 #%를 생명력으로 흡수" }],
+      trade: {
+        ids: {
+          explicit: ["explicit.stat_2557965901", "explicit.stat_55876295"],
+        },
+      },
+    });
+    _setRefIndex(
+      new Map([
+        [
+          "Leeches #% of Physical Damage as Life",
+          {
+            ref: "Leeches #% of Physical Damage as Life",
+            neg: false,
+            lang: "en",
+            ids: ["55876295"],
+          },
+        ],
+      ]),
+    );
+    expect(statText("Leeches #% of Physical Damage as Life")).toBe(
+      "물리 공격 피해의 #%를 생명력으로 흡수",
+    );
+  });
+
+  it("스탯 id 로 찾은 문구가 둘 이상이면 쓰지 않는다 — 다른 스탯을 섞게 된다", () => {
+    lang.value = "ko";
+    for (const t of ["문구 하나 #", "문구 둘 #"])
+      LINES.push({
+        ref: t,
+        matchers: [{ string: t }],
+        trade: { ids: { explicit: ["explicit.stat_111"] } },
+      });
+    _setRefIndex(
+      new Map([
+        [
+          "Some stat #",
+          { ref: "Some stat #", neg: false, lang: "en", ids: ["111"] },
+        ],
+      ]),
+    );
+    expect(statText("Some stat #")).toBe("Some stat #");
+  });
+
+  it("preferLocal — 한국어가 묶은 두 스탯 중 local 쪽으로 본다", () => {
+    const idx = buildRefIndex(
+      JSON.stringify({
+        ref: "Leech #% of Physical Attack Damage as Life",
+        matchers: [{ string: "물리 공격 피해의 #%를 생명력으로 흡수" }],
+        trade: {
+          ids: {
+            explicit: ["explicit.stat_2557965901", "explicit.stat_55876295"],
+          },
+        },
+      }),
+      "ko",
+    );
+    preferLocal(
+      idx,
+      [
+        {
+          ref: "Leech #% of Physical Attack Damage as Life",
+          id: "base_life_leech_from_physical_attack_damage_permyriad",
+          trade: { ids: { explicit: ["explicit.stat_2557965901"] } },
+        },
+        {
+          ref: "Leeches #% of Physical Damage as Life",
+          id: "local_life_leech_from_physical_damage_permyriad",
+          trade: { ids: { explicit: ["explicit.stat_55876295"] } },
+        },
+      ]
+        .map((o) => JSON.stringify(o))
+        .join("\n"),
+    );
+    expect(idx.get("물리 공격 피해의 #%를 생명력으로 흡수")?.ref).toBe(
+      "Leeches #% of Physical Damage as Life",
+    );
   });
 });
 
@@ -292,10 +477,10 @@ describe("initStatText — 원문이 한국어든 영어든 지금 언어로", (
     expect(statText(EN)).toBe(LOCAL);
   });
 
-  it("한국어: 영어 표만 받고, 한국어 원문은 그대로 둔다", async () => {
+  it("한국어: 두 표를 다 받고(묶기용), 한국어 원문은 그대로 둔다", async () => {
     lang.value = "ko";
     await initStatText();
-    expect(asked.map((u) => u.includes("/en/"))).toEqual([true]);
+    expect(asked.map((u) => /\/(ko|en)\//.exec(u)?.[1])).toEqual(["ko", "en"]);
     expect(statText(KO)).toBe(KO);
     expect(statText(EN)).toBe(LOCAL);
   });
@@ -311,5 +496,40 @@ describe("initStatText — 원문이 한국어든 영어든 지금 언어로", (
     await initStatText();
     expect(statText(EN)).toBe(LOCAL);
     expect(statText(KO)).toBe(KO);
+  });
+});
+
+describe("실제 데이터 — 한국어·영어 원문이 한 옵션으로 묶인다", () => {
+  // 2026-09-24 점검에서 목록에 두 번 오르던 대표 사례(스냅샷 16개, 매물 339개 누락의 원인)
+  const read = (l: string) =>
+    readFileSync(
+      resolve(here, `../../../../public/data/${l}/stats.ndjson`),
+      "utf-8",
+    );
+  afterEach(() => _setRefIndex(null));
+
+  it("같은 스탯의 한국어·영어 원문이 같은 statId", () => {
+    const idx = buildRefIndex(read("ko"), "ko");
+    const en = read("en");
+    for (const [k, v] of buildRefIndex(en, "en"))
+      if (!idx.has(k)) idx.set(k, v);
+    preferLocal(idx, en);
+    _setRefIndex(idx);
+    for (const [ko, eng] of [
+      ["처치한 적 하나당 생명력 # 획득", "Gain # Life per enemy killed"],
+      ["정확도 #", "# to Accuracy Rating"],
+      ["치명타 피해 보너스 #%", "#% to Critical Damage Bonus"],
+      // 한국어판이 local/전역 두 스탯을 한 문구로 묶은 경우 — preferLocal 이 local 로 맞춘다
+      [
+        "물리 공격 피해의 #%를 생명력으로 흡수",
+        "Leeches #% of Physical Damage as Life",
+      ],
+      [
+        "물리 공격 피해의 #%를 마나로 흡수",
+        "Leeches #% of Physical Damage as Mana",
+      ],
+    ]) {
+      expect(`${ko} | ${statId(ko)}`).toBe(`${ko} | ${statId(eng)}`);
+    }
   });
 });

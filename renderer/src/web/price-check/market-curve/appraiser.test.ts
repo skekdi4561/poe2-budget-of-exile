@@ -303,7 +303,60 @@ describe("statOptions", () => {
     ];
     const s = statOptions(rows);
     expect(s).toHaveLength(1);
-    expect(s[0]).toEqual({ key: "치명타 확률 #%", n: 2, lo: 2, hi: 5 });
+    expect(s[0]).toEqual({
+      key: "치명타 확률 #%",
+      keys: ["치명타 확률 #%"],
+      n: 2,
+      lo: 2,
+      hi: 5,
+    });
+  });
+
+  it("idOf 로 같은 스탯의 두 원문을 한 옵션으로 — 매물 수·범위를 합친다", () => {
+    const row = (offs: Record<string, number>): RichRow => ({
+      pdps: 1,
+      edps: 0,
+      p: 1,
+      t: 0,
+      crit: 0,
+      block: 0,
+      offs,
+    });
+    const idOf = (k: string) =>
+      k === "Gain # Life per enemy killed"
+        ? "처치 생명력"
+        : k === "처치한 적 하나당 생명력 # 획득"
+          ? "처치 생명력"
+          : k;
+    const rows = [
+      row({ "처치한 적 하나당 생명력 # 획득": 20 }),
+      row({ "처치한 적 하나당 생명력 # 획득": 30 }),
+      row({ "Gain # Life per enemy killed": 45 }),
+    ];
+    const s = statOptions(rows, idOf);
+    expect(s).toEqual([
+      {
+        key: "처치 생명력",
+        keys: [
+          "처치한 적 하나당 생명력 # 획득",
+          "Gain # Life per enemy killed",
+        ],
+        n: 3,
+        lo: 20,
+        hi: 45,
+      },
+    ]);
+    // 필터도 같은 idOf 로 — 영어로 온 매물이 빠지지 않는다
+    const f = [{ key: "처치 생명력", min: 40, max: null }];
+    expect(rows.map((r) => matchesFilters(r.offs, f, idOf))).toEqual([
+      false,
+      false,
+      true,
+    ]);
+    // idOf 없이(원문 열쇠 그대로)는 예전처럼 따로 논다
+    expect(statOptions(rows).map((o) => o.key)).toEqual([
+      "처치한 적 하나당 생명력 # 획득",
+    ]);
   });
 });
 
@@ -691,5 +744,35 @@ describe("trendSpan — 추세 길이를 시간/일 중 무엇으로 말할까",
   it("이력이 없거나 아주 짧아도 0시간이라고 말하지 않는다", () => {
     expect(trendSpan(0)).toEqual({ unit: "h", value: 1 });
     expect(trendSpan(0.2)).toEqual({ unit: "h", value: 1 });
+  });
+});
+
+describe("옵션 값 읽기 — 부호와 숫자 없는 영어 원문", () => {
+  // 음수 옵션이 양수로 읽히면 범위 힌트(lo~hi)가 거짓이고 최소값 필터가 반대로 걸린다.
+  // 숫자 없는 영어 원문("an additional")이 0 이면 한국어 "1개"와 묶었을 때 최소 1 필터에서 빠진다.
+  it("음수는 음수로, 'an additional' 은 1, 범위 하이픈은 부호가 아니다", () => {
+    const snap = {
+      taken_at: 0,
+      bows: [
+        {
+          pdps: 100,
+          edps: 0,
+          price: 1,
+          cur: "exalted",
+          mods: [
+            "모든 원소 저항 -20%",
+            "Loads an additional bolt",
+            "최근 4초 이내 재장전한 경우 30% 확률",
+            "피해 10-20 추가 테스트",
+          ],
+        },
+      ],
+    };
+    const { rows } = rowsFromSnapshot(snap, { exalted: 1 }, new Set(), 0);
+    const o = rows[0].offs;
+    expect(o["모든 원소 저항 -#%"]).toBe(-20);
+    expect(o["Loads an additional bolt"]).toBe(1);
+    expect(o["최근 #초 이내 재장전한 경우 #% 확률"]).toBe(30);
+    expect(o["피해 #-# 추가 테스트"]).toBe(20);
   });
 });

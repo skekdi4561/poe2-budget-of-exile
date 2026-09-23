@@ -99,7 +99,10 @@ export interface RichRow {
 }
 // 24h 매물에서 실제로 관측된 옵션 하나 — 필터 검색 목록의 항목
 export interface StatOption {
-  key: string; // "치명타 확률 #%" 처럼 숫자를 # 으로 지운 옵션 열쇠
+  // 옵션 열쇠. statOptions 에 넘긴 idOf 가 정한다 — 위젯은 statId 를 넘겨서 같은 스탯이면
+  // 원문 언어(한국어/영어)와 상관없이 같은 열쇠가 된다. idOf 가 없으면 원문 열쇠 그대로.
+  key: string;
+  keys: string[]; // 이 열쇠로 묶인 원문 열쇠들("치명타 확률 #%" 처럼 숫자를 # 으로 지운 것), 많이 나온 순
   n: number; // 이 옵션을 가진 매물 수
   lo: number; // 관측된 최소값 — 입력 힌트용
   hi: number; // 관측된 최대값
@@ -107,12 +110,12 @@ export interface StatOption {
 // 사용자가 추가한 필터 행 — min/max 모두 비우면 "이 옵션이 있기만 하면"
 export interface StatFilter {
   key: string;
+  keys?: string[]; // 표시용 원문 열쇠들(StatOption.keys) — 비교에는 안 쓴다
   min: number | null;
   max: number | null;
 }
 export interface MarketBoard {
   rows: RichRow[];
-  stats: StatOption[];
   sample: number;
   ageHours: number;
   rates: Record<string, number>;
@@ -222,8 +225,18 @@ const modVal = (m: string) => {
   // 첫 숫자가 아니라 **가장 큰 숫자**를 쓴다. "최근 4초 이내 재장전한 경우 … 30% 확률"
   // 처럼 문턱값이 앞에 오는 옵션에서 첫 숫자를 잡으면 필터가 4 를 값으로 보고 30 이상을
   // 요구하는 조건이 항상 0건이 되며, 관측 힌트(lo~hi)도 거짓을 말한다.
-  const ns = String(m).match(/[\d.]+/g);
-  return ns ? Math.max(...ns.map(Number).filter((n) => isFinite(n))) : 0;
+  // 부호는 살린다 — "모든 원소 저항 -20%" 는 -20 이다(예전엔 20 으로 읽혀 범위가 거짓이었다).
+  // 그래서 "가장 큰 숫자"는 절댓값 기준이다. 숫자 사이 하이픈(10-20)은 범위라 부호가 아니다.
+  const ns = (
+    String(m)
+      .replace(/(\d)-(?=\d)/g, "$1 ")
+      .match(/-?[\d.]+/g) ?? []
+  )
+    .map(Number)
+    .filter((n) => isFinite(n));
+  // 숫자가 없는 영어 원문 "Loads an additional bolt" 는 한국어 "추가 볼트 1개" 와 같은 옵션이다
+  if (!ns.length) return /\ban additional\b/i.test(m) ? 1 : 0;
+  return ns.reduce((a, b) => (Math.abs(b) > Math.abs(a) ? b : a));
 };
 // 방어구(방패)는 지표가 방어도라 세는 옵션이 다르다. 무기 목록을 그대로 쓰면 방어도를
 // 만드는 옵션이 '방어도 밖 옵션' 상위를 차지하고, 그걸 조건으로 걸면 "이 조건을 걸면 같은
@@ -265,30 +278,67 @@ export function optRank(key: string): number {
   return 1;
 }
 
-// 24h 매물에서 관측된 옵션 전체 목록 — 거래소 필터처럼 검색해 고른다
-export function statOptions(rows: RichRow[]): StatOption[] {
-  const agg = new Map<string, { n: number; lo: number; hi: number }>();
-  for (const r of rows)
-    for (const [k, v] of Object.entries(r.offs)) {
-      const a = agg.get(k);
-      if (!a) agg.set(k, { n: 1, lo: v, hi: v });
+const sameKey = (k: string) => k;
+
+// 매물 하나의 옵션을 idOf 기준 열쇠로 다시 묶는다 — 같은 열쇠가 겹치면 큰 값.
+function groupOffs(
+  offs: Record<string, number>,
+  idOf: (k: string) => string,
+): Record<string, number> {
+  if (idOf === sameKey) return offs;
+  const out: Record<string, number> = {};
+  for (const [k, v] of Object.entries(offs)) {
+    const id = idOf(k);
+    if (!(id in out) || v > out[id]) out[id] = v;
+  }
+  return out;
+}
+
+// 24h 매물에서 관측된 옵션 전체 목록 — 거래소 필터처럼 검색해 고른다.
+// idOf 로 같은 스탯의 한국어·영어 원문을 한 옵션으로 묶는다(위젯은 statId 를 넘긴다).
+export function statOptions(
+  rows: RichRow[],
+  idOf: (k: string) => string = sameKey,
+): StatOption[] {
+  const agg = new Map<
+    string,
+    { n: number; lo: number; hi: number; raw: Map<string, number> }
+  >();
+  for (const r of rows) {
+    for (const [id, v] of Object.entries(groupOffs(r.offs, idOf))) {
+      const a = agg.get(id);
+      if (!a) agg.set(id, { n: 1, lo: v, hi: v, raw: new Map() });
       else {
         a.n++;
         if (v < a.lo) a.lo = v;
         if (v > a.hi) a.hi = v;
       }
     }
+    for (const k of Object.keys(r.offs)) {
+      const raw = agg.get(idOf(k))!.raw;
+      raw.set(k, (raw.get(k) ?? 0) + 1);
+    }
+  }
   return [...agg.entries()]
     .filter(([, a]) => a.n >= 2) // 곡선이 성립하려면 최소 2개
-    .map(([key, a]) => ({ key, n: a.n, lo: a.lo, hi: a.hi }))
+    .map(([key, a]) => ({
+      key,
+      keys: [...a.raw].sort((x, y) => y[1] - x[1]).map(([k]) => k),
+      n: a.n,
+      lo: a.lo,
+      hi: a.hi,
+    }))
     .sort((a, b) => optRank(a.key) - optRank(b.key) || b.n - a.n);
 }
 
 // 필터 행 전부 만족해야 통과. min/max 비우면 "옵션 존재"만 본다.
+// 필터 열쇠는 statOptions 에 넘긴 것과 **같은 idOf** 로 만든 열쇠다.
 export function matchesFilters(
-  offs: Record<string, number>,
+  rawOffs: Record<string, number>,
   filters: StatFilter[],
+  idOf: (k: string) => string = sameKey,
 ): boolean {
+  const offs = filters.length ? groupOffs(rawOffs, idOf) : rawOffs;
   return filters.every((f) => {
     if (!(f.key in offs)) return false; // 존재 판정은 값이 아니라 열쇠로 — 값 없는 옵션이 '죽은 필터'가 됐다
     const v = offs[f.key] || 0;
@@ -373,6 +423,18 @@ export function formatEx(
 // 축만 로케일 자릿수 구분(1,200 / 1.200)을 쓰고 표·말풍선은 1200 이던 어긋남을 없앤다.
 export const fmtMetric = (d: number, locale: string | undefined = uiLocale()) =>
   Math.round(d).toLocaleString(locale);
+
+// 옵션 값 범위(lo~hi)·매물 수 — 소수 옵션(치명타 확률 1.5~5.55)이 독일어에서 1,5 로 나오게.
+// vue-i18n 에 숫자를 그대로 넘기면 로케일 없이 문자열이 된다.
+export const fmtNum = (v: number, locale: string | undefined = uiLocale()) =>
+  v.toLocaleString(locale, { maximumFractionDigits: 2 });
+
+// 추세 변화율 — 언어마다 % 붙이는 법이 다르다(독일어·프랑스어 "12 %").
+export const fmtPct = (pct: number, locale: string | undefined = uiLocale()) =>
+  (pct / 100).toLocaleString(locale, {
+    style: "percent",
+    maximumFractionDigits: 0,
+  });
 
 // 가격축 눈금 라벨 — "25.0 div" 대신 "25 div" 처럼 군더더기 없이.
 // **숫자는 로케일을 따른다** — 독일어에서 1.3 은 1,3 이다. 최전선 표(toLocaleString)와
@@ -503,7 +565,6 @@ export async function marketBoard(
 
   return {
     rows,
-    stats: statOptions(rows),
     sample: rows.length,
     ageHours: (Date.now() - Math.max(...rows.map((r) => r.t))) / 3_600_000,
     rates,

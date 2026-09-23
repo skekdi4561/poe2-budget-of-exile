@@ -70,7 +70,8 @@
           1 {{ t(":" + c.key) }}
           <span class="text-gray-500">=</span>
           <span class="text-yellow-300 font-medium">{{ c.ex }}</span>
-          <span class="text-gray-500">{{ t(":cur_exalted") }}</span>
+          <!-- 숫자 뒤 통화 이름은 러·서 등에서 수 일치가 깨진다("490 Экзальт") — 위젯 가격과 같은 약어 ex -->
+          <span class="text-gray-500">ex</span>
         </span>
       </div>
 
@@ -222,9 +223,13 @@
                   @mousedown.prevent="addFilter(s)"
                   class="w-full text-left px-3 py-1.5 hover:bg-gray-800 flex justify-between gap-2"
                 >
-                  <span class="truncate">{{ statText(s.key) }}</span>
+                  <span class="truncate">{{ statLabel(s.keys) }}</span>
                   <span class="text-gray-500 whitespace-nowrap text-sm">{{
-                    t(":stat_meta", { n: s.n, lo: s.lo, hi: s.hi })
+                    t(":stat_meta", {
+                      n: fmtNum(s.n),
+                      lo: fmtNum(s.lo),
+                      hi: fmtNum(s.hi),
+                    })
                   }}</span>
                 </button>
               </div>
@@ -242,9 +247,11 @@
               :key="f.key + i"
               class="flex items-center gap-2 mb-1.5 bg-gray-900 rounded px-2 py-1.5 border border-gray-800"
             >
-              <span class="flex-1 truncate" :title="statText(f.key)">{{
-                statText(f.key)
-              }}</span>
+              <span
+                class="flex-1 truncate"
+                :title="statLabel(f.keys ?? [f.key])"
+                >{{ statLabel(f.keys ?? [f.key]) }}</span
+              >
               <input
                 v-model.number="f.min"
                 type="number"
@@ -377,7 +384,7 @@
                   : t(":trend_change", { d: trendDays })
               }}
               {{ trendChange.up ? "▲" : "▼" }}
-              {{ trendChange.pct }}%
+              {{ fmtPct(trendChange.pct) }}
             </span>
           </div>
           <canvas
@@ -408,7 +415,7 @@ import {
 } from "vue";
 import Widget from "@/web/overlay/Widget.vue";
 import { useI18nNs } from "@/web/i18n";
-import { statText, initStatText } from "./statText";
+import { statId, statLabel, initStatText } from "./statText";
 import { Host } from "@/web/background/IPC";
 import { useLeagues } from "@/web/background/Leagues";
 import type { WidgetManager, WidgetSpec } from "@/web/overlay/interfaces";
@@ -419,10 +426,13 @@ import {
   formatEx,
   lastBoardError,
   matchesFilters,
+  statOptions,
   metricRows,
   priceTicks,
   fmtTick,
   fmtMetric,
+  fmtNum,
+  fmtPct,
   trendSpan,
   MarketBoard,
   StatOption,
@@ -471,10 +481,10 @@ export default defineComponent({
     },
   },
   setup(props) {
-    // 화면 문자열은 전부 app_i18n.json 의 market_curve 아래에 있다(ko/en). 다른 언어는
-    // 키가 없어 en 으로 대체된다 — 즉 앱 언어 설정을 그대로 따라간다.
+    // 화면 문자열은 전부 app_i18n.json 의 market_curve 아래에 있다(10개 언어 — i18n.test.ts 가
+    // 키 누락을 막는다). 앱 언어 설정을 그대로 따라간다.
     const { t } = useI18nNs("market_curve");
-    // 옵션 이름을 앱 언어로 보여주기 위한 표(한국어면 아무것도 안 받는다).
+    // 옵션 이름을 앱 언어로 보여주고 한국어·영어 원문을 한 옵션으로 묶기 위한 표.
     // 일부러 기다리지 않는다 — 표가 늦게 와도 statTextRev 가 다시 그리게 한다.
     // void 대신 catch 를 붙인다: void 는 거부를 미처리로 남긴다.
     initStatText().catch(() => {});
@@ -649,23 +659,29 @@ export default defineComponent({
     function hideDropSoon() {
       setTimeout(() => (showDrop.value = false), 150);
     }
+    // 옵션 목록 — 같은 스탯이면 한국어·영어 원문을 한 줄로 묶는다(statId). 예전엔 원문별로
+    // 따로 올라 하나를 고르면 다른 언어로 온 매물이 전부 빠졌다(실측 2,223개 중 339개).
+    // statId 가 표 로딩(statTextRev)을 읽으므로 표가 늦게 와도 다시 묶인다.
+    const stats = computed<StatOption[]>(() =>
+      board.value ? statOptions(board.value.rows, statId) : [],
+    );
     const matchedStats = computed<StatOption[]>(() => {
       if (!board.value) return [];
       const q = query.value.trim().toLowerCase();
       const used = new Set(filters.map((f) => f.key));
-      const pool = board.value.stats.filter((s) => !used.has(s.key));
+      const pool = stats.value.filter((s) => !used.has(s.key));
       if (!q) return pool.slice(0, 20); // 비어 있으면 자주 보이는 옵션 순
       // 표시문(현재 언어)으로도 찾게 한다 — 영어 UI 에서 한국어 원문만 뒤지면 아무것도 안 걸린다
       return pool
         .filter(
           (s) =>
-            s.key.toLowerCase().includes(q) ||
-            statText(s.key).toLowerCase().includes(q),
+            s.keys.some((k) => k.toLowerCase().includes(q)) ||
+            statLabel(s.keys).toLowerCase().includes(q),
         )
         .slice(0, 20);
     });
     function addFilter(s: StatOption) {
-      filters.push({ key: s.key, min: null, max: null });
+      filters.push({ key: s.key, keys: s.keys, min: null, max: null });
       query.value = "";
       showDrop.value = false;
     }
@@ -741,7 +757,7 @@ export default defineComponent({
         (r) =>
           r.crit >= lo &&
           r.block >= bl &&
-          matchesFilters(r.offs, normFilters.value),
+          matchesFilters(r.offs, normFilters.value, statId),
       );
     });
     // 곡선에 실제로 들어가는 매물 수. filtered.length 를 쓰면 metricRows 의 d>0 에서
@@ -1099,7 +1115,9 @@ export default defineComponent({
       trendHours,
       trendShortSpan,
       t,
-      statText,
+      statLabel,
+      fmtNum,
+      fmtPct,
       trendChange,
       trendCanvasEl,
       board,
