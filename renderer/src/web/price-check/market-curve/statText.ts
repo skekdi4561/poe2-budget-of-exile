@@ -10,6 +10,11 @@
 // 한국어 UI 에선 그게 영어로 섞여 보였다. 그래서 지금 언어가 아닌 쪽 표를 **둘 다** 받는다.
 //
 // 못 찾은 옵션은 원문 그대로 둔다 — 빈 칸이나 키 이름이 뜨는 것보다 낫다.
+//
+// **부호를 기억한다.** 스탯 표는 "증폭/감폭", "증가/감소"를 한 ref 에 묶고 뒤쪽을 negate 로
+// 표시한다. 예전엔 원문이 negate 쪽이어도 번역을 matchers[0](양수 쪽)으로 골라서,
+// "공격 피해 20% 감폭"이 영어 UI 에서 "#% more Attack Damage"로 떴다 — 필터로 고르면 정반대
+// 매물이 걸렸다(2026-09-23 실측: 스냅샷 16개에서 3종·78건, ko 외 모든 언어).
 import { ref } from "vue";
 import { AppConfig } from "@/web/Config";
 import { STAT_BY_REF } from "@/assets/data";
@@ -18,16 +23,21 @@ import { modKey } from "./appraiser";
 // 표가 준비되면 올라간다. 화면이 이 값을 읽어 두면 로딩이 끝났을 때 저절로 다시 그려진다.
 export const statTextRev = ref(0);
 
-let refIndex: Map<string, string> | null = null;
+/** 원문 표기 하나가 가리키는 스탯과, 그 표기가 부호를 뒤집은 쪽(negate)인지. */
+export type RefEntry = { ref: string; neg: boolean };
+let refIndex: Map<string, RefEntry> | null = null;
 // 어느 언어 기준으로 준비했는지 — 설정에서 언어를 바꿔도 앱을 껐다 켜지 않게 한다.
 let builtFor: string | null = null;
 
-/** ko/stats.ndjson 한 덩어리에서 "정규화된 한국어 표기 → ref" 표를 만든다. */
-export function buildRefIndex(ndjson: string): Map<string, string> {
-  const out = new Map<string, string>();
+/** stats.ndjson 한 덩어리에서 "정규화된 원문 표기 → {ref, 부호}" 표를 만든다. */
+export function buildRefIndex(ndjson: string): Map<string, RefEntry> {
+  const out = new Map<string, RefEntry>();
   for (const line of ndjson.split("\n")) {
     if (!line.trim()) continue;
-    let o: { ref?: string; matchers?: Array<{ string?: string }> };
+    let o: {
+      ref?: string;
+      matchers?: Array<{ string?: string; negate?: boolean }>;
+    };
     try {
       o = JSON.parse(line);
     } catch {
@@ -37,7 +47,7 @@ export function buildRefIndex(ndjson: string): Map<string, string> {
     for (const m of o.matchers ?? []) {
       const k = modKey(m.string ?? "");
       // 먼저 나온 matcher 를 이긴다 — 뒤엣것은 대개 값이 1 로 고정된 특수형이다
-      if (k && !out.has(k)) out.set(k, o.ref);
+      if (k && !out.has(k)) out.set(k, { ref: o.ref, neg: m.negate === true });
     }
   }
   return out;
@@ -57,7 +67,7 @@ export async function initStatText(): Promise<void> {
   const lang = AppConfig().language;
   if (builtFor === lang) return;
   builtFor = lang;
-  const idx = new Map<string, string>();
+  const idx = new Map<string, RefEntry>();
   for (const l of tablesFor(lang)) {
     try {
       const r = await fetch(
@@ -85,15 +95,20 @@ export function statText(key: string): string {
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   statTextRev.value;
   if (!refIndex) return key;
-  const r = refIndex.get(key);
-  if (!r) return key;
-  const s = STAT_BY_REF(r);
-  const local = s?.matchers?.[0]?.string;
-  return local ? modKey(local) : r; // 표기가 없으면 ref(영문 정본)로
+  const e = refIndex.get(key);
+  if (!e) return key;
+  // 원문과 **같은 부호**의 표기를 고른다 — 첫 표기는 대개 양수 쪽이다
+  const local = STAT_BY_REF(e.ref)?.matchers?.find(
+    (m) => (m.negate === true) === e.neg,
+  )?.string;
+  if (local) return modKey(local);
+  // 같은 부호 표기가 없으면: 양수는 ref(영문 정본)로, 음수는 원문 그대로 —
+  // ref 는 양수 쪽 문구라 음수 원문을 ref 로 바꾸면 뜻이 뒤집힌다.
+  return e.neg ? key : e.ref;
 }
 
 /** 테스트 전용 — 표를 직접 밀어 넣는다. */
-export function _setRefIndex(m: Map<string, string> | null): void {
+export function _setRefIndex(m: Map<string, RefEntry> | null): void {
   refIndex = m;
   builtFor = null;
   statTextRev.value++;

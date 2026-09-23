@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 
 const STATS: Record<
   string,
-  { ref: string; matchers: Array<{ string: string }> }
+  { ref: string; matchers: Array<{ string: string; negate?: true }> }
 > = {
   "#% increased Physical Damage": {
     ref: "#% increased Physical Damage",
@@ -18,6 +18,18 @@ const STATS: Record<
     matchers: [{ string: "Adds # to # Fire Damage" }],
   },
   "표기없음": { ref: "표기없음", matchers: [] },
+  // 부호 쌍: 한 ref 에 양수 표기와 negate 표기가 같이 있다(스탯 표의 실제 모양)
+  "#% more Attack Damage": {
+    ref: "#% more Attack Damage",
+    matchers: [
+      { string: "#% more Attack Damage" },
+      { string: "#% less Attack Damage", negate: true },
+    ],
+  },
+  "#% increased Poison Duration": {
+    ref: "#% increased Poison Duration",
+    matchers: [{ string: "#% increased Poison Duration" }], // negate 표기 없음
+  },
   // 지금 언어(여기선 독일어 흉내) 표기가 원문 두 언어와 모두 달라야 "옮겼다"가 보인다
   "Adds # to # Lightning Damage": {
     ref: "Adds # to # Lightning Damage",
@@ -54,8 +66,14 @@ describe("buildRefIndex", () => {
         }),
       ].join("\n"),
     );
-    expect(idx.get("물리 피해 #% 증가")).toBe("#% increased Physical Damage");
-    expect(idx.get("화염 피해 #~# 추가")).toBe("Adds # to # Fire Damage");
+    expect(idx.get("물리 피해 #% 증가")).toEqual({
+      ref: "#% increased Physical Damage",
+      neg: false,
+    });
+    expect(idx.get("화염 피해 #~# 추가")).toEqual({
+      ref: "Adds # to # Fire Damage",
+      neg: false,
+    });
     expect(idx.size).toBe(2); // 깨진 줄은 건너뛰고 나머지는 살린다
   });
 
@@ -67,7 +85,10 @@ describe("buildRefIndex", () => {
         matchers: [{ string: "정확도 +#" }],
       }),
     );
-    expect(idx.get("정확도 #")).toBe("# to Accuracy Rating");
+    expect(idx.get("정확도 #")).toEqual({
+      ref: "# to Accuracy Rating",
+      neg: false,
+    });
   });
 });
 
@@ -80,20 +101,74 @@ describe("statText", () => {
 
   it("표에 있으면 지금 언어 표기로", () => {
     _setRefIndex(
-      new Map([["물리 피해 #% 증가", "#% increased Physical Damage"]]),
+      new Map([
+        [
+          "물리 피해 #% 증가",
+          { ref: "#% increased Physical Damage", neg: false },
+        ],
+      ]),
     );
     expect(statText("물리 피해 #% 증가")).toBe("#% increased Physical Damage");
   });
 
   it("표에 없는 옵션은 원문 그대로", () => {
     _setRefIndex(
-      new Map([["물리 피해 #% 증가", "#% increased Physical Damage"]]),
+      new Map([
+        [
+          "물리 피해 #% 증가",
+          { ref: "#% increased Physical Damage", neg: false },
+        ],
+      ]),
     );
     expect(statText("듣도 보도 못한 옵션 #")).toBe("듣도 보도 못한 옵션 #");
   });
 
+  it("negate 원문은 negate 표기로 — 뜻이 뒤집히지 않는다", () => {
+    // "공격 피해 20% 감폭"(less)이 "more"로 뜨면 필터로 고른 매물이 정반대가 된다
+    _setRefIndex(
+      new Map([
+        ["공격 피해 #% 증폭", { ref: "#% more Attack Damage", neg: false }],
+        ["공격 피해 #% 감폭", { ref: "#% more Attack Damage", neg: true }],
+      ]),
+    );
+    expect(statText("공격 피해 #% 증폭")).toBe("#% more Attack Damage");
+    expect(statText("공격 피해 #% 감폭")).toBe("#% less Attack Damage");
+  });
+
+  it("지금 언어에 negate 표기가 없으면 원문 그대로 — ref 로 물러나면 뜻이 뒤집힌다", () => {
+    _setRefIndex(
+      new Map([
+        [
+          "중독 지속시간 #% 감소",
+          { ref: "#% increased Poison Duration", neg: true },
+        ],
+      ]),
+    );
+    expect(statText("중독 지속시간 #% 감소")).toBe("중독 지속시간 #% 감소");
+  });
+
+  it("buildRefIndex 가 negate 표기를 부호와 함께 기억한다", () => {
+    const idx = buildRefIndex(
+      JSON.stringify({
+        ref: "#% more Attack Damage",
+        matchers: [
+          { string: "공격 피해 #% 증폭" },
+          { string: "공격 피해 #% 감폭", negate: true },
+        ],
+      }),
+    );
+    expect(idx.get("공격 피해 #% 증폭")).toEqual({
+      ref: "#% more Attack Damage",
+      neg: false,
+    });
+    expect(idx.get("공격 피해 #% 감폭")).toEqual({
+      ref: "#% more Attack Damage",
+      neg: true,
+    });
+  });
+
   it("그 언어에 표기가 없으면 ref(영문 정본)로 물러난다", () => {
-    _setRefIndex(new Map([["아무거나 #", "표기없음"]]));
+    _setRefIndex(new Map([["아무거나 #", { ref: "표기없음", neg: false }]]));
     expect(statText("아무거나 #")).toBe("표기없음");
   });
 });
@@ -151,7 +226,37 @@ describe("실제 데이터", () => {
       "번개 피해 #~# 추가",
       "물리 피해 #~# 추가",
     ]) {
-      expect(`${k} -> ${idx.get(k) ?? "(없음)"}`).not.toContain("(없음)");
+      expect(`${k} -> ${idx.get(k)?.ref ?? "(없음)"}`).not.toContain("(없음)");
+    }
+  });
+
+  it("실제 수집에 나오는 negate 옵션이 부호째 기억되고, 영어 표에 같은 부호 표기가 있다", () => {
+    // 2026-09-23 실측에서 뜻이 뒤집혀 보이던 세 옵션(스냅샷 16개, 78건)
+    const read = (l: string) =>
+      readFileSync(
+        resolve(here, `../../../../public/data/${l}/stats.ndjson`),
+        "utf-8",
+      );
+    const ko = buildRefIndex(read("ko"));
+    const enNeg = new Set<string>();
+    for (const line of read("en").split("\n")) {
+      if (!line.trim()) continue;
+      const o = JSON.parse(line) as {
+        ref: string;
+        matchers?: Array<{ negate?: boolean }>;
+      };
+      if (o.matchers?.some((m) => m.negate === true)) enNeg.add(o.ref);
+    }
+    for (const k of [
+      "공격 피해 #% 감폭",
+      "중독 지속시간 #% 감소",
+      "최대 마나 #% 감소",
+    ]) {
+      const e = ko.get(k);
+      expect(`${k} -> ${e?.neg}`).toBe(`${k} -> true`);
+      expect(`${k} -> en negate ${enNeg.has(e?.ref ?? "")}`).toBe(
+        `${k} -> en negate true`,
+      );
     }
   });
 });
