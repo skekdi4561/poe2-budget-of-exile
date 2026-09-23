@@ -142,6 +142,7 @@ PoE2 는 이 무기 분류를 Quarterstaff 로 개명했습니다. 36개 베이�
 | Português | `trade_result.gem_sockets` | `Engastes` | **`Encaixes`** | 위와 같음 |
 | Português | `tips.tip_9` | `…preencher os engastes vazios de runa…` | **`…preencher os encaixes vazios de runa…`** | 위와 같음. 이 낱말 하나만 바꿈 |
 | Português | `filters.empty_rune_socket` | `Vazio no Engaste de Runas` | **`Vazio no Encaixe de Runas`** | 위와 같음. 현재 코드에서 이 키를 쓰는 곳은 0건이라 우선순위 낮음 |
+| 正體中文 | `filters.tag_implicit` | `隨機` | **`固定`** | `tag_explicit` 도 `隨機`(무작위)라 고정/부여 속성 칩이 구분되지 않음. 게임 `IMPLICIT_MODIFIER: '固定詞綴'`, 같은 파일 `item.mod_implicit` = `固定詞綴` |
 
 ---
 

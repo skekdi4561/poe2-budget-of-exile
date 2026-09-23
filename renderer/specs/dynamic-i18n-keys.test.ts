@@ -50,5 +50,10 @@ describe("변수로 만든 i18n 키가 en 에 있다", () => {
     const values = [...enumBody.matchAll(/=\s*"([^"]+)"/g)].map((m) => m[1]);
     expect(values.length).toBeGreaterThan(10);
     expect(values.filter((v) => typeof en[v] !== "string")).toEqual([]);
+    // SourceInfo.vue 는 t(`item.mod_${type}`) 로 같은 값들을 또 쓴다 — 6개가 빠져 있었다
+    const item = en.item as Record<string, unknown>;
+    expect(values.filter((v) => typeof item[`mod_${v}`] !== "string")).toEqual(
+      [],
+    );
   });
 });

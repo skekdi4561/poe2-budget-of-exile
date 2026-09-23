@@ -124,7 +124,12 @@
     "ascendancy_points": "포인트: {0}",
     "duplicates": "중복: {0}",
     "wrong_language": "POE2 언어가 앱 언어와 다릅니다",
-    "wrong_language_help": "POE2 는 {0} 인데 앱은 {1} 로 설정되어 있습니다"
+    "wrong_language_help": "POE2 는 {0} 인데 앱은 {1} 로 설정되어 있습니다",
+    "mod_enchant": "인챈트",
+    "mod_veiled": "장막",
+    "mod_added-rune": "증강물",
+    "mod_sanctum": "성역",
+    "mod_skill": "스킬"
   },
   "item_category": {
     "prop": "유형: {0}",

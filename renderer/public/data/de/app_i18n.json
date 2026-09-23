@@ -124,7 +124,12 @@
     "has_elemental_cold_affix": "Kälte",
     "has_elemental_fire_affix": "Feuer",
     "has_elemental_lightning_affix": "Blitz",
-    "ascendancy_points": "Punkte: {0}"
+    "ascendancy_points": "Punkte: {0}",
+    "mod_enchant": "Verzauberung",
+    "mod_veiled": "Verschleiert",
+    "mod_added-rune": "Augmentations",
+    "mod_sanctum": "Heiligtum",
+    "mod_skill": "Fertigkeit"
   },
   "item_category": {
     "prop": "Kategorie: {0}",

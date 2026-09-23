@@ -122,7 +122,12 @@
     "has_elemental_cold_affix": "Hielo",
     "has_elemental_lightning_affix": "Rayo",
     "open_on_craftofexile": "Objeto base abierto en Craft of Exile",
-    "ascendancy_points": "Puntos: {0}"
+    "ascendancy_points": "Puntos: {0}",
+    "mod_enchant": "encantado",
+    "mod_veiled": "Velado",
+    "mod_added-rune": "mejora",
+    "mod_sanctum": "Santuario",
+    "mod_skill": "Habilidad"
   },
   "item_category": {
     "prop": "Categoría: {0}",

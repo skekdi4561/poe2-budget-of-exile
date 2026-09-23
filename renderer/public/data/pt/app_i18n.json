@@ -119,7 +119,11 @@
     "victorious": "Triunfante",
     "cowardly": "Covarde",
     "deadly": "Mortal",
-    "open_on_craftofexile": "Abrir item base no Craft of Exile"
+    "open_on_craftofexile": "Abrir item base no Craft of Exile",
+    "mod_enchant": "encantado",
+    "mod_veiled": "Velado",
+    "mod_added-rune": "Aprimoramento",
+    "mod_skill": "Habilidade"
   },
   "item_category": {
     "prop": "Categoria: {0}",

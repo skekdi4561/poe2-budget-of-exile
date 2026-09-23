@@ -124,7 +124,12 @@
     "find_same_price": "篩選",
     "find_same_price_type": "篩選：",
     "price": "僅限價格",
-    "price_and_item": "價格與物品"
+    "price_and_item": "價格與物品",
+    "mod_enchant": "附魔",
+    "mod_veiled": "隱匿",
+    "mod_added-rune": "符文",
+    "mod_sanctum": "聖域聯盟",
+    "mod_skill": "技能"
   },
   "item_category": {
     "prop": "類別：{0}",
@@ -194,7 +199,7 @@
     "hide_anointment": "買家可能會更改塗抹",
     "hide_for_crafting": "僅在作為基礎物品價格檢查時選擇",
     "hide_empty_mod": "僅在物品有 6 個詞綴（其中 1 個已製作）或有 5 個詞綴時選擇",
-    "tag_implicit": "隨機",
+    "tag_implicit": "固定",
     "tag_fractured": "破裂",
     "tag_crafted": "已製作",
     "tag_scourge": "災厄",
@@ -540,7 +545,7 @@
   "hide_attr_smallest_total": "最小的能力值偏低，幾乎沒有價值",
   "pseudo": "偽屬性",
   "explicit": "隨機",
-  "implicit": "隨機",
+  "implicit": "固定詞綴",
   "crafted": "已製作",
   "enchant": "附魔",
   "scourge": "災厄",

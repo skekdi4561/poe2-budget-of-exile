@@ -124,7 +124,12 @@
     "ascendancy_points": "Points : {0}",
     "victorious": "Victorieux",
     "cowardly": "Lâche",
-    "deadly": "Mortel"
+    "deadly": "Mortel",
+    "mod_enchant": "enchante",
+    "mod_veiled": "Voilé",
+    "mod_added-rune": "Rune",
+    "mod_sanctum": "Sanctuaire",
+    "mod_skill": "Compétence"
   },
   "item_category": {
     "prop": "Catégorie : {0}",

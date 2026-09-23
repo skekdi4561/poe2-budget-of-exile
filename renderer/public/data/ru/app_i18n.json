@@ -129,7 +129,11 @@
     "uses_remaining": "Осталось использовать: {0}",
     "victorious": "Победный",
     "cowardly": "Трусливый",
-    "deadly": "Смертельный"
+    "deadly": "Смертельный",
+    "mod_enchant": "зачарование",
+    "mod_veiled": "Завуалирован",
+    "mod_added-rune": "усилителей",
+    "mod_sanctum": "Святилище"
   },
   "item_category": {
     "prop": "Категория: {0}",

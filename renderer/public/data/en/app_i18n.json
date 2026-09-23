@@ -127,7 +127,13 @@
     "deadly": "Deadly",
     "wrong_language": "POE2 language doesn't match PoE2 Budget of Exile",
     "wrong_language_help": "POE2 is set to {0} but PoE2 Budget of Exile is currently set to {1}",
-    "duplicates": "Duplicates: {0}"
+    "duplicates": "Duplicates: {0}",
+    "mod_enchant": "Enchant",
+    "mod_necropolis": "Necropolis",
+    "mod_veiled": "Veiled",
+    "mod_added-rune": "Augment",
+    "mod_sanctum": "Sanctum",
+    "mod_skill": "Skill"
   },
   "item_category": {
     "prop": "Category: {0}",

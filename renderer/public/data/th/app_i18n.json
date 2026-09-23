@@ -107,7 +107,12 @@
     "not_sanctified": "Not Sanctified",
     "cowardly": "Cowardly",
     "victorious": "Victorious",
-    "deadly": "Deadly"
+    "deadly": "Deadly",
+    "mod_enchant": "enchant",
+    "mod_veiled": "Veiled",
+    "mod_added-rune": "Augment",
+    "mod_sanctum": "Sanctum",
+    "mod_skill": "Skill"
   },
   "item_category": {
     "prop": "หมวดหมู่: {0}",
