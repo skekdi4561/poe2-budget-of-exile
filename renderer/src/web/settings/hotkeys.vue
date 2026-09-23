@@ -35,7 +35,11 @@ import {
   _configModelValue,
   findWidget,
 } from "./utils";
-import { PriceCheckWidget, DelveGridWidget } from "@/web/overlay/interfaces";
+import {
+  PriceCheckWidget,
+  DelveGridWidget,
+  MarketCurveWidget,
+} from "@/web/overlay/interfaces";
 import { ItemCheckWidget } from "../item-check/widget.js";
 
 import UiRadio from "@/web/ui/UiRadio.vue";
@@ -56,6 +60,12 @@ const hotkeys = computed<HotkeySchema[]>(() => {
     "delve-grid",
     props.config,
   )!;
+  // (이 포크) 시장 곡선 위젯(기본 F7). 예전엔 설정 어디에도 없어서 다른 프로그램과 겹쳐도
+  // 설정 파일을 손으로 고쳐야 했다(README 는 "설정에서 확인하라"고 틀리게 안내했다).
+  const marketCurveWidget = findWidget<MarketCurveWidget>(
+    "market-curve",
+    props.config,
+  );
   return [
     {
       translationKey: "price_check.name",
@@ -90,6 +100,14 @@ const hotkeys = computed<HotkeySchema[]>(() => {
       translationKey: "settings.delve_grid",
       config: _configModelValue(delveGridWidget, "toggleKey"),
     },
+    ...(marketCurveWidget
+      ? [
+          {
+            translationKey: "market_curve.title_rest",
+            config: _configModelValue(marketCurveWidget, "toggleKey"),
+          },
+        ]
+      : []),
   ];
 });
 
