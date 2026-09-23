@@ -158,7 +158,7 @@
     "weapon_twomace": "Two-Handed Mace",
     "weapon_twosword": "Two-Handed Sword",
     "weapon_wand": "Wand",
-    "weapon_warstaff": "Warstaff",
+    "weapon_warstaff": "Quarterstaff",
     "jewel_cluster": "Cluster Jewel",
     "heistmission_blueprint": "Heist Blueprint",
     "heistmission_contract": "Heist Contract",
@@ -443,7 +443,7 @@
     "show_volume": "Show Currency Exchange volume per hour:",
     "warn_advanced": "Advanced settings, don't change unless you are experiencing issues",
     "initial_delay": "Initial clipboard check delay(after copy-item keybind is pressed)",
-    "harvest": "Share price-check results with the market curve (F7)",
+    "harvest": "Share price-check results with the Market Appraiser (F7)",
     "harvest_help": "Sends the public listing data already shown in your price-check results (listing id, item name and rarity, price, DPS and other stats, modifiers). Your account is never sent, and no extra trade requests are made."
   },
   "poe2_new": {
@@ -577,5 +577,10 @@
     "save": "Save",
     "confirm": "Confirm",
     "clear": "Clear Saved"
+  },
+  "attach_hint": {
+    "price": "Price check",
+    "curve": "Market Appraiser",
+    "settings": "Settings"
   }
 }
