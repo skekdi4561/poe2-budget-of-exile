@@ -17,7 +17,9 @@ implementation to them.
 
 ## What that means for you
 
-- Every release is built by CI from this public repository; the build is reproducible.
+- Releases are built locally from the tagged commit of this public repository, and the tag is
+  published with each release. CI also builds every push to master as a check. The build is not
+  bit-for-bit reproducible yet, so the release's `latest.yml` hash is the reference.
 - The test suite is part of the deal, not decoration — behaviour we change is covered by
   tests, and we mutation-check the tests that guard anything subtle.
 - If you would rather not run AI-assisted software, that is a legitimate choice.

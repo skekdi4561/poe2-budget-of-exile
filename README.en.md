@@ -12,7 +12,7 @@ It was built for the Kakao (Korean) realm, and it is a fork of [Exiled Exchange 
 - `F7` — market curve widget for 7 attack weapon types (bow, crossbow, one-hand mace, two-hand mace, spear, quarterstaff, talisman) and shields.
   Price frontier by DPS (armour for shields), modifier filters, the best DPS your budget can buy, price trend
 - Data: the top-100 snapshot that the [Attack Weapon Price Appraiser](https://skekdi4561.github.io/poe2-bow/) site (Korean only)
-  takes every hour, plus samples sent by users (see the notice below)
+  takes about every hour (about 75 minutes including collection time), plus samples sent by users (see the notice below)
 - Everything else from the original is unchanged: price checks for every item, the overlay, and all its languages.
   The app runs in 9 languages (English, Русский, 正體中文, 한국어, 日本語, Deutsch, Español, Português (Brasil), Français),
   and the default trade site follows the app language (Korean uses the Kakao trade site, poe.kakaogames.com)
@@ -34,9 +34,9 @@ Just make sure the file came from this repository's Releases.
 
 ## Usage
 
-**On first launch the app follows your Windows language settings**: Korean if Korean is in your Windows
-language list (and the Kakao trade site); otherwise the language of your Windows regional format, or English
-if the app does not have that language. If your game client uses a different language, press `Shift + Space`
+**On first launch the app follows your Windows language settings**: the first language in the list if the
+app has it and it is not English; otherwise Korean if Korean is anywhere in the list (with the Kakao trade
+site); otherwise the first language in the list that the app has, or English. If your game client uses a different language, press `Shift + Space`
 in game, click the gear button, open General → Language, pick your game client's language, and save.
 
 1. When you start the game, an icon appears in the tray. The league is **set to the current challenge league automatically**
@@ -48,7 +48,7 @@ in game, click the gear button, open General → Language, pick your game client
    and see the best DPS range for your budget. `Esc` closes it.
 
 If the curve is empty, that weapon's prices have not been collected yet (for example, in the first hour of a new season).
-It fills within an hour.
+It usually fills within 1–2 hours.
 
 ## Troubleshooting
 
@@ -67,7 +67,7 @@ It fills within an hour.
 From the trade site's responses to **attack weapon and shield price checks that you run yourself**, this app extracts only
 the public information of the listings and sends it to a collection server — listing id, item name and rarity, weapon type,
 league, price and currency, DPS, attack speed and critical hit chance (shields: armour and block chance), modifier text,
-and the Kakao instant-buy fee.
+and the instant-buy fee when there is one.
 The collected samples become the market curves of the [Attack Weapon Price Appraiser](https://skekdi4561.github.io/poe2-bow/)
 and go back to every user.
 
@@ -78,7 +78,9 @@ and go back to every user.
   already shows). That is why we do not call this "anonymous"
 - Samples are sent only from searches for the 7 attack weapon types and shields, and the collector uses only
   current-league samples for the curves
-- Sent samples reach the curves only after the collector has verified them on the trade site
+- Samples that would change a price curve are verified on the trade site by the collector first, and
+  implausibly cheap ones are dropped. A sample that an already verified better-and-cheaper listing beats
+  cannot change the curve, so it goes in unverified (it can show up once you add modifier filters)
 - It is on by default. **To turn it off: Settings → Price check → uncheck "Share price-check results with the Market Appraiser" and save.**
   From the moment you save, nothing is sent, and anything queued for sending is discarded
 
