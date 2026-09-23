@@ -1,11 +1,11 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Feature Request
-    url: https://github.com/Kvan7/Exiled-Exchange-2/discussions/categories/ideas
-    about: Feature ideas should be submitted here so they can be discussed before work is done on them
-  - name: Help/Q&A
-    url: https://github.com/Kvan7/Exiled-Exchange-2/discussions/categories/q-a
-    about: Please ask and answer questions here. This is marked as a q&a category so replies that fix things can be marked as "answers" similar to Stack Overflow
-  - name: Discussions
-    url: https://github.com/Kvan7/Exiled-Exchange-2/discussions
-    about: Link to discussions page
+  - name: Troubleshooting (English README)
+    url: https://github.com/skekdi4561/poe2-budget-of-exile/blob/master/README.en.md#troubleshooting
+    about: Common problems and fixes for PoE2 Budget of Exile. Please do not report this app's bugs to the Exiled Exchange 2 tracker.
+  - name: 문제 해결 (한국어 README)
+    url: https://github.com/skekdi4561/poe2-budget-of-exile#%EB%AC%B8%EC%A0%9C%EA%B0%80-%EC%83%9D%EA%B8%B0%EB%A9%B4
+    about: PoE2 시세 감정소에서 자주 생기는 문제와 해결법입니다. 이 앱의 버그를 원작(Exiled Exchange 2) 이슈 트래커에 올리지 마세요.
+  - name: Latest release / 최신 버전
+    url: https://github.com/skekdi4561/poe2-budget-of-exile/releases
+    about: Check that you are on the latest version before reporting. / 신고하기 전에 최신 버전인지 확인해 주세요.

@@ -1,93 +1,100 @@
-name: Bug Report
-description: File a bug report.
+name: Bug report / 버그 신고
+description: Report a bug in PoE2 Budget of Exile (PoE2 시세 감정소). / PoE2 시세 감정소(PoE2 Budget of Exile)의 버그를 알려 주세요.
 title: "[Bug]: "
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report!
+        **This tracker is for PoE2 Budget of Exile (PoE2 시세 감정소), an unofficial fork of Exiled Exchange 2.**
+        Please do **not** report bugs in this app to the Exiled Exchange 2 tracker — its authors did not make this build and cannot fix it.
+
+        **여기는 Exiled Exchange 2의 비공식 포크인 PoE2 시세 감정소(PoE2 Budget of Exile)의 이슈 트래커입니다.**
+        이 앱의 버그를 원작(Exiled Exchange 2) 이슈 트래커에 올리지 **마세요** — 원작 제작자가 만든 빌드가 아니라 고칠 수 없습니다.
+
+        English or Korean is fine. / 영어나 한국어로 써 주세요.
   - type: checkboxes
-    id: faq
+    id: readme
     attributes:
-      label: FAQ
-      description: Please check the [FAQ](https://kvan7.github.io/Exiled-Exchange-2/faq) before submitting an issue
+      label: Troubleshooting / 문제 해결
+      description: "[English README](https://github.com/skekdi4561/poe2-budget-of-exile/blob/master/README.en.md#troubleshooting) · [한국어 README](https://github.com/skekdi4561/poe2-budget-of-exile#%EB%AC%B8%EC%A0%9C%EA%B0%80-%EC%83%9D%EA%B8%B0%EB%A9%B4)"
       options:
-        - label: I have checked the [FAQ](https://kvan7.github.io/Exiled-Exchange-2/faq) and my problem was not there
+        - label: I read the Troubleshooting section of the README and it did not help. / README의 "문제가 생기면"을 읽었지만 해결되지 않았습니다.
           required: true
-  - type: checkboxes
-    id: common-issues
+  - type: input
+    id: version
     attributes:
-      label: Common Issues
-      description: Please check the [Common Issues Page](https://kvan7.github.io/Exiled-Exchange-2/issues) before submitting an issue
-      options:
-        - label: I have checked the [Common Issues Page](https://kvan7.github.io/Exiled-Exchange-2/issues) and my problem was not there
-          required: true
-  - type: checkboxes
-    id: existing-issues
-    attributes:
-      label: Existing Issues
-      description: Please check the [pinned issues and existing issues](https://github.com/Kvan7/Exiled-Exchange-2/issues?q=is%3Aissue) before submitting an issue
-      options:
-        - label: I have checked the [pinned issues and existing issues](https://github.com/Kvan7/Exiled-Exchange-2/issues?q=is%3Aissue) and my problem was not there
-          required: true
+      label: App version / 앱 버전
+      description: Settings → About shows it (e.g. "Version 1.3.1"). / 설정 → 정보에 나옵니다(예 "버전 1.3.1").
+      placeholder: "1.3.1"
+    validations:
+      required: true
   - type: dropdown
-    id: common-bug
+    id: app-language
     attributes:
-      label: Common Bugs
-      description: Selection for bugs that are known to occur frequently with game updates
+      label: App language / 앱 언어
+      description: Settings → General → Language / 설정 → 일반 → 언어
       options:
-        - An error occurred while parsing the item
-        - Not Recognized Modifier
-        - No modifiers found
-        - Other
-      default: 3
+        - English
+        - Русский
+        - 正體中文
+        - 한국어
+        - 日本語
+        - Deutsch
+        - Español
+        - Português (Brasil)
+        - Français
+    validations:
+      required: true
+  - type: dropdown
+    id: game-language
+    attributes:
+      label: Game language / 게임 언어
+      description: The language of your Path of Exile 2 client (the language the item text is in). / Path of Exile 2 게임 클라이언트의 언어(아이템 텍스트가 나오는 언어).
+      options:
+        - English
+        - Русский
+        - 正體中文
+        - 한국어
+        - 日本語
+        - Deutsch
+        - Español
+        - Português (Brasil)
+        - Français
+        - Other / 기타
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Where did it happen? / 어디서 생겼나요?
+      options:
+        - Price check (Ctrl + D) / 가격 체크 (Ctrl + D)
+        - F7 widget, Market Appraiser / F7 위젯, 시세 감정소
+        - Overlay or settings (Shift + Space) / 오버레이·설정 (Shift + Space)
+        - Install or update / 설치·업데이트
+        - Other / 기타
     validations:
       required: true
   - type: textarea
     id: what-happened
     attributes:
-      label: What happened?
-      description: Also what did you expect to happen?
-      placeholder: Tell us what you see!
-      value: "Change this text please"
-    validations:
-      required: true
-  - type: dropdown
-    id: version
-    attributes:
-      label: Version
-      description: What version of EE2 are you running? You can see this in Settings -> About
-      options:
-        - 0.16.3
-        - 0.16.2
-        - 0.16.1
-        - 0.16.0
-        - 0.15.8
-        - 0.15.7
-        - 0.15.6
-        - 0.15.5
-        - 0.15.4
-        - 0.15.3
-        - 0.15.2
-        - 0.15.1
-        - 0.15.0
-        - Change me
-      default: 13
+      label: What happened? / 무슨 일이 있었나요?
+      description: What did you do, what did you expect, and what happened instead? Include any error message shown. Screenshots help. / 무엇을 했고, 무엇을 기대했고, 실제로는 어떻게 됐나요? 뜬 오류 메시지가 있으면 같이 적어 주세요. 스크린샷도 도움이 됩니다.
     validations:
       required: true
   - type: textarea
     id: item
     attributes:
-      label: Item Copy text
-      description: PLEASE copy the item's text and paste it here. You can do so with `ctrl + alt + c` when hovering over the item, if your bug doesn't related to any items at all, write "None" (if it is about an item in any way and you write None it will be ignored)
+      label: Item text / 아이템 텍스트
+      description: Hover the item in game, press `Ctrl + Alt + C`, and paste it here. If the bug is not about an item, write "None". / 게임에서 아이템에 마우스를 올리고 `Ctrl + Alt + C` 로 복사해 붙여 넣으세요. 아이템과 관계없는 버그면 "없음"이라고 쓰세요.
       render: shell
     validations:
       required: true
   - type: textarea
     id: logs
     attributes:
-      label: Log output
-      description: Please go to Settings -> Debug, and copy and paste what is in that text box. (No need for backticks)
+      label: Log output / 로그
+      description: Settings → Debug, copy the text in the box and paste it here. Check it for anything you do not want to make public. / 설정 → Debug 에서 상자 안의 글을 복사해 붙여 넣으세요. 공개하고 싶지 않은 내용이 있는지 확인해 주세요.
       render: shell
     validations:
-      required: true
+      required: false
