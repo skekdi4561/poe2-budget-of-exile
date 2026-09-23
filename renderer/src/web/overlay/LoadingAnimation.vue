@@ -8,9 +8,7 @@
         <div class="py-2 px-4">
           <div class="text-base">{{ t("app.name") }}</div>
           <p>{{ t("app_is_ready") }}</p>
-          <p class="text-gray-400 text-sm">
-            Ctrl+D 가격 검색 · F7 시세 곡선 · Shift+Space 설정
-          </p>
+          <p class="text-gray-400 text-sm">{{ hints }}</p>
         </div>
       </div>
     </div>
@@ -18,14 +16,36 @@
 </template>
 
 <script setup lang="ts">
-import { shallowRef } from "vue";
+import { shallowRef, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { Host } from "@/web/background/IPC";
 import { AppConfig } from "@/web/Config";
+import type {
+  PriceCheckWidget,
+  MarketCurveWidget,
+} from "@/web/overlay/widgets";
 
 const { t } = useI18n();
 
 const show = shallowRef(false);
+
+// 단축키 안내 — 예전엔 한국어 문장 하나("Ctrl+D 가격 검색 · …")가 모든 언어에 박혀 있었고,
+// 사용자가 단축키를 바꿔도 옛 키를 알려줬다. 실제 설정된 키와 지금 언어의 이름으로 만든다.
+const hints = computed(() => {
+  const pc = AppConfig<PriceCheckWidget>("price-check");
+  const mc = AppConfig<MarketCurveWidget>("market-curve");
+  const price = pc?.hotkey
+    ? [pc.hotkeyHold, pc.hotkey].filter(Boolean).join(" + ")
+    : null;
+  return [
+    [price, t("attach_hint.price")],
+    [mc?.toggleKey ?? null, t("attach_hint.curve")],
+    [AppConfig().overlayKey, t("attach_hint.settings")],
+  ]
+    .filter(([key]) => key)
+    .map(([key, label]) => `${key} ${label}`)
+    .join(" · ");
+});
 
 Host.onEvent("MAIN->OVERLAY::overlay-attached", () => {
   if (!show.value && AppConfig().showAttachNotification) {

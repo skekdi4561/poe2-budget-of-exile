@@ -8,6 +8,50 @@ import type { ServerEvents } from "../server";
 import type { Logger } from "../RemoteLogger";
 import type { GameWindow } from "./GameWindow";
 
+// 게임이 관리자 권한으로 돌 때의 안내 — 메인 프로세스라 app_i18n 을 못 읽어 여기 둔다.
+const NO_ACCESS: Record<string, { title: string; body: string }> = {
+  "ko": {
+    title: "PoE2 창 - 접근 불가",
+    body: "Path of Exile 2 가 관리자 권한으로 실행 중입니다.\nPoE2 시세 감정소를 관리자 권한으로 다시 실행해야 합니다.",
+  },
+  "en": {
+    title: "PoE2 window - No access",
+    body: "Path of Exile 2 is running with administrator rights.\nRestart PoE2 Budget of Exile as administrator.",
+  },
+  "ru": {
+    title: "Окно PoE2 — нет доступа",
+    body: "Path of Exile 2 запущена с правами администратора.\nПерезапустите PoE2 Budget of Exile от имени администратора.",
+  },
+  "cmn-Hant": {
+    title: "PoE2 窗口 - 無法存取",
+    body: "Path of Exile 2 正以系統管理員權限運行。\n請以系統管理員身分重新啟動 PoE2 Budget of Exile。",
+  },
+  "ja": {
+    title: "PoE2 ウィンドウ - アクセス不可",
+    body: "Path of Exile 2 が管理者権限で実行されています。\nPoE2 Budget of Exile を管理者として再起動してください。",
+  },
+  "de": {
+    title: "PoE2-Fenster - Kein Zugriff",
+    body: "Path of Exile 2 läuft mit Administratorrechten.\nStarte PoE2 Budget of Exile als Administrator neu.",
+  },
+  "es": {
+    title: "Ventana de PoE2 - Sin acceso",
+    body: "Path of Exile 2 se está ejecutando con permisos de administrador.\nReinicia PoE2 Budget of Exile como administrador.",
+  },
+  "pt": {
+    title: "Janela do PoE2 - Sem acesso",
+    body: "O Path of Exile 2 está sendo executado com privilégios de administrador.\nReinicie o PoE2 Budget of Exile como administrador.",
+  },
+  "fr": {
+    title: "Fenêtre PoE2 - Accès refusé",
+    body: "Path of Exile 2 est exécuté avec les droits d'administrateur.\nRedémarrez PoE2 Budget of Exile en tant qu'administrateur.",
+  },
+  "th": {
+    title: "หน้าต่าง PoE2 - ไม่มีสิทธิ์เข้าถึง",
+    body: "Path of Exile 2 กำลังทำงานด้วยสิทธิ์ผู้ดูแลระบบ\nโปรดเปิด PoE2 Budget of Exile ใหม่ในฐานะผู้ดูแลระบบ",
+  },
+};
+
 export class OverlayWindow {
   public isInteractable = false;
   public wasUsedRecently = true;
@@ -127,6 +171,9 @@ export class OverlayWindow {
     }
   };
 
+  /** 렌더러 설정의 language — 안내창 언어. 설정이 오기 전에는 null. */
+  public language: string | null = null;
+
   updateOpts(
     overlayKey: string,
     windowTitle: string,
@@ -179,14 +226,15 @@ export class OverlayWindow {
         "error [Overlay] PoE2 is running with administrator rights",
       );
 
+      // 설정 언어를 아직 모르면(렌더러가 설정을 보내기 전) 예전처럼 영어+한국어.
+      // 알면 그 언어 + 영어 — 영어 안내는 언어와 상관없이 남겨 둔다.
+      const local = NO_ACCESS[this.language ?? ""];
+      const en = NO_ACCESS.en;
+      const second =
+        local && local !== en ? local : !local ? NO_ACCESS.ko : null;
       dialog.showErrorBox(
-        "PoE2 window - No access",
-        // ----------------------
-        // 이 창은 메인 프로세스라 i18n 이 없다 — 두 언어를 같이 적는다
-        "Path of Exile 2 is running with administrator rights.\n" +
-          "Restart PoE2 Budget of Exile as administrator.\n" +
-          "\n" +
-          "PoE2 시세 감정소를 관리자 권한으로 다시 실행해야 합니다.",
+        (local ?? en).title,
+        second ? `${en.body}\n\n${second.body}` : en.body,
       );
     } else {
       this.server.sendEventTo("broadcast", {
