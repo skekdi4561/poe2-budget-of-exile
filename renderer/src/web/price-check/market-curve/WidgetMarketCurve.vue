@@ -459,7 +459,7 @@ export default defineComponent({
   widget: {
     type: "market-curve",
     instances: "single",
-    trNameKey: "market_curve.title_rest", // market_curve.name 은 어느 언어에도 없다 — 있는 제목 키를 쓴다
+    trNameKey: "attach_hint.curve", // market_curve.name 은 어느 언어에도 없고, title_rest 는 대시로 시작하는 조각
     initInstance: (): MarketCurveWidget => ({
       wmId: 0,
       wmType: "market-curve",

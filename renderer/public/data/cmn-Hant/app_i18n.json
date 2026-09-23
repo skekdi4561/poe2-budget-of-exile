@@ -414,7 +414,7 @@
     "core_currency": "主要基礎通貨：",
     "default_all_selected": "預設勾選所有篩選",
     "open_editor_above": "在上方開啟符文插槽選擇器",
-    "harvest": "將查價結果分享給行情鑑價（F7）",
+    "harvest": "將查價結果分享給行情鑑價",
     "harvest_help": "傳送查價結果中已顯示的公開掛售資料（掛售 id、物品名稱與稀有度、價格、DPS 等數值、詞綴）。不會傳送您的帳號，也不會額外向交易所發出請求。"
   },
   "poe2_new": {

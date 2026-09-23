@@ -353,6 +353,25 @@ describe("statOptions", () => {
       false,
       true,
     ]);
+    // 순위는 묶인 원문으로 — 열쇠가 영어 ref 여도 "스킬 레벨"은 위로
+    const top = statOptions(
+      [
+        row({ "모든 투사체 스킬 레벨 #": 1, "반려수의 공격 속도 #%": 9 }),
+        row({ "모든 투사체 스킬 레벨 #": 2, "반려수의 공격 속도 #%": 9 }),
+        row({ "반려수의 공격 속도 #%": 9, "기타 옵션 #": 1 }),
+        row({ "기타 옵션 #": 1 }),
+        row({ "기타 옵션 #": 1 }),
+      ],
+      (k) =>
+        k === "모든 투사체 스킬 레벨 #"
+          ? "# to Level of all Projectile Skills"
+          : k,
+    );
+    expect(top.map((o) => o.key)).toEqual([
+      "# to Level of all Projectile Skills",
+      "기타 옵션 #",
+      "반려수의 공격 속도 #%",
+    ]);
     // idOf 없이(원문 열쇠 그대로)는 예전처럼 따로 논다
     expect(statOptions(rows).map((o) => o.key)).toEqual([
       "처치한 적 하나당 생명력 # 획득",

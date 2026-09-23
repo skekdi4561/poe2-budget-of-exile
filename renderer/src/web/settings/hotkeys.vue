@@ -103,7 +103,7 @@ const hotkeys = computed<HotkeySchema[]>(() => {
     ...(marketCurveWidget
       ? [
           {
-            translationKey: "market_curve.title_rest",
+            translationKey: "attach_hint.curve", // title_rest 는 "– Marktanalyse" 같은 제목 뒤 조각
             config: _configModelValue(marketCurveWidget, "toggleKey"),
           },
         ]

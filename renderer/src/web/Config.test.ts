@@ -147,6 +147,8 @@ describe("첫 실행 언어 — OS 언어를 따른다", () => {
   it("languageFromLocales — 앞에서부터 처음 맞는 언어, 없으면 en", () => {
     const f = real.languageFromLocales;
     expect(f(["ko-KR"])).toBe("ko");
+    // 표시 언어는 한국어, 지역 형식은 영어 — Electron 은 지역 형식을 첫 항목으로 둔다
+    expect(f(["en-US", "ko"])).toBe("ko");
     expect(f(["de-DE", "en-US"])).toBe("de");
     expect(f(["pl-PL", "ja-JP"])).toBe("ja");
     expect(f(["pt-BR"])).toBe("pt");

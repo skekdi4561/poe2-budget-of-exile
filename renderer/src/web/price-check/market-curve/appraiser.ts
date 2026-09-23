@@ -328,7 +328,14 @@ export function statOptions(
       lo: a.lo,
       hi: a.hi,
     }))
-    .sort((a, b) => optRank(a.key) - optRank(b.key) || b.n - a.n);
+    .map((o) => ({
+      o,
+      // 열쇠가 statId(영어 ref)면 OPT_TOP 의 한국어 규칙(스킬 레벨·추가 화살)이 안 걸린다 —
+      // 묶인 원문들 중 가장 좋은 순위를 쓴다(v1.3.1 은 원문 열쇠로 매겼다).
+      rank: Math.min(optRank(o.key), ...o.keys.map(optRank)),
+    }))
+    .sort((a, b) => a.rank - b.rank || b.o.n - a.o.n)
+    .map(({ o }) => o);
 }
 
 // 필터 행 전부 만족해야 통과. min/max 비우면 "옵션 존재"만 본다.

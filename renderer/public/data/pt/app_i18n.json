@@ -399,7 +399,7 @@
     "show_suggest_warning_warn": "Mostrar alerta",
     "show_suggest_warning_help": "Mostrar alerta e ajuda",
     "default_all_selected": "Por padrão, todos os filtros habilitados",
-    "harvest": "Compartilhar consultas de preço com o Avaliador de Mercado (F7)",
+    "harvest": "Compartilhar consultas de preço com o Avaliador de Mercado",
     "harvest_help": "Envia os dados públicos dos anúncios já exibidos na sua consulta de preço (id do anúncio, nome e raridade, preço, DPS e outros valores, modificadores). Sua conta nunca é enviada e nenhuma solicitação extra é feita ao mercado."
   },
   "poe2_new": {

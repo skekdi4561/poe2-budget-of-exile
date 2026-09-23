@@ -34,8 +34,9 @@ Just make sure the file came from this repository's Releases.
 
 ## Usage
 
-**On first launch the app uses your Windows display language** (Korean Windows → Korean and the Kakao trade site;
-a language the app does not have → English). If your game client uses a different language, press `Shift + Space`
+**On first launch the app follows your Windows language settings**: Korean if Korean is in your Windows
+language list (and the Kakao trade site); otherwise the language of your Windows regional format, or English
+if the app does not have that language. If your game client uses a different language, press `Shift + Space`
 in game, click the gear button, open General → Language, pick your game client's language, and save.
 
 1. When you start the game, an icon appears in the tray. The league is **set to the current challenge league automatically**
@@ -78,7 +79,7 @@ and go back to every user.
 - Samples are sent only from searches for the 7 attack weapon types and shields, and the collector uses only
   current-league samples for the curves
 - Sent samples reach the curves only after the collector has verified them on the trade site
-- It is on by default. **To turn it off: Settings → Price check → uncheck "Share price-check results with the Market Appraiser (F7)" and save.**
+- It is on by default. **To turn it off: Settings → Price check → uncheck "Share price-check results with the Market Appraiser" and save.**
   From the moment you save, nothing is sent, and anything queued for sending is discarded
 
 ## Transparency

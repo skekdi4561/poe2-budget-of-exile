@@ -436,7 +436,7 @@
     "travel_option_disabled": "Désactivé",
     "travel_option_button": "Bouton",
     "travel_option_row": "Ctrl‑clic",
-    "harvest": "Partager les vérifications de prix avec la cote du marché (F7)",
+    "harvest": "Partager les vérifications de prix avec la cote du marché",
     "harvest_help": "Envoie les données publiques des annonces déjà affichées par ta vérification de prix (id de l'annonce, nom et rareté, prix, DPS et autres valeurs, modificateurs). Ton compte n'est jamais envoyé et aucune requête supplémentaire n'est faite au marché."
   },
   "poe2_new": {

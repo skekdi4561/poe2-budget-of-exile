@@ -443,7 +443,7 @@
     "show_volume": "Show Currency Exchange volume per hour:",
     "warn_advanced": "Advanced settings, don't change unless you are experiencing issues",
     "initial_delay": "Initial clipboard check delay(after copy-item keybind is pressed)",
-    "harvest": "Share price-check results with the Market Appraiser (F7)",
+    "harvest": "Share price-check results with the Market Appraiser",
     "harvest_help": "Sends the public listing data already shown in your price-check results (listing id, item name and rarity, price, DPS and other stats, modifiers). Your account is never sent, and no extra trade requests are made."
   },
   "poe2_new": {

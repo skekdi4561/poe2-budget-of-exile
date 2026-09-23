@@ -222,12 +222,13 @@ en 원문은 `This tool relies on {0}, consider supporting them!` 이고, 코드
 
 ## 8. Weblate 로 못 고치는 것 — 원작 이슈로
 
-아래 네 종류는 Weblate 번역으로는 고칠 수 없습니다.
+아래 다섯 종류는 Weblate 번역으로는 고칠 수 없습니다.
 
 - en 원문에 키가 없는 것: 코드가 쓰는데 en 파일에 없는 키 45개입니다. 원작 upstream/master 기준으로 코드의 리터럴 키를 뽑아 대조했고, 뽑은 키 목록은 원작 감사와 같았습니다.
 - en 원문 자체가 틀린 것: `Warstaff`, `Marital` 입니다.
 - 번역 파일에만 있고 en·코드 어디에도 없는 키.
 - 이름이 틀린 키.
+- 코드가 만들어 쓰는데 어느 언어 파일에도 없는 키(숨김 사유 4개, 수정자 유형) — 모든 언어에서 키 이름이 그대로 뜸.
 
 영어 이슈 초안(코드 없이, 근거 확인 방법 포함)은 아래와 같습니다.
 
@@ -259,6 +260,11 @@ en 원문은 `This tool relies on {0}, consider supporting them!` 이고, 코드
 >   - Thai `item_category.azmeri_charm` should be `item_category.flask_charm`.
 >
 >   Translators can enter the text again under the correct key on Weblate, but the old keys have to be removed from the files.
+>
+> **4. Keys built in code that no language file has**
+> These are passed to `t()` but exist in no `app_i18n.json` (not even English), so the tooltip shows the raw key name in every language:
+> - `hide_harvest_and_instilling` (`create-stat-filters.ts`), `hide_attr_same_2nd_n_3rd` and `hide_attr_smallest_total` (`pseudo/index.ts`), `low_tier_reflection` (`pseudo/reflection-rules.ts`) — shown as the hidden-filter reason in `FilterModifier.vue` (`t(props.filter.hidden!)`).
+> - `UnknownModifier.vue` renders `t(stat.type)` with values like `explicit` / `implicit` / `rune`, which are not keys; the existing `filters.tag_*` strings could be used instead.
 >
 > Thanks for your time!
 
