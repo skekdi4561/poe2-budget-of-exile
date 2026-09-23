@@ -146,3 +146,60 @@ describe("위젯 다국어", () => {
     expect(leaked.map(([n, s]) => `${n}: ${s}`)).toEqual([]);
   });
 });
+
+// 원작 한국어 파일에 일본어 문자열 5개가 들어 있었다(app.deprecated, filters.hide_anointment,
+// filters.hybrid_note, price_check.always_show_tier, price_check.remember_ratio — 2026-09-23 수정).
+// 한국어 UI 에 일본어가 그대로 떴다. 원작 머지 때 다시 들어오면 여기서 잡는다.
+// 앱 문자열 **전체**를 본다(위젯 것만이 아니다). 언어 이름 목록 같은 예외는 아직 없다.
+describe("앱 문자열에 다른 언어 문자가 섞여 있지 않다", () => {
+  const SCRIPT: Record<string, RegExp> = {
+    hangul: /[가-힯ᄀ-ᇿ]/,
+    kana: /[぀-ヿ]/,
+    han: /[一-鿿]/,
+    cyrillic: /[Ѐ-ӿ]/,
+    thai: /[฀-๿]/,
+  };
+  const LATIN = ["hangul", "kana", "han", "cyrillic", "thai"];
+  const FORBIDDEN: Record<string, string[]> = {
+    "en": LATIN,
+    "de": LATIN,
+    "es": LATIN,
+    "fr": LATIN,
+    "pt": LATIN,
+    "ko": ["kana", "cyrillic", "thai"],
+    "ja": ["hangul", "cyrillic", "thai"],
+    "cmn-Hant": ["hangul", "kana", "cyrillic", "thai"],
+    "ru": ["hangul", "kana", "han", "thai"],
+    "th": ["hangul", "kana", "han", "cyrillic"],
+  };
+  const strings = (o: unknown, path = ""): Array<[string, string]> =>
+    typeof o === "string"
+      ? [[path, o]]
+      : o && typeof o === "object"
+        ? Object.entries(o).flatMap(([k, v]) =>
+            strings(v, path ? `${path}.${k}` : k),
+          )
+        : [];
+
+  it("검사 대상이 앱이 고를 수 있는 언어 전부다", () => {
+    expect(Object.keys(FORBIDDEN).sort()).toEqual([...LANGS].sort());
+  });
+
+  for (const lang of LANGS) {
+    it(lang, () => {
+      const all = strings(
+        JSON.parse(
+          readFileSync(
+            resolve(here, `../../../../public/data/${lang}/app_i18n.json`),
+            "utf-8",
+          ),
+        ),
+      );
+      expect(all.length).toBeGreaterThan(200); // 파일을 통째로 못 읽으면 여기서 걸린다
+      const bad = all
+        .filter(([, v]) => FORBIDDEN[lang].some((sc) => SCRIPT[sc].test(v)))
+        .map(([k]) => k);
+      expect(bad).toEqual([]);
+    });
+  }
+});
