@@ -5,6 +5,8 @@
 // 어긋나면 24h 합집합의 지문(fingerprint) 중복 제거가 빗나간다.
 import { ParsedItem } from "@/parser";
 import { ItemCategory } from "@/parser/meta";
+import { AppConfig } from "@/web/Config";
+import type { PriceCheckWidget } from "@/web/overlay/widgets";
 
 // 수집 대상 판정에 필요한 검색 문맥 — 요청마다 명시로 넘긴다(전역 상태 금지).
 // 전역 ctx 를 async 응답 시점에 읽으면, 그 사이 다른 검색이 ctx 를 덮어써
@@ -221,9 +223,27 @@ export const FLUSH_MAX = 30;
 export const _queue = new Map<string, HarvestRow>(); // 테스트에서만 직접 접근
 let flushTimer: ReturnType<typeof setTimeout> | null = null;
 
+/**
+ * 사용자가 수집을 켜 두었는가(설정 → 가격 검사).
+ * **설정을 못 읽으면 보내지 않는다** — 개인정보 토글은 모를 때 꺼져 있어야 맞다.
+ * 정상 실행에서는 가격검사보다 설정이 먼저 올라오므로 이 분기는 테스트에서만 탄다.
+ */
+export function harvestEnabled(): boolean {
+  try {
+    return AppConfig<PriceCheckWidget>("price-check")?.harvest === true;
+  } catch {
+    return false;
+  }
+}
+
 export function _flush() {
   flushTimer = null;
   if (!_queue.size || !HARVEST_URL) return;
+  // 대기 중에 사용자가 껐으면 쌓인 것도 보내지 않고 버린다 — 끈 뒤에 나가면 안 된다.
+  if (!harvestEnabled()) {
+    _queue.clear();
+    return;
+  }
   const rows: HarvestRow[] = [];
   for (const [k, v] of _queue) {
     rows.push(v);
@@ -240,7 +260,7 @@ export function _flush() {
 }
 
 export function harvestFetchResults(results: unknown[], ctx: HarvestCtx) {
-  if (!HARVEST_URL || !ctx.cat) return;
+  if (!HARVEST_URL || !ctx.cat || !harvestEnabled()) return;
   for (const res of results) {
     const row = normalizeResult(res, ctx.league, ctx.cat);
     if (row?.id) _queue.set(row.id, row);

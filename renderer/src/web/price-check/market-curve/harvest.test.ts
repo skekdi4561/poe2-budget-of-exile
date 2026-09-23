@@ -1,5 +1,6 @@
 // 업로드 큐: 배치 초과분이 유실되지 않고 이어 전송되는지 (2회차 자가검증에서 잡은 결함)
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+
 import {
   _queue,
   _flush,
@@ -10,6 +11,18 @@ import {
 } from "./harvest";
 
 import { ItemCategory } from "@/parser/meta";
+
+// 수집 토글. 기본은 켜 둔다(기존 테스트가 수집이 일어나는 걸 전제한다).
+const cfg = vi.hoisted(() => ({
+  harvest: true as boolean | undefined,
+  throws: false,
+}));
+vi.mock("@/web/Config", () => ({
+  AppConfig: (type?: string) => {
+    if (cfg.throws) throw new Error("설정이 아직 안 올라옴");
+    return type === "price-check" ? { harvest: cfg.harvest } : {};
+  },
+}));
 
 function fakeRow(i: number) {
   return {
@@ -331,5 +344,64 @@ describe("normalizeResult — 방패(방어구)", () => {
     };
     const row = normalizeResult(bow, "L", "weapon.bow");
     expect("block" in (row ?? {})).toBe(false);
+  });
+});
+
+describe("수집 토글 — 끄면 아무것도 안 보낸다", () => {
+  // 위 스위트와 같은 매물 모양이다 — 지어낸 모양이면 normalizeResult 가 거부해서
+  // "꺼지면 안 들어간다"가 토글과 무관하게 통과해 버린다. 그래서 대조군을 같이 둔다.
+  const ctx = { cat: "weapon.bow", league: "L" };
+  const res = {
+    id: "tog1",
+    item: { extended: { pdps: 100, edps: 0 }, typeLine: "활", rarity: "Rare" },
+    listing: { price: { currency: "divine", amount: 3 } },
+  };
+
+  beforeEach(() => {
+    _queue.clear();
+    cfg.harvest = true;
+    vi.useFakeTimers();
+  });
+  afterEach(() => {
+    _queue.clear();
+    cfg.harvest = true;
+    cfg.throws = false;
+    vi.runAllTimers();
+    vi.useRealTimers();
+    vi.unstubAllGlobals(); // 단언이 실패해도 fetch 스텁이 다음 스위트로 새지 않게
+  });
+
+  it("대조군: 켜져 있으면 같은 매물이 큐에 들어간다", () => {
+    harvestFetchResults([res], ctx);
+    expect(_queue.size).toBe(1);
+  });
+
+  it("꺼져 있으면 큐에 넣지도 않는다", () => {
+    cfg.harvest = false;
+    harvestFetchResults([res], ctx);
+    expect(_queue.size).toBe(0);
+  });
+
+  it("값이 없으면(설정을 못 읽은 경우) 보내지 않는다 — 모를 땐 꺼진 쪽", () => {
+    cfg.harvest = undefined;
+    harvestFetchResults([res], ctx);
+    expect(_queue.size).toBe(0);
+  });
+
+  it("설정을 읽다 예외가 나도 보내지 않는다", () => {
+    cfg.throws = true;
+    harvestFetchResults([res], ctx);
+    expect(_queue.size).toBe(0);
+  });
+
+  it("대기 중에 끄면 flush 가 쌓인 것을 보내지 않고 버린다", () => {
+    const sent = vi.fn(async () => new Response("{}"));
+    vi.stubGlobal("fetch", sent);
+    harvestFetchResults([res], ctx);
+    expect(_queue.size).toBe(1);
+    cfg.harvest = false; // 사용자가 설정에서 끔
+    _flush();
+    expect(sent).not.toHaveBeenCalled();
+    expect(_queue.size).toBe(0);
   });
 });

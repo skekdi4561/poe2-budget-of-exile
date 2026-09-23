@@ -157,7 +157,7 @@ export interface Config {
 }
 
 export const defaultConfig = (): Config => ({
-  configVersion: 38,
+  configVersion: 39,
   overlayKey: "Shift + Space",
   overlayBackground: "rgba(129, 139, 149, 0.15)",
   overlayBackgroundClose: true,
@@ -737,6 +737,20 @@ function upgradeConfig(_config: Config): Config {
       config.hideOverlayOnBlur = false;
     }
     config.configVersion = 38;
+  }
+
+  if (config.configVersion < 39) {
+    // 시장 곡선 수집을 설정에서 끌 수 있게 했다 — 전에는 소스를 고쳐 다시 빌드해야 했다.
+    // 기존 사용자는 지금까지처럼 켜진 채로 둔다(동작이 바뀌지 않는다).
+    // 값을 **명시적으로** 넣는 이유: undefined 로 두면 동작은 켜져 있는데 설정 화면
+    // 체크박스는 꺼진 것처럼 보인다. 개인정보 토글이 실제와 다르게 보이면 안 된다.
+    const pc = config.widgets.find((w) => w.wmType === "price-check") as
+      | widget.PriceCheckWidget
+      | undefined;
+    if (pc && pc.harvest === undefined) {
+      pc.harvest = true;
+    }
+    config.configVersion = 39;
   }
   /* eslint-enable */
 

@@ -145,6 +145,12 @@
     <ui-checkbox class="mb-4" v-model="showCursor">{{
       t(":cursor_pos")
     }}</ui-checkbox>
+    <div class="mb-4">
+      <ui-checkbox class="mb-1" v-model="harvest">{{
+        t(":harvest")
+      }}</ui-checkbox>
+      <div class="italic text-gray-500">{{ t(":harvest_help") }}</div>
+    </div>
 
     <div class="mb-4">
       <div class="flex-1 mb-1">{{ t(":use_tooltip_hover") }}</div>
@@ -284,6 +290,7 @@ export default defineComponent({
         "activateStockFilter",
       ),
       showCursor: configModelValue(() => configWidget.value, "showCursor"),
+      harvest: configModelValue(() => configWidget.value, "harvest"),
       builtinBrowser: configModelValue(
         () => configWidget.value,
         "builtinBrowser",

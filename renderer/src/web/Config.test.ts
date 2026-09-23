@@ -48,7 +48,7 @@ describe("upgradeConfig 36 → 37 (V41 — 지운 시장 곡선 위젯 복구)",
   it("위젯을 지운 v36 설정 → 37 이 되고 market-curve 위젯이 F7 로 되살아난다", async () => {
     await init({ configVersion: 36, widgets: real.defaultConfig().widgets }); // 가짜 레지스트리라 price-check 뿐
     // 마이그레이션은 사슬이라 최신(38)까지 간다 — 안 돌면 36 그대로다
-    expect(real.AppConfig().configVersion).toBe(38);
+    expect(real.AppConfig().configVersion).toBe(39);
     expect(marketCurves()).toHaveLength(1); // 위젯이 안 생기면 F7 이 영영 죽는다
     expect((marketCurves()[0] as { toggleKey?: string }).toggleKey).toBe("F7");
   });
@@ -88,7 +88,7 @@ describe("upgradeConfig 37 → 38 (원작 0.16 의 savedAugments · hideOverlayO
   it("37 설정에 savedAugments 와 hideOverlayOnBlur 가 채워진다", async () => {
     // 가짜 레지스트리의 price-check 에는 savedAugments 가 없다 — 옛 설정과 같은 상태다
     await init({ configVersion: 37, hideOverlayOnBlur: undefined });
-    expect(real.AppConfig().configVersion).toBe(38);
+    expect(real.AppConfig().configVersion).toBe(39);
     expect(priceCheck()?.savedAugments).toEqual({});
     expect(real.AppConfig().hideOverlayOnBlur).toBe(false);
   });
@@ -106,5 +106,35 @@ describe("upgradeConfig 37 → 38 (원작 0.16 의 savedAugments · hideOverlayO
     });
     expect(priceCheck()?.savedAugments).toEqual(saved); // 원작 코드는 무조건 {} 로 지운다
     expect(real.AppConfig().hideOverlayOnBlur).toBe(true);
+  });
+});
+
+describe("upgradeConfig 38 → 39 (시장 곡선 수집 토글)", () => {
+  beforeEach(() => {
+    vi.stubGlobal("document", { documentElement: { style: {} } });
+  });
+
+  const priceCheck = () =>
+    real.AppConfig().widgets.find((w) => w.wmType === "price-check") as
+      | { harvest?: boolean }
+      | undefined;
+
+  it("38 설정에 harvest 가 명시적으로 true 로 들어간다", async () => {
+    // undefined 로 남으면 동작은 켜져 있는데 설정 화면 체크박스는 꺼진 것처럼 보인다
+    await init({ configVersion: 38 });
+    expect(real.AppConfig().configVersion).toBe(39);
+    expect(priceCheck()?.harvest).toBe(true);
+  });
+
+  it("사용자가 이미 끈 값은 되살리지 않는다", async () => {
+    await init({
+      configVersion: 38,
+      widgets: real
+        .defaultConfig()
+        .widgets.map((w) =>
+          w.wmType === "price-check" ? { ...w, harvest: false } : w,
+        ) as Config["widgets"],
+    });
+    expect(priceCheck()?.harvest).toBe(false);
   });
 });

@@ -428,7 +428,9 @@
     "travel_to_hideout": "Reise zum Versteck für Listings. Erfordert Anmeldung über den eingebauten Browser; bedenke die damit verbundenen Risiken.",
     "core_currency": "Primäre Basiswährung:",
     "travel_option_button": "Schaltfläche",
-    "travel_option_row": "Strg-Klick"
+    "travel_option_row": "Strg-Klick",
+    "harvest": "Preisabfragen mit der Marktkurve (F7) teilen",
+    "harvest_help": "Sendet die öffentlichen Angebotsdaten, die deine Preisabfrage ohnehin anzeigt (Angebots-ID, Preis, DPS, Mods). Dein Account wird nie gesendet, und es werden keine zusätzlichen Handelsanfragen gestellt."
   },
   "poe2_new": {
     "beta_warning": "Dies ist eine BETA für POE2, es wird nicht immer wie erwartet funktionieren.",

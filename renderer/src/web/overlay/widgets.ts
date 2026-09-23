@@ -61,6 +61,9 @@ export interface PriceCheckWidget extends Widget {
   savedAugments: {
     [key: string]: Array<string | null>;
   };
+  // (이 포크) 가격검사 응답의 매물 공개 정보를 시장 곡선 수집 서버로 보낼지.
+  // 끄면 아무것도 보내지 않는다. 설정 → 가격 검사 에서 바꾼다.
+  harvest: boolean;
 }
 
 export interface StopwatchWidget extends Widget {

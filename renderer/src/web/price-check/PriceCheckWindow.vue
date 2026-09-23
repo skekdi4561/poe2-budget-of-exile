@@ -211,6 +211,7 @@ export default defineComponent({
         rememberListingType: false,
         initialDelay: 48,
         savedAugments: {},
+        harvest: true,
       };
     },
   } satisfies WidgetSpec,
