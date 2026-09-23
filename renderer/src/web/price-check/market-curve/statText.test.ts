@@ -1,6 +1,6 @@
 // 옵션 이름 번역 — 한국어 원문 → ref → 지금 언어 표기.
 // 못 찾으면 반드시 한국어 원문이 그대로 나와야 한다(빈 칸이나 ref 노출은 결함).
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -18,13 +18,23 @@ const STATS: Record<
     matchers: [{ string: "Adds # to # Fire Damage" }],
   },
   "표기없음": { ref: "표기없음", matchers: [] },
+  // 지금 언어(여기선 독일어 흉내) 표기가 원문 두 언어와 모두 달라야 "옮겼다"가 보인다
+  "Adds # to # Lightning Damage": {
+    ref: "Adds # to # Lightning Damage",
+    matchers: [{ string: "Fügt # bis # Blitzschaden hinzu" }],
+  },
 };
 vi.mock("@/assets/data", () => ({
   STAT_BY_REF: (r: string) => STATS[r],
 }));
-vi.mock("@/web/Config", () => ({ AppConfig: () => ({ language: "en" }) }));
+const lang = vi.hoisted(() => ({ value: "en" }));
+vi.mock("@/web/Config", () => ({
+  AppConfig: () => ({ language: lang.value }),
+}));
 
-const { buildRefIndex, statText, _setRefIndex } = await import("./statText");
+const { buildRefIndex, statText, _setRefIndex, tablesFor, initStatText } =
+  await import("./statText");
+const { modKey } = await import("./appraiser");
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -88,7 +98,43 @@ describe("statText", () => {
   });
 });
 
+describe("tablesFor — 지금 언어가 아닌 쪽 표만 받는다", () => {
+  // 영어·한국어 사용자에게 회귀가 없다는 걸 여기서 못박는다: 자기 언어 표를 받으면
+  // 원문이 matchers[0] 표기로 바뀌어 보일 수 있다(번역이 아니라 재표기).
+  it("영어 UI 는 한국어 표만 — 지금과 같다", () => {
+    expect(tablesFor("en")).toEqual(["ko"]);
+  });
+  it("한국어 UI 는 영어 표만 — 영어 크라우드 옵션을 한국어로", () => {
+    expect(tablesFor("ko")).toEqual(["en"]);
+  });
+  it("그 외 언어는 둘 다", () => {
+    for (const l of ["de", "ja", "ru", "cmn-Hant"])
+      expect(tablesFor(l)).toEqual(["ko", "en"]);
+  });
+});
+
 describe("실제 데이터", () => {
+  it("영어 스탯 표도 읽히고, 글로벌 크라우드가 보내는 영어 옵션이 대응된다", () => {
+    // 2026-09-23 실측에서 한국어 표에 없던 상위 옵션들 — 전부 영어 원문이었다.
+    // 이게 빠지면 한국어 UI 에 영어가, 다른 언어 UI 에 영어가 섞여 보인다.
+    const idx = buildRefIndex(
+      readFileSync(
+        resolve(here, "../../../../public/data/en/stats.ndjson"),
+        "utf-8",
+      ),
+    );
+    expect(idx.size).toBeGreaterThan(3000);
+    for (const k of [
+      "Adds # to # Lightning Damage",
+      "# to Strength",
+      "Gain # Life per enemy killed",
+      "# to Accuracy Rating",
+      "#% increased Physical Damage",
+    ]) {
+      expect(`${k} -> ${idx.has(k)}`).toBe(`${k} -> true`);
+    }
+  });
+
   it("한국어 스탯 표가 실제로 읽히고 대표 옵션이 대응된다", () => {
     const nd = readFileSync(
       resolve(here, "../../../../public/data/ko/stats.ndjson"),
@@ -107,5 +153,58 @@ describe("실제 데이터", () => {
     ]) {
       expect(`${k} -> ${idx.get(k) ?? "(없음)"}`).not.toContain("(없음)");
     }
+  });
+});
+
+describe("initStatText — 원문이 한국어든 영어든 지금 언어로", () => {
+  const REF = "Adds # to # Lightning Damage";
+  const KO = modKey("번개 피해 #~# 추가");
+  const EN = modKey("Adds # to # Lightning Damage");
+  const LOCAL = modKey("Fügt # bis # Blitzschaden hinzu");
+  const asked: string[] = [];
+
+  beforeEach(() => {
+    asked.length = 0;
+    _setRefIndex(null);
+    vi.stubGlobal("fetch", async (url: string) => {
+      asked.push(url);
+      const m = url.includes("/ko/") ? "번개 피해 #~# 추가" : REF;
+      return new Response(
+        JSON.stringify({ ref: REF, matchers: [{ string: m }] }),
+      );
+    });
+  });
+  afterEach(() => {
+    lang.value = "en";
+    _setRefIndex(null);
+    vi.unstubAllGlobals();
+  });
+
+  it("그 외 언어: 한국어 원문도 영어 원문도 옮긴다", async () => {
+    lang.value = "de";
+    await initStatText();
+    expect(statText(KO)).toBe(LOCAL);
+    expect(statText(EN)).toBe(LOCAL);
+  });
+
+  it("한국어: 영어 표만 받고, 한국어 원문은 그대로 둔다", async () => {
+    lang.value = "ko";
+    await initStatText();
+    expect(asked.map((u) => u.includes("/en/"))).toEqual([true]);
+    expect(statText(KO)).toBe(KO);
+    expect(statText(EN)).toBe(LOCAL);
+  });
+
+  it("한 표를 못 받아도 나머지 표로 돈다", async () => {
+    lang.value = "de";
+    vi.stubGlobal("fetch", async (url: string) => {
+      if (url.includes("/ko/")) throw new Error("down");
+      return new Response(
+        JSON.stringify({ ref: REF, matchers: [{ string: REF }] }),
+      );
+    });
+    await initStatText();
+    expect(statText(EN)).toBe(LOCAL);
+    expect(statText(KO)).toBe(KO);
   });
 });
