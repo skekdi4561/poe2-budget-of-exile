@@ -57,3 +57,42 @@ describe("변수로 만든 i18n 키가 en 에 있다", () => {
     );
   });
 });
+
+describe("분류명·공통 낱말이 빠지지 않는다", () => {
+  const load = (l: string) =>
+    JSON.parse(
+      readFileSync(resolve(here, `../public/data/${l}/app_i18n.json`), "utf-8"),
+    ) as Record<string, unknown>;
+
+  it("거래 분류(CATEGORY_TO_TRADE_ID) 전부에 en 분류명이 있다 — FilterName 이 t(item_category.*) 로 쓴다", () => {
+    const body = readFileSync(
+      resolve(src, "web/price-check/trade/pathofexile-trade.ts"),
+      "utf-8",
+    );
+    const start = body.indexOf("CATEGORY_TO_TRADE_ID");
+    const ids = [
+      ...body
+        .slice(start, body.indexOf("]);", start))
+        .matchAll(/"([a-z]+(?:\.[a-z_]+)?)"/g),
+    ].map((m) => m[1].replace(".", "_"));
+    expect(ids.length).toBeGreaterThan(40);
+    const cat = en.item_category as Record<string, unknown>;
+    expect(ids.filter((k) => typeof cat[k] !== "string")).toEqual([]);
+  });
+
+  it("en 에 없는 공통 낱말(Save·Cancel·min·max…)이 고를 수 있는 모든 언어에 있다", () => {
+    // en 에 키가 없어 원작 Weblate 가 못 내주는 낱말들 — 한국어 파일을 기준 목록으로 쓴다
+    const ko = load("ko");
+    const words = Object.keys(ko).filter(
+      (k) => typeof ko[k] === "string" && !(k in en),
+    );
+    expect(words.length).toBeGreaterThan(30);
+    for (const l of ["ru", "cmn-Hant", "ja", "de", "es", "pt", "fr"]) {
+      const d = load(l);
+      const missing = words.filter(
+        (k) => typeof d[k] !== "string" && k !== "Hotcool",
+      );
+      expect(`${l}: ${missing.join(", ")}`).toBe(`${l}: `);
+    }
+  });
+});

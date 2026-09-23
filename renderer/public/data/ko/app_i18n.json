@@ -178,7 +178,12 @@
     "armour_buckler": "버클러",
     "weapon_talisman": "부적",
     "armour_focus": "집중구",
-    "map_tablet": "서판"
+    "map_tablet": "서판",
+    "gem_activegem": "스킬 젬",
+    "gem_supportgem": "보조 젬",
+    "gem_metagem": "메타 젬",
+    "map_fragment": "지도 조각",
+    "map_waystone": "경로석"
   },
   "filters": {
     "selected_some": "{1} 중 {0}개 선택",

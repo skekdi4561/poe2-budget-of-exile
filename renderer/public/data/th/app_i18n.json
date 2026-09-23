@@ -161,7 +161,12 @@
     "armour_buckler": "โล่เล็ก",
     "map_tablet": "แท็บเล็ต",
     "weapon_talisman": "เครื่องรางศักดิ์สิทธิ์",
-    "flask_charm": "เครื่องราง"
+    "flask_charm": "เครื่องราง",
+    "gem_activegem": "สกิลเจม",
+    "gem_supportgem": "ซัพพอร์ตเจม",
+    "gem_metagem": "เมตาเจม",
+    "map_fragment": "ชิ้นส่วนแผนที่",
+    "map_waystone": "ศิลานำทาง"
   },
   "filters": {
     "selected_some": "{0} จาก {1}, คลัง",

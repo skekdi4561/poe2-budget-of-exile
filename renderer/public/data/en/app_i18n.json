@@ -182,7 +182,12 @@
     "weapon_flail": "Flail",
     "armour_buckler": "Buckler",
     "map_tablet": "Tablet",
-    "weapon_talisman": "Talisman"
+    "weapon_talisman": "Talisman",
+    "gem_activegem": "Skill Gem",
+    "gem_supportgem": "Support Gem",
+    "gem_metagem": "Meta Gem",
+    "map_fragment": "Map Fragment",
+    "map_waystone": "Waystone"
   },
   "filters": {
     "selected_some": "{0} of {1}, stats",
