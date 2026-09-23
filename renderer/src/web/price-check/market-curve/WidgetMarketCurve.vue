@@ -123,7 +123,7 @@
           <span v-if="best" class="ml-auto"
             >{{ t(":best_for_budget", { m: metricLabel }) }}
             <span class="font-bold text-teal-400 text-lg">{{
-              Math.round(best.d)
+              fmtMetric(best.d)
             }}</span>
             · {{ formatEx(best.p, board.rates) }}</span
           >
@@ -178,7 +178,7 @@
             :style="{ left: hover.left + 'px', top: hover.top + 'px' }"
             style="font-variant-numeric: tabular-nums"
           >
-            {{ metricLabel }} {{ Math.round(hover.d) }} ·
+            {{ metricLabel }} {{ fmtMetric(hover.d) }} ·
             <span class="text-yellow-400 font-bold">{{
               formatEx(hover.p, board.rates)
             }}</span>
@@ -318,7 +318,7 @@
                       'text-teal-400 font-bold': best && r.d === best.d,
                     }"
                   >
-                    <td class="py-1 px-2">{{ Math.round(r.d) }}</td>
+                    <td class="py-1 px-2">{{ fmtMetric(r.d) }}</td>
                     <td class="py-1 px-2 text-right">
                       {{ formatEx(r.p, board.rates) }}
                     </td>
@@ -422,6 +422,7 @@ import {
   metricRows,
   priceTicks,
   fmtTick,
+  fmtMetric,
   trendSpan,
   MarketBoard,
   StatOption,
@@ -556,7 +557,10 @@ export default defineComponent({
           ex:
             r[c.id] >= 10
               ? Math.round(r[c.id]).toLocaleString(uiLocale())
-              : r[c.id].toFixed(1),
+              : r[c.id].toLocaleString(uiLocale(), {
+                  minimumFractionDigits: 1,
+                  maximumFractionDigits: 1,
+                }),
         }));
     });
 
@@ -839,7 +843,7 @@ export default defineComponent({
         ctx.moveTo(x, PAD.t);
         ctx.lineTo(x, H - PAD.b);
         ctx.stroke();
-        ctx.fillText(Math.round(d).toLocaleString(uiLocale()), x, H - 8);
+        ctx.fillText(fmtMetric(d), x, H - 8);
       }
       // 축선
       ctx.strokeStyle = "rgba(156,163,175,0.5)";
@@ -1105,6 +1109,7 @@ export default defineComponent({
       weaponName,
       onWeaponChange,
       rateChips,
+      fmtMetric,
       metric,
       metrics,
       sortDesc,

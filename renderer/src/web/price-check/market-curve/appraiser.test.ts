@@ -16,6 +16,7 @@ import {
   isOffDps,
   priceTicks,
   fmtTick,
+  fmtMetric,
   trendSpan,
   MIRROR_IN_DIVINE,
 } from "./appraiser";
@@ -623,6 +624,14 @@ describe("fetchSnapshot 타임아웃 (V28)", () => {
       vi.useRealTimers();
       timeoutSpy.mockRestore();
     }
+  });
+});
+
+describe("fmtMetric — 지표 숫자는 화면 어디서나 같은 형식", () => {
+  it("반올림하고 사용자 언어의 자릿수 구분을 쓴다", () => {
+    expect(fmtMetric(1234.6, "en")).toBe("1,235");
+    expect(fmtMetric(1234.6, "de")).toBe("1.235");
+    expect(fmtMetric(812.4, "ko")).toBe("812");
   });
 });
 

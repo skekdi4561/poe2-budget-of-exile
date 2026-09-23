@@ -369,6 +369,11 @@ export function formatEx(
   return num + (useDiv ? " div" : " ex");
 }
 
+// 지표(DPS·방어도) 표시 — 축·표·말풍선·예산 줄이 **같은** 형식을 쓴다.
+// 축만 로케일 자릿수 구분(1,200 / 1.200)을 쓰고 표·말풍선은 1200 이던 어긋남을 없앤다.
+export const fmtMetric = (d: number, locale: string | undefined = uiLocale()) =>
+  Math.round(d).toLocaleString(locale);
+
 // 가격축 눈금 라벨 — "25.0 div" 대신 "25 div" 처럼 군더더기 없이.
 // **숫자는 로케일을 따른다** — 독일어에서 1.3 은 1,3 이다. 최전선 표(toLocaleString)와
 // 축이 서로 다른 소수점을 쓰고 있었다.
