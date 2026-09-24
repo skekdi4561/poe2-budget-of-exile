@@ -405,3 +405,42 @@ describe("수집 토글 — 끄면 아무것도 안 보낸다", () => {
     expect(_queue.size).toBe(0);
   });
 });
+
+describe("레어만 보낸다 — 수집기와 시장 곡선이 레어만 쓴다", () => {
+  // 실측(2026-09-25): 업로드의 76%가 유니크·노멀이라 아무도 안 쓰는 전송이었다
+  const ctx = { cat: "weapon.bow", league: "L" };
+  const listing = (id: string, rarity?: string) => ({
+    id,
+    item: {
+      extended: { pdps: 100, edps: 0 },
+      typeLine: "활",
+      ...(rarity ? { rarity } : {}),
+    },
+    listing: { price: { currency: "divine", amount: 3 } },
+  });
+
+  beforeEach(() => {
+    _queue.clear();
+    cfg.harvest = true;
+    vi.useFakeTimers();
+  });
+  afterEach(() => {
+    _queue.clear();
+    vi.runAllTimers();
+    vi.useRealTimers();
+  });
+
+  it("레어·등급 없음은 보내고, 유니크·노멀·매직은 안 보낸다", () => {
+    harvestFetchResults(
+      [
+        listing("rare", "Rare"),
+        listing("blank"), // 등급이 비면 레어로 본다(수집기·위젯과 같은 규칙)
+        listing("unique", "Unique"),
+        listing("normal", "Normal"),
+        listing("magic", "Magic"),
+      ],
+      ctx,
+    );
+    expect([..._queue.keys()].sort()).toEqual(["blank", "rare"]);
+  });
+});

@@ -76,7 +76,7 @@ and go back to every user.
 - The seller's account name is not sent either. However, **the listing id is a public identifier that points to that
   listing on the trade site**, so looking it up on the trade site shows the seller's account (information the trade site
   already shows). That is why we do not call this "anonymous"
-- Samples are sent only from searches for the 7 attack weapon types and shields, and the collector uses only
+- Only **rare** listings are sent, and only from searches for the 7 attack weapon types and shields (the curves use rares only), and the collector uses only
   current-league samples for the curves
 - Samples that would change a price curve are verified on the trade site by the collector first, and
   implausibly cheap ones are dropped. A sample that an already verified better-and-cheaper listing beats
