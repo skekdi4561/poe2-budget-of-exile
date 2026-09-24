@@ -264,10 +264,12 @@ export function harvestFetchResults(results: unknown[], ctx: HarvestCtx) {
   if (!HARVEST_URL || !ctx.cat || !harvestEnabled()) return;
   for (const res of results) {
     const row = normalizeResult(res, ctx.league, ctx.cat);
-    // 레어만 보낸다 — 수집기(serve.py 합류)와 시장 곡선(rowsFromSnapshot)이 레어만 쓴다.
+    // 레어만 보낸다 — 시장 곡선(rowsFromSnapshot)과 사이트 기본값('희귀 등급만')이 레어만 쓴다.
     // 실측(2026-09-25, 워커 24시간 창 1,621행): 유니크 50.5%·노멀 25.2% — 업로드의 76%가
-    // 아무도 안 쓰는 전송이었고, 카테고리당 800행 창에서 레어 자리를 밀어낼 수도 있었다.
-    // 등급이 비면 레어로 본다(수집기·위젯과 같은 규칙).
+    // 곡선에 안 쓰이는 전송이었고, 카테고리당 800행 창이 찰 때 레어 자리를 밀어낼 수 있다.
+    // 수집기 합류(serve.py merge_harvest)는 등급을 거르지 않아 비레어도 공개 파일에 실린다
+    // (같은 날 소프트코어 파일 행 바이트의 28%) — 그래서 보내는 쪽에서 거른다.
+    // 등급이 비면 레어로 본다(위젯·사이트와 같은 규칙).
     if (row?.id && (row.rarity || "Rare") === "Rare") _queue.set(row.id, row);
   }
   if (_queue.size && !flushTimer) flushTimer = setTimeout(_flush, 5000);
