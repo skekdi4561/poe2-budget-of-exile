@@ -2,5 +2,6 @@
 build
 coverage
 dist
+dist-web
 node_modules
 public

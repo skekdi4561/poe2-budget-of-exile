@@ -1,5 +1,6 @@
 node_modules
 */dist/**
+renderer/dist-web/
 
 # local env files
 .env.local

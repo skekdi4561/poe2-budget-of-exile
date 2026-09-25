@@ -217,7 +217,8 @@ async function loadItems(language: string) {
   }
 }
 
-async function loadStats(language: string) {
+// 웹판 시장 곡선(src/curve.ts)이 거래소 API 없이 옵션 표만 채우려고 쓴다.
+export async function loadStats(language: string) {
   const ndjson = await (
     await fetch(`${import.meta.env.BASE_URL}data/${language}/stats.ndjson`)
   ).text();

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- 위젯은 48rem(768px) 고정 폭이다. 폰에서는 레이아웃 폭을 800 으로 잡아 위젯을 줄여서
+         통째로 보여준다 — 폭에 맞춰 다시 배치하면 F7 과 다른 모양이 된다. -->
+    <meta name="viewport" content="width=800" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="/icon.ico" />
+    <title>PoE2 시세 감정소</title>
+    <style>
+      /* 페이지 배치만 여기서 한다. Vite 는 HTML 안의 <style> 을 번들 CSS 에 넣지 않으므로
+         번들 CSS 는 게임 속(F7) CSS 와 바이트 단위로 같게 유지된다(pages.yml 의 CSS 검사). */
+      html > body > #app {
+        height: auto;
+        min-height: 100vh;
+        overflow: visible;
+        flex-direction: row;
+        padding: 1rem;
+      }
+      .curve-backdrop {
+        position: fixed;
+        inset: 0;
+      }
+      .curve-host {
+        position: relative;
+        margin: auto;
+        flex: none;
+      }
+      /* Widget.vue 구조: 루트 > .widget > [위젯 내용, 숨기기·편집·이동 패널, 이동 손잡이].
+         게임에서는 .widget 이 화면 기준 절대 위치다 — 웹에서는 문서 흐름에 둔다. */
+      .curve-host > div {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        max-width: none !important;
+        max-height: none !important;
+      }
+      .curve-host > div > :not(:first-child) {
+        display: none !important;
+      }
+      /* App.vue 는 웹킷의 숫자 입력 화살표만 숨긴다 — 파이어폭스 쪽 같은 처리 */
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- App.vue 의 루트와 같은 클래스 — 글꼴·기본 글자 크기가 여기서 정해진다 -->
+    <div id="app" class="text-sm font-poe-sc"></div>
+    <script type="module" src="/src/curve.ts"></script>
+  </body>
+</html>

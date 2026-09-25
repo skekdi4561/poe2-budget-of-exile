@@ -10,6 +10,7 @@
     "lint-fix": "eslint --ext .ts,.vue src --fix",
     "format": "prettier . --write ",
     "build": "vue-tsc --noEmit && vite build",
+    "build:web": "npm run make-index-files && vite build --config vite.web.config.mts && node -e \"require('fs').renameSync('dist-web/curve.html','dist-web/index.html')\"",
     "make-index-files": "node src/assets/make-index-files.mjs",
     "test": "vitest"
   },

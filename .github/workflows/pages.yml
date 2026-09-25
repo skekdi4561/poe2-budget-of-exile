@@ -1,0 +1,66 @@
+name: Web curve (Pages)
+
+# 웹판 시장 곡선 — 게임 속 F7 위젯(WidgetMarketCurve.vue)을 그대로 띄우는 정적 페이지.
+# 앱 릴리스(main.yml)와 따로 돈다. 저장소 설정 Pages → Source 가 GitHub Actions 여야 한다.
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'renderer/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# 배포 중인 것은 끊지 않는다 — 끊으면 사이트가 반쯤 올라간 상태로 남을 수 있다.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./renderer
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-node@v6
+      with:
+        node-version: 24
+    - run: npm ci
+    - run: npm run build:web
+    # 게임 속 빌드를 한 번 더 지어 CSS 를 비교한다 — 웹판 CSS 가 F7 위젯의 CSS 와 한 글자라도
+    # 다르면 배포하지 않는다. url() 의 폴더 부분만 무시한다(웹판은 base "./" 라 경로 앞부분이
+    # 다르다 — 파일 이름은 내용 해시라 같아야 한다).
+    - run: npx vite build
+    - name: CSS equals in-game CSS
+      run: |
+        node -e "
+        const fs = require('fs');
+        const css = (d) => {
+          const f = fs.readdirSync(d + '/assets').filter((x) => x.endsWith('.css'));
+          if (f.length !== 1) throw Error(d + ' css files: ' + f);
+          return fs.readFileSync(d + '/assets/' + f[0], 'utf8').replace(/url\(([^)]*\/)?([^/)]+)\)/g, 'url(\$2)');
+        };
+        if (css('dist') !== css('dist-web')) { console.error('web CSS != in-game CSS'); process.exit(1); }
+        console.log('CSS identical');
+        "
+    - uses: actions/upload-pages-artifact@v5
+      with:
+        path: ./renderer/dist-web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - id: deployment
+      uses: actions/deploy-pages@v5
